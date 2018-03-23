@@ -173,22 +173,12 @@ get.fitness.from.genotype.female <- function(genotype, genome,all.haplotype,all.
 }
 
 
-
-
-
-
-
-simulate.frequency <- function(){
-
-
-  nb.genotypes <- dim(build.all.genotype(genome))[1]
-  frequencies <- rep(1/nb.genotypes,nb.genotypes)
-
-  males.genotype <- get.male(genome,build.all.haplotype(genome),build.all.genotype(genome))
-  females.genotype <- get.female(genome,build.all.haplotype(genome),build.all.genotype(genome))
-
+simulate.frequency <- function(genome,initial.frequency){
 nb.genotypes <- dim(build.all.genotype(genome))[1]
-frequencies <- rep(1/nb.genotypes,nb.genotypes)
+males.genotype <- get.male(genome,build.all.haplotype(genome),build.all.genotype(genome))
+females.genotype <- get.female(genome,build.all.haplotype(genome),build.all.genotype(genome))
+nb.genotypes <- dim(build.all.genotype(genome))[1]
+frequencies <- initial.frequency
 new.frequencies <- rep(0,nb.genotypes)
 male.frequency <- sum(frequencies[males.genotype])
 female.frequency <- sum(frequencies[females.genotype])
