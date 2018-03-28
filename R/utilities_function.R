@@ -1,5 +1,5 @@
 
-mod <- function(i,j){
-  value <- i%%j
-  if(value>0) return(value) else return(j)
+mod <- function(value,modulo){
+  new.value <- value%%modulo
+  if(new.value>0) return(new.value) else return(modulo)
 }
