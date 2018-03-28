@@ -18,16 +18,20 @@ get.id.sd.locus <- function(genome){
   return(sd.locus)
 }
 
-get.male <- function(genome,all.haplotype,all.genotype){
-  sd.locus <- get.id.sd.locus(genome)
+get.male <- function(genome){
+  all.haplotype <- build.all.haplotype(genome)
+  all.genotype <- build.all.genotype(genome)
   male = c()
   for(genotype in 1:get.nb.genotype(genome)){
-    if(is.male(genotype,sd.locus,all.haplotype,all.genotype,genome)) male <- c(male,genotype)
+    if(is.male(genotype,genome)) male <- c(male,genotype)
   }
   return(male)
 }
 
-is.male <- function(genotype,sd.locus,all.haplotype,all.genotype,genome){
+is.male <- function(genotype, genome){
+  all.haplotype <- build.all.haplotype(genome)
+  all.genotype <- build.all.genotype(genome)
+  sd.locus <- get.id.sd.locus(genome)
   haplotype1 = all.haplotype[all.genotype[genotype,1]]
   haplotype2 = all.haplotype[all.genotype[genotype,2]]
   my_locus.sd <- genome[[sd.locus]]$sd
@@ -35,16 +39,20 @@ is.male <- function(genotype,sd.locus,all.haplotype,all.genotype,genome){
   return(my_locus.sd[position] == 1)
 }
 
-get.female <- function(genome,all.haplotype,all.genotype){
-  sd.locus <- get.id.sd.locus(genome)
+get.female <- function(genome){
+  all.haplotype <- build.all.haplotype(genome)
+  all.genotype <- build.all.genotype(genome)
   female = c()
   for(genotype in 1:get.nb.genotype(genome)){
-    if(is.female(genotype,sd.locus,all.haplotype,all.genotype,genome)) female <- c(female,genotype)
+    if(is.female(genotype, genome)) female <- c(female,genotype)
   }
   return(female)
 }
 
-is.female <- function(genotype,sd.locus,all.haplotype,all.genotype,genome){
+is.female <- function(genotype, genome){
+  all.haplotype <- build.all.haplotype(genome)
+  all.genotype <- build.all.genotype(genome)
+  sd.locus <- get.id.sd.locus(genome)
   haplotype1 = all.haplotype[all.genotype[genotype,1]]
   haplotype2 = all.haplotype[all.genotype[genotype,2]]
   my_locus.sd <- genome[[sd.locus]]$sd

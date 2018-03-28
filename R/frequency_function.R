@@ -1,7 +1,7 @@
 simulate.frequency <- function(genome,initial.frequency){
 nb.genotypes <- dim(build.all.genotype(genome))[1]
-males.genotype <- get.male(genome,build.all.haplotype(genome),build.all.genotype(genome))
-females.genotype <- get.female(genome,build.all.haplotype(genome),build.all.genotype(genome))
+males.genotype <- get.male(genome)
+females.genotype <- get.female(genome)
 nb.genotypes <- dim(build.all.genotype(genome))[1]
 frequencies <- initial.frequency
 new.frequencies <- rep(0,nb.genotypes)
