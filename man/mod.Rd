@@ -13,8 +13,6 @@ mod(value, modulo)
 }
 \value{
 The remainder of the division of value by modulo
-
-The remainder of the division of value by modulo
 }
 \description{
 This function return the modulus of a number. The difference with
