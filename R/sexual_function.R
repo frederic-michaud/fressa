@@ -18,6 +18,11 @@ get.id.sd.locus <- function(genome){
   return(sd.locus)
 }
 
+
+#' give the list of male in a population
+#'
+#' This function return the index of all genotype that are,
+#' at least partially, male
 get.male <- function(genome){
   all.haplotype <- build.all.haplotype(genome)
   all.genotype <- build.all.genotype(genome)
@@ -28,17 +33,24 @@ get.male <- function(genome){
   return(male)
 }
 
-is.male <- function(genotype, genome){
+#' Determine if a genotype is male
+#'
+#' This function return true if the genotype with index
+#' genotype.index might generate a male and false otherwise.
+is.male <- function(genotype.index, genome){
   all.haplotype <- build.all.haplotype(genome)
   all.genotype <- build.all.genotype(genome)
   sd.locus <- get.id.sd.locus(genome)
-  haplotype1 = all.haplotype[all.genotype[genotype,1]]
-  haplotype2 = all.haplotype[all.genotype[genotype,2]]
+  haplotype1 = all.haplotype[all.genotype[genotype.index,1],]
+  haplotype2 = all.haplotype[all.genotype[genotype.index,2],]
   my_locus.sd <- genome[[sd.locus]]$sd
   position <- where.is.locus(c(haplotype1[sd.locus],haplotype2[sd.locus]),build.genotype.from.locus(genome,sd.locus))
   return(my_locus.sd[position] == 1)
 }
-
+#' give the list of female in a population
+#'
+#' This function return the index of all genotype that are,
+#' at least partially, female
 get.female <- function(genome){
   all.haplotype <- build.all.haplotype(genome)
   all.genotype <- build.all.genotype(genome)
@@ -49,12 +61,16 @@ get.female <- function(genome){
   return(female)
 }
 
-is.female <- function(genotype, genome){
+#' Determine if a genotype is female
+#'
+#' This function return true if the genotype with index
+#' genotype.index might generate a female, and false otherwise.
+is.female <- function(genotype.index, genome){
   all.haplotype <- build.all.haplotype(genome)
   all.genotype <- build.all.genotype(genome)
   sd.locus <- get.id.sd.locus(genome)
-  haplotype1 = all.haplotype[all.genotype[genotype,1]]
-  haplotype2 = all.haplotype[all.genotype[genotype,2]]
+  haplotype1 = all.haplotype[all.genotype[genotype.index,1],]
+  haplotype2 = all.haplotype[all.genotype[genotype.index,2],]
   my_locus.sd <- genome[[sd.locus]]$sd
   position <- where.is.locus(c(haplotype1[sd.locus],haplotype2[sd.locus]),build.genotype.from.locus(genome,sd.locus))
   return(my_locus.sd[position] == 0)
