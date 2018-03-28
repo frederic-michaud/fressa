@@ -8,5 +8,5 @@ is.male(genotype.index, genome)
 }
 \description{
 This function return true if the genotype with index
-genotype.index might generate a male.
+genotype.index might generate a male and false otherwise.
 }

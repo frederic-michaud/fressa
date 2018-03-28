@@ -2,11 +2,11 @@
 % Please edit documentation in R/sexual_function.R
 \name{is.female}
 \alias{is.female}
-\title{Determine if a genotype is male}
+\title{Determine if a genotype is female}
 \usage{
 is.female(genotype.index, genome)
 }
 \description{
 This function return true if the genotype with index
-genotype.index might generate a male.
+genotype.index might generate a female, and false otherwise.
 }
