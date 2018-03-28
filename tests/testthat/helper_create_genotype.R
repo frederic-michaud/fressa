@@ -12,7 +12,7 @@ locus3 = data.frame(chrom1 = c(1,1,1,2,2,3),
                     chrom2 = c(1,2,3,2,3,3),
                     sd     = c(0,1,1,1,1,1),
                     fitness.male   = c(0.9,1.1,1.2,0,0,1.2),
-                    fitness.female = c(1,1,1,1,1,1))
+                    fitness.female = c(0.9,0.9,1,1,1,1))
 genome2 = list(locus1,locus2,locus3)
 
 genome.without.sd = list(locus2,locus2)
