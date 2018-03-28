@@ -123,6 +123,10 @@ genotype.is.in.locus <- function(allele.locus,locus.all.config){
 }
 
 #' gives the position of a certain configuration
+# TODO
+# The name of this function should be updated
+# It also sound that the function does the same as the function get.genotype.index.from.haplotypes.index
+# Why is it more complicated?
 where.is.locus <- function(allele.locus,locus.all.config){
   where.is <- 0
   for (config in 1:dim(locus.all.config)[1]){
@@ -144,7 +148,9 @@ get.genotype.index.from.haplotypes.index <- function(haplotypes,all.genotype){
 #' get fitness of a male
 #'
 #' get the fitness of a male from the index value of its genotype
-get.fitness.from.genotype.male <- function(genotype, genome,all.haplotype,all.genotype){
+get.fitness.from.genotype.male <- function(genotype, genome){
+  all.genotype <- build.all.genotype(genome)
+  all.haplotype <- build.all.haplotype(genome)
   fitness <- 1
   haplotype1 <- get.haplotype.from.index(all.genotype[genotype,1],get.nb.alleles.per.locus(genome))
   haplotype2 <- get.haplotype.from.index(all.genotype[genotype,2],get.nb.alleles.per.locus(genome))
@@ -159,7 +165,9 @@ get.fitness.from.genotype.male <- function(genotype, genome,all.haplotype,all.ge
 #' get fitness of a female
 #'
 #' get the fitness of a female from the index value of its genotype
-get.fitness.from.genotype.female <- function(genotype, genome,all.haplotype,all.genotype){
+get.fitness.from.genotype.female <- function(genotype, genome){
+  all.genotype <- build.all.genotype(genome)
+  all.haplotype <- build.all.haplotype(genome)
   fitness <- 1
   haplotype1 <- get.haplotype.from.index(all.genotype[genotype,1],get.nb.alleles.per.locus(genome))
   haplotype2 <- get.haplotype.from.index(all.genotype[genotype,2],get.nb.alleles.per.locus(genome))
