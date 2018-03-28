@@ -1,8 +1,18 @@
+#' give the position of the sd locus
+#'
+#' This function return the position of the sexual determining
+#' locus, i.e. the locus containing the sex determination, in the genome.
+#' If it is not found, return an error.
+#' If more than one sd is found, return an error
+
 get.id.sd.locus <- function(genome){
   sd.locus <- 0
   nb.locus <- get.nb.locus(genome)
   for(n.locus in 1:nb.locus){
-    if("sd" %in% colnames(genome[[n.locus]])) sd.locus <- n.locus
+    is.in <- ("sd" %in% colnames(genome[[n.locus]]))
+    if(sd.locus > 0 & is.in) stop("too many sex loci")
+    if(is.in) sd.locus <- n.locus
+
   }
   if(sd.locus ==0) stop("no sexual locus found to determine the sex")
   return(sd.locus)
