@@ -37,30 +37,33 @@ nb.genotypes <- dim(build.all.genotype(genome))[1]
 males.genotype <- get.male(genome)
 females.genotype <- get.female(genome)
 frequencies <- initial.frequency
-male.frequency <- sum(frequencies[males.genotype])
-female.frequency <- sum(frequencies[females.genotype])
+maleness <- get.all.maleness(genome)
+femaleness <- get.all.femaleness(genome)
+male.frequency <- sum(frequencies[males.genotype]*maleness[males.genotype])
+female.frequency <- sum(frequencies[females.genotype]*femaleness[females.genotype])
+
 props <- c()
 all.genotype <- build.all.genotype(genome)
 all.haplotype <- build.all.haplotype(genome)
 new.frequencies <- rep(0,nb.genotypes)
 fitness.males <- sapply(1:nb.genotypes, get.fitness.from.genotype.male,genome = genome)
 fitness.females <- sapply(1:nb.genotypes, get.fitness.from.genotype.female,genome = genome)
-maleness <- get.maleness(genome)
-femaleness <- get.femaleness(genome)
+
+
 mean.fitness.male <- 0
-for(male.genotype in males.genotype) mean.fitness.male <- mean.fitness.male + 1/male.frequency*fitness.males[male.genotype]*frequencies[male.genotype]
+for(male.genotype in males.genotype) mean.fitness.male <- mean.fitness.male + 1/male.frequency*fitness.males[male.genotype]*maleness[male.genotype]*frequencies[male.genotype]
 fitness.males <- fitness.males/mean.fitness.male
 mean.fitness.female <- 0
-for(female.genotype in females.genotype) mean.fitness.female <- mean.fitness.female + 1/female.frequency*fitness.females[female.genotype]*frequencies[female.genotype]
+for(female.genotype in females.genotype) mean.fitness.female <- mean.fitness.female + 1/female.frequency*fitness.females[female.genotype]*femaleness[female.genotype]*frequencies[female.genotype]
 fitness.females <- fitness.females/mean.fitness.female
-
 for(male.genotype in males.genotype){
   for(female.genotype in females.genotype){
     childs <- get.childs.index.from.parent.index(male.genotype,female.genotype,genome)
     fitness.male <- fitness.males[male.genotype]
     fitness.female <- fitness.females[female.genotype]
     fitness.couple <- fitness.male*fitness.female
-    probability.of.couple <-1/(male.frequency*female.frequency)*(frequencies[male.genotype]*frequencies[female.genotype])
+    probability.of.couple <-1/(male.frequency*female.frequency)*(frequencies[male.genotype]*frequencies[female.genotype])*
+      maleness[male.genotype]*femaleness[female.genotype]
     for(child in childs){
       new.frequencies[child] <- new.frequencies[child] + fitness.couple*probability.of.couple/4
     }
