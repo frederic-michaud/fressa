@@ -4,7 +4,7 @@
 \alias{get.fitness.from.genotype.female}
 \title{get fitness of a female}
 \usage{
-get.fitness.from.genotype.female(genotype, genome, all.haplotype, all.genotype)
+get.fitness.from.genotype.female(genotype, genome)
 }
 \description{
 get the fitness of a female from the index value of its genotype
