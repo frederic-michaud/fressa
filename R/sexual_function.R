@@ -23,6 +23,8 @@ get.id.sd.locus <- function(genome){
 #'
 #' This function return the index of all genotype that are,
 #' at least partially, male
+#' the number of sd represent of much male is an individual.
+#' if it's one, the individual is fully male, if 0 fully female
 get.male <- function(genome){
   all.haplotype <- build.all.haplotype(genome)
   all.genotype <- build.all.genotype(genome)
@@ -45,7 +47,7 @@ is.male <- function(genotype.index, genome){
   haplotype2 = all.haplotype[all.genotype[genotype.index,2],]
   my_locus.sd <- genome[[sd.locus]]$sd
   position <- where.is.locus(c(haplotype1[sd.locus],haplotype2[sd.locus]),build.genotype.from.locus(genome,sd.locus))
-  return(my_locus.sd[position] == 1)
+  return(my_locus.sd[position] > 0)
 }
 #' give the list of female in a population
 #'
@@ -73,7 +75,7 @@ is.female <- function(genotype.index, genome){
   haplotype2 = all.haplotype[all.genotype[genotype.index,2],]
   my_locus.sd <- genome[[sd.locus]]$sd
   position <- where.is.locus(c(haplotype1[sd.locus],haplotype2[sd.locus]),build.genotype.from.locus(genome,sd.locus))
-  return(my_locus.sd[position] == 0)
+  return(my_locus.sd[position] < 1)
 }
 
 
