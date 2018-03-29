@@ -1,0 +1,46 @@
+---
+title: "Simple sex antagonistic gene"
+author: "Frederic Michaud"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+In this vignette, we show in a simple example how to simulate a sex-antagonist gene.
+First we create two locus, and a genome. This define the system. 
+```{r}
+devtools::load_all()
+locus1 = data.frame(chrom1=c(1,1),chrom2 = c(1,2),sd = c(0,1),fitness.male=c(1,1),fitness.female=c(1,1))
+locus2 = data.frame(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
+genome = list(locus1,locus2)
+```
+
+Now comes the magic, we just need one function to see to which equilibrium this system goes
+
+```{r}
+freqs <- compute.frequency.evolution(genome, generations=100)
+```
+
+We can now directly plot the result.
+```{r}
+plot(freqs[,1],type="l",ylim=c(0,0.5),col="green")
+lines(freqs[,2],type="l",col="blue")
+lines(freqs[,3],type="l",col="red")
+lines(freqs[,4],type="l",col="purple")
+lines(freqs[,5],type="l",col="yellow")
+lines(freqs[,6],type="l",col="orange")
+lines(freqs[,7],type="l",col="grey")
+legend("topleft",legend=c("XfXf","XmXf","YfXm","YmXm","XmXm","YfXf","XfYm"),lty = rep(1,7),col=c("green","blue","red","purple","yellow","orange","grey"))
+```
+
+
