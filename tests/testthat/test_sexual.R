@@ -36,11 +36,32 @@ test_that("The function get.male get all the male present in the population",
           }
 )
 
-test_that("The function get.female  get all the female present in the population",
+test_that("The function get.all.maleness getthe correct value fot the maleness",
           {
-            expect_equal(get.female(genome1),c(1,2,5))
-            expect_equal(get.female(genome2),c(1,4,7,10,13,16,52,55,58,61,64,94,97,100,103,127,130,133,151,154,166))
-            expect_equal(get.female(genome.partially.sexual),c(1,2,5,6,7,10,11,16,17,18))
+            expect_equal(get.all.maleness(genome1),c(0,0,1,1,0,1,1))
+            expect_equal(get.all.maleness(genome.partially.sexual),c(0,0,1,1,0,0,0,1,1,0,0,1,1,1,1,0.5,0.5,0.5))
+          }
+)
+test_that("The function get.maleness correctly get the maleness",
+          {
+            expect_equal(get.maleness(3,genome1),1)
+            expect_equal(get.maleness(5,genome1),0)
+            expect_equal(get.maleness(17,genome.partially.sexual),0.5)
+          }
+)
+
+test_that("The function get.all.femaleness getthe correct value fot the femaleness",
+          {
+            expect_equal(get.all.femaleness(genome1),1-c(0,0,1,1,0,1,1))
+            expect_equal(get.all.femaleness(genome.partially.sexual),1-c(0,0,1,1,0,0,0,1,1,0,0,1,1,1,1,0.5,0.5,0.5))
+          }
+)
+test_that("The function get.femaleness correctly get the femaleness",
+          {
+            expect_equal(get.femaleness(3,genome1),0)
+            expect_equal(get.femaleness(5,genome1),1)
+            expect_equal(get.femaleness(17,genome.partially.sexual),0.5)
 
           }
 )
+

@@ -45,7 +45,8 @@ all.haplotype <- build.all.haplotype(genome)
 new.frequencies <- rep(0,nb.genotypes)
 fitness.males <- sapply(1:nb.genotypes, get.fitness.from.genotype.male,genome = genome)
 fitness.females <- sapply(1:nb.genotypes, get.fitness.from.genotype.female,genome = genome)
-
+maleness <- get.maleness(genome)
+femaleness <- get.femaleness(genome)
 mean.fitness.male <- 0
 for(male.genotype in males.genotype) mean.fitness.male <- mean.fitness.male + 1/male.frequency*fitness.males[male.genotype]*frequencies[male.genotype]
 fitness.males <- fitness.males/mean.fitness.male

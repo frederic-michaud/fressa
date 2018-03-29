@@ -18,6 +18,32 @@ get.id.sd.locus <- function(genome){
   return(sd.locus)
 }
 
+#' Give the list of maleness in a population
+get.all.maleness <- function(genome){
+  all.haplotype <- build.all.haplotype(genome)
+  all.genotype <- build.all.genotype(genome)
+  male = c()
+  for(genotype.index in 1:get.nb.genotype(genome)){
+    male <- c(male,get.maleness(genotype.index,genome))
+  }
+  return(male)
+}
+
+#' Determine the maleness of a genotype
+#'
+#' Gives the proportion of individuals whith the given genotype
+#' which are male
+get.maleness <- function(genotype.index, genome){
+  all.haplotype <- build.all.haplotype(genome)
+  all.genotype <- build.all.genotype(genome)
+  sd.locus <- get.id.sd.locus(genome)
+  haplotype1 = all.haplotype[all.genotype[genotype.index,1],]
+  haplotype2 = all.haplotype[all.genotype[genotype.index,2],]
+  my_locus.sd <- genome[[sd.locus]]$sd
+  position <- where.is.locus(c(haplotype1[sd.locus],haplotype2[sd.locus]),build.genotype.from.locus(genome,sd.locus))
+  return(my_locus.sd[position])
+}
+
 
 #' give the list of male in a population
 #'
@@ -79,3 +105,15 @@ is.female <- function(genotype.index, genome){
 }
 
 
+#' Give the list of femaleness in a population
+get.all.femaleness <- function(genome){
+  return(1-get.all.maleness(genome))
+}
+
+#' Determine the femaleness of a genotype
+#'
+#' Gives the proportion of individuals whith the given genotype
+#' which are female
+get.femaleness <- function(genotype.index, genome){
+  return(1-get.maleness(genotype.index, genome))
+}
