@@ -21,7 +21,7 @@ get.childs.genotype.from.parent.genotype <- function(male.genotype,female.genoty
 #' This function returns the index of all child, i.e. the position
 #' of this individual in the all.genotype matrix.
 get.childs.index.from.parent.index <- function(male.genotype,female.genotype,genome){
-  all.genotype <- build.all.genotype(genome)
+  all.genotype <- genome@all.genotype
   childs <- get.childs.genotype.from.parent.genotype(all.genotype[male.genotype,],all.genotype[female.genotype,])
   a1 <- get.genotype.index.from.haplotypes.index(childs[1,],all.genotype)
   a2 <- get.genotype.index.from.haplotypes.index(childs[2,],all.genotype)
@@ -33,7 +33,7 @@ get.childs.index.from.parent.index <- function(male.genotype,female.genotype,gen
 #' Get the frequency of new born as a function of adults
 
 simulate.frequency <- function(genome,initial.frequency){
-nb.genotypes <- dim(build.all.genotype(genome))[1]
+nb.genotypes <- dim(genome@all.genotype)[1]
 males.genotype <- get.male(genome)
 females.genotype <- get.female(genome)
 frequencies <- initial.frequency
@@ -43,8 +43,8 @@ male.frequency <- sum(frequencies[males.genotype]*maleness[males.genotype])
 female.frequency <- sum(frequencies[females.genotype]*femaleness[females.genotype])
 
 props <- c()
-all.genotype <- build.all.genotype(genome)
-all.haplotype <- build.all.haplotype(genome)
+all.genotype <- genome@all.genotype
+all.haplotype <- genome@all.haplotype
 new.frequencies <- rep(0,nb.genotypes)
 fitness.males <- sapply(1:nb.genotypes, get.fitness.from.genotype.male,genome = genome)
 fitness.females <- sapply(1:nb.genotypes, get.fitness.from.genotype.female,genome = genome)

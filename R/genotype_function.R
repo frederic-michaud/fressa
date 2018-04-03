@@ -1,7 +1,7 @@
 
 #' get the number of locus that contain the genome
 get.nb.locus <- function(genome){
-  return(length(genome))
+  return(length(genome@locus))
 }
 
 #' get the number of possible genotype that exist for a given genome
@@ -11,8 +11,7 @@ get.nb.locus <- function(genome){
 #' by \eqn{n(n+1)/2}, but if some are not (like YY), it might be more complicated
 get.nb.genotype <- function(genome)
 {
-  all.genotype <- build.all.genotype(genome)
-  return(dim(all.genotype)[1])
+  return(dim(genome@all.genotype)[1])
 }
 
 #' get an haplotype from it's index
@@ -38,7 +37,7 @@ get.haplotype.from.index <- function(haplotype.index,nb.alleles){
 #' @return A table containing the number of allele at each locus
 get.nb.alleles.per.locus <- function(genome){
   nb.alleles <- c()
-  for (locus in genome){
+  for (locus in genome@locus){
     alleles <- unique(c(locus$chrom1,locus$chrom2))
     nb.alleles <- c(nb.alleles,length(alleles))
   }
@@ -54,7 +53,7 @@ get.nb.alleles.per.locus <- function(genome){
 build.all.haplotype <- function(genome){
   nb.alleles <- get.nb.alleles.per.locus(genome)
   nb.haplotypes <- prod(nb.alleles)
-  all.haplotype <- matrix(0,nrow=nb.haplotypes,ncol = length(genome))
+  all.haplotype <- matrix(0,nrow=nb.haplotypes,ncol = get.nb.locus(genome))
   for (haplotype in 1:nb.haplotypes){
     haplotype.representation <- get.haplotype.from.index(haplotype,nb.alleles)
     all.haplotype[haplotype,] <- haplotype.representation
@@ -71,9 +70,9 @@ build.all.haplotype <- function(genome){
 #' are not possible and this function takes care of eliminating them
 #' like yy is not possible.
 build.genotype.from.locus <- function(genome,locus){
-   all.config <- matrix(0,ncol=2,nrow=length(genome[[locus]]$chrom1))
-    for(i in 1:length(genome[[locus]]$chrom1)){
-      all.config[i,] <- c(genome[[locus]]$chrom1[i],genome[[locus]]$chrom2[i])
+   all.config <- matrix(0,ncol=2,nrow=length(genome@locus[[locus]]$chrom1))
+    for(i in 1:length(genome@locus[[locus]]$chrom1)){
+      all.config[i,] <- c(genome@locus[[locus]]$chrom1[i],genome@locus[[locus]]$chrom2[i])
     }
    return(all.config)
 }
@@ -90,6 +89,7 @@ build.genotype.from.locus <- function(genome,locus){
 #' of the form YY would not be returned.
 
 build.all.genotype <- function(genome){
+  loci <- genome@locus
   nb.locus <- get.nb.locus(genome)
   locus.all.config <- vector("list",nb.locus)
   for(locus in 1:nb.locus){
@@ -149,14 +149,14 @@ get.genotype.index.from.haplotypes.index <- function(haplotypes,all.genotype){
 #'
 #' get the fitness of a male from the index value of its genotype
 get.fitness.from.genotype.male <- function(genotype, genome){
-  all.genotype <- build.all.genotype(genome)
-  all.haplotype <- build.all.haplotype(genome)
+  all.genotype <- genome@all.genotype
+  all.haplotype <- genome@all.haplotype
   fitness <- 1
   haplotype1 <- get.haplotype.from.index(all.genotype[genotype,1],get.nb.alleles.per.locus(genome))
   haplotype2 <- get.haplotype.from.index(all.genotype[genotype,2],get.nb.alleles.per.locus(genome))
-  for (locus in 1:length(genome)){
+  for (locus in 1:get.nb.locus(genome)){
     position <- where.is.locus(c(haplotype1[locus],haplotype2[locus]),build.genotype.from.locus(genome,locus))
-    locus.fitness <- genome[[locus]]$fitness.male[position]
+    locus.fitness <- genome@locus[[locus]]$fitness.male[position]
     fitness <- fitness*locus.fitness
   }
   return(fitness)
@@ -166,14 +166,14 @@ get.fitness.from.genotype.male <- function(genotype, genome){
 #'
 #' get the fitness of a female from the index value of its genotype
 get.fitness.from.genotype.female <- function(genotype, genome){
-  all.genotype <- build.all.genotype(genome)
-  all.haplotype <- build.all.haplotype(genome)
+  all.genotype <- genome@all.genotype
+  all.haplotype <- genome@all.haplotype
   fitness <- 1
   haplotype1 <- get.haplotype.from.index(all.genotype[genotype,1],get.nb.alleles.per.locus(genome))
   haplotype2 <- get.haplotype.from.index(all.genotype[genotype,2],get.nb.alleles.per.locus(genome))
-  for (locus in 1:length(genome)){
+  for (locus in 1:get.nb.locus(genome)){
     position <- where.is.locus(c(haplotype1[locus],haplotype2[locus]),build.genotype.from.locus(genome,locus))
-    locus.fitness <- genome[[locus]]$fitness.female[position]
+    locus.fitness <- genome@locus[[locus]]$fitness.female[position]
     fitness <- fitness*locus.fitness
   }
   return(fitness)
