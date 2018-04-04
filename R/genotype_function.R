@@ -14,6 +14,14 @@ get.nb.genotype <- function(genome)
   return(dim(genome@all.genotype)[1])
 }
 
+
+#' get the number of possible haplotype that exist for a given genome
+get.nb.haplotype <- function(genome)
+{
+  return(dim(genome@all.haplotype)[1])
+}
+
+
 #' get an haplotype from it's index
 #'
 #' All possible haplotype can be generated and store in a
