@@ -28,19 +28,23 @@ genome = create.genome(locus = list(locus1,locus2))
 Now comes the magic, we just need one function to see to which equilibrium this system goes
 
 ```{r}
-freqs <- compute.frequency.evolution(genome, generations=100)
+freqs <- compute.frequency.evolution(genome, generations=500)
 ```
 
 We can now directly plot the result.
 ```{r}
-plot(freqs[,1],type="l",ylim=c(0,0.5),col="green")
-lines(freqs[,2],type="l",col="blue")
-lines(freqs[,3],type="l",col="red")
-lines(freqs[,4],type="l",col="purple")
-lines(freqs[,5],type="l",col="yellow")
-lines(freqs[,6],type="l",col="orange")
-lines(freqs[,7],type="l",col="grey")
-legend("topleft",legend=c("XfXf","XmXf","YfXm","YmXm","XmXm","YfXf","XfYm"),lty = rep(1,7),col=c("green","blue","red","purple","yellow","orange","grey"))
+plot.haplotype.frequency(genome,freqs)
+plot.genotype.frequency(genome,freqs)
+plot.allele.frequency(genome,freqs,1)
+plot.allele.frequency(genome,freqs,2)
 ```
+
+
+
+
+
+
+
+
 
 
