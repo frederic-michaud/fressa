@@ -35,14 +35,14 @@ compute.frequency.evolution <- function(genome,initial.frequency = NULL,generati
   return(freqs)
 }
 
-plot.haplotype.frequency <- function(genome,freqs,names = NULL){
+plot.haplotype.frequency <- function(genome,freqs){
   haplotype.frequency <- get.haplotype.frequency(genome,freqs)
   max.freq <- max(haplotype.frequency)
   plot(haplotype.frequency[1,],type="l",ylim=c(0,1.2*max.freq),col=1,xlab = "Generation",ylab="frequency")
   for(haplotype in 2:get.nb.haplotype(genome)){
     lines(haplotype.frequency[haplotype,],col=haplotype)
   }
-  legend("topright",legend=get.haplotype.names(genome,names),lty = rep(1,get.nb.haplotype(genome)),col=1:get.nb.haplotype(genome))
+  legend("topright",legend=get.haplotype.names(genome),lty = rep(1,get.nb.haplotype(genome)),col=1:get.nb.haplotype(genome))
 }
 
 get.haplotype.frequency <- function(genome,freqs)
@@ -72,13 +72,13 @@ get.haplotype.frequency.single.generation <- function(genome,freqs)
   return(sum.column + sum.row)
 }
 
-plot.genotype.frequency <- function(genome,freqs,names){
+plot.genotype.frequency <- function(genome,freqs){
   max.freq <- max(freqs)
   plot(freqs[1,],type="l",ylim=c(0,1.2*max.freq),col=1,xlab = "Generation",ylab="frequency")
   for(genotype in 2:get.nb.genotype(genome)){
     lines(freqs[genotype,],col=genotype)
   }
-  legend("topright",legend=get.genotype.names(genome,names),lty = rep(1,get.nb.genotype(genome)),col=1:get.nb.genotype(genome))
+  legend("topright",legend=get.genotype.names(genome),lty = rep(1,get.nb.genotype(genome)),col=1:get.nb.genotype(genome))
 }
 
 
