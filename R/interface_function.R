@@ -35,14 +35,14 @@ compute.frequency.evolution <- function(genome,initial.frequency = NULL,generati
   return(freqs)
 }
 
-plot.haplotype.frequency <- function(genome,freqs){
+plot.haplotype.frequency <- function(genome,freqs,names = NULL){
   haplotype.frequency <- get.haplotype.frequency(genome,freqs)
   max.freq <- max(haplotype.frequency)
   plot(haplotype.frequency[1,],type="l",ylim=c(0,1.2*max.freq),col=1,xlab = "Generation",ylab="frequency")
   for(haplotype in 2:get.nb.haplotype(genome)){
     lines(haplotype.frequency[haplotype,],col=haplotype)
   }
-  legend("topright",legend=get.haplotype.names(genome),lty = rep(1,get.nb.haplotype(genome)),col=1:get.nb.haplotype(genome))
+  legend("topright",legend=get.haplotype.names(genome,names),lty = rep(1,get.nb.haplotype(genome)),col=1:get.nb.haplotype(genome))
 }
 
 get.haplotype.frequency <- function(genome,freqs)
@@ -72,13 +72,13 @@ get.haplotype.frequency.single.generation <- function(genome,freqs)
   return(sum.column + sum.row)
 }
 
-plot.genotype.frequency <- function(genome,freqs){
+plot.genotype.frequency <- function(genome,freqs,names){
   max.freq <- max(freqs)
   plot(freqs[1,],type="l",ylim=c(0,1.2*max.freq),col=1,xlab = "Generation",ylab="frequency")
   for(genotype in 2:get.nb.genotype(genome)){
     lines(freqs[genotype,],col=genotype)
   }
-  legend("topright",legend=get.genotype.names(genome),lty = rep(1,get.nb.genotype(genome)),col=1:get.nb.genotype(genome))
+  legend("topright",legend=get.genotype.names(genome,names),lty = rep(1,get.nb.genotype(genome)),col=1:get.nb.genotype(genome))
 }
 
 
@@ -98,6 +98,7 @@ get.allele.frequency <- function(genome,freqs,locus.position)
 {
   nb.generation <- ncol(freqs)
   allele.number <- get.nb.alleles.per.locus(genome)[locus.position]
+  print(allele.number)
   allele.frequency <- matrix(0,ncol = nb.generation,nrow = allele.number)
   for (generation in 1:nb.generation){
     allele.frequency[,generation] <- get.allele.frequency.single.generation(genome,freqs[,generation],locus.position)
@@ -117,4 +118,38 @@ get.single.allele.frequency.single.generation <- function(allele,genome,freqs,lo
   matching.haplotype <- which(all.haplotype[,locus.position] == allele)
   allele.frequency <- sum(haplotype.frequency[matching.haplotype])
   return(allele.frequency)
+}
+
+get.frequency.from.one.allele.frequency <- function(genome,locus,allele,allele.frequency){
+  nb.genotype <- get.nb.genotype(genome)
+  all.matching.genotype <- get.genotype.with.given.allele(genome,locus,allele)
+  matching.homozygothe <- all.matching.genotype[duplicated(all.matching.genotype)]
+  all.matching.genotype.not.double <- unique(all.matching.genotype)
+  matching.heterozygothe <- setdiff(all.matching.genotype.not.double,matching.homozygothe)
+  no.matching <- setdiff(1:nb.genotype,union(matching.homozygothe,matching.heterozygothe))
+  nb.matching.genotype <- length(all.matching.genotype)
+  frequency <- rep(0, nb.genotype)
+  frequency[matching.homozygothe] <- 2*allele.frequency/length(all.matching.genotype)
+  frequency[matching.heterozygothe] <- allele.frequency/length(all.matching.genotype)+(1-allele.frequency)/(2*nb.genotype - length(all.matching.genotype))
+  frequency[no.matching] <- 2*(1-allele.frequency)/(2*nb.genotype - length(all.matching.genotype))
+  return(frequency)
+}
+
+get.genotype.with.given.allele <- function(genome,locus,allele){
+   all.matching.haplotype <- get.haplotype.with.given.allele(genome,locus,allele)
+   all.matching.genotype <- c()
+   all.genotype <- genome@all.genotype
+   for(haplotype in all.matching.haplotype){
+     position.first.haplotype.match <- which(haplotype==all.genotype[,1])
+     position.second.haplotype.match <- which(haplotype==all.genotype[,2])
+     all.matching.genotype <- c(position.first.haplotype.match,position.second.haplotype.match,all.matching.genotype)
+   }
+   return(all.matching.genotype)
+}
+
+get.haplotype.with.given.allele <- function(genome,locus,allele){
+  all.haplotype <- genome@all.haplotype
+  all.allele <- all.haplotype[,locus]
+  matching.haplotype <- which(all.allele==allele)
+  return(matching.haplotype)
 }

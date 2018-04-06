@@ -33,14 +33,18 @@ freqs <- compute.frequency.evolution(genome, generations=500)
 
 We can now directly plot the result.
 ```{r}
-plot.haplotype.frequency(genome,freqs)
-plot.genotype.frequency(genome,freqs)
+plot.haplotype.frequency(genome,freqs,name=matrix(c("x","y","f","m"),nrow=2,byrow = T))
+plot.genotype.frequency(genome,freqs,name=matrix(c("x","y","f","m"),nrow=2,byrow = T))
 plot.allele.frequency(genome,freqs,1)
 plot.allele.frequency(genome,freqs,2)
 ```
 
 
 
+```{r}
+genome1
+get.genotype.with.given.allele(genome1,1,1)
+```
 
 
 

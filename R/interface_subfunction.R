@@ -1,14 +1,36 @@
 #' return names for the haplotype
-get.haplotype.names <- function(genome){
+get.haplotype.names <- function(genome,names = NULL){
+  if(is.null(names)) haplotype.names <- get.haplotype.names.without.names(genome)
+  else haplotype.names <- get.haplotype.names.with.names(genome,names = names)
+  return(haplotype.names)
+}
+
+#' return names for the haplotype if a name is provided
+get.haplotype.names.with.names <- function(genome,names){
+  all.haplotype <- genome@all.haplotype
+  haplotype.names <- c()
+  for(haplotype in 1:get.nb.haplotype(genome)){
+    haplotype.name <- c()
+    haplotype <- all.haplotype[haplotype,]
+    for(locus in 1:get.nb.locus(genome)){
+      haplotype.name <- paste(haplotype.name,names[locus,haplotype[locus]],collapse = "")
+    }
+    haplotype.names <- c(haplotype.names,haplotype.name)
+  }
+  return(haplotype.names)
+}
+
+#' return names for the haplotype if no name is provided
+get.haplotype.names.without.names <- function(genome){
   all.haplotype <- genome@all.haplotype
   haplotype.names <- apply(all.haplotype,1,paste,collapse="")
   return(haplotype.names)
 }
 
 #' generate names for the phenotype
-get.genotype.names <- function(genome){
+get.genotype.names <- function(genome,names=NULL){
   all.genotype <- genome@all.genotype
-  haplotype.names <- get.haplotype.names(genome)
+  haplotype.names <- get.haplotype.names(genome,names)
   genotype.names=c()
   for(genotype in 1:get.nb.genotype(genome)){
     haplotype1.name <- haplotype.names[all.genotype[genotype,1]]
