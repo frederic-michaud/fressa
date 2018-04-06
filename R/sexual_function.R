@@ -9,7 +9,7 @@ get.id.sd.locus <- function(genome){
   sd.locus <- 0
   nb.locus <- get.nb.locus(genome)
   for(n.locus in 1:nb.locus){
-    is.in <- ("sd" %in% colnames(genome@locus[[n.locus]]))
+    is.in <- length(genome@locus[[n.locus]]@sd > 0)
     if(sd.locus > 0 & is.in) stop("too many sex loci")
     if(is.in) sd.locus <- n.locus
 
