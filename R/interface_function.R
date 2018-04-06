@@ -3,7 +3,7 @@
 #' Given a genome, this function simulate the evolution of the frequency
 #' of all the possible genotype that exist
 #' @return A matrix containing the frequencies of each genotype at each generation
-#' @param genome a list of loci
+#' @param genome A S4 object of the type genome
 #' @param initial.frequency The initial frequency of the various genotype. If NULL is given
 #' the initial frequencies will all be set to the same value
 #' @param generations The number of generation that have to be computed (including the first one)
@@ -12,9 +12,6 @@
 #' locus2 = data.frame(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
 #' genome = list(locus1,locus2)
 #' freqs <- compute.frequency.evolution(genome)
-#' plot(freqs[,1],type="l",col=1,ylim=c(0,.5),xlim = c(0,100))
-#' lines(freqs[,2],type="l",col=2)
-#' lines(freqs[,3],type="l",col=3)
 #'
 #'
 
@@ -34,6 +31,21 @@ compute.frequency.evolution <- function(genome,initial.frequency = NULL,generati
   }
   return(freqs)
 }
+
+#' Plot the evolution of the frequency of haplotypes
+#'
+#' given a matrix of frequency returned by the function `compute.frequency.evolution`
+#' and the associated genome, plot the frequency of all possible haplotype through time
+#'
+#' @param genome A S4 object of the type genome
+#' @param freqs a matrix of frequency as returned by the function `compute.frequency.evolution`
+#' @examples
+#' locus1 = create.locus(chrom1=c(1,1),chrom2 = c(1,2),sd = c(0,1),fitness.male=c(1,1),fitness.female=c(1,1))
+#' locus2 = create.locus(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
+#' genome = create.genome(locus=list(locus1,locus2))
+#' freqs <- compute.frequency.evolution(genome)
+#' plot.haplotype.frequency(genome, freqs)
+#'
 
 plot.haplotype.frequency <- function(genome,freqs){
   haplotype.frequency <- get.haplotype.frequency(genome,freqs)
@@ -72,6 +84,22 @@ get.haplotype.frequency.single.generation <- function(genome,freqs)
   return(sum.column + sum.row)
 }
 
+#' Plot the evolution of the frequency of genotype
+#'
+#' given a matrix of frequency returned by the function `compute.frequency.evolution`
+#' and the associated genome, plot the frequency of all possible genotype through time
+#'
+#' @param genome A S4 object of the type genome
+#' @param freqs a matrix of frequency as returned by the function `compute.frequency.evolution`
+#' @examples
+#' locus1 = create.locus(chrom1=c(1,1),chrom2 = c(1,2),sd = c(0,1),fitness.male=c(1,1),fitness.female=c(1,1))
+#' locus2 = create.locus(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
+#' genome = create.genome(locus=list(locus1,locus2))
+#' freqs <- compute.frequency.evolution(genome)
+#' plot.genotype.frequency(genome, freqs)
+#'
+
+
 plot.genotype.frequency <- function(genome,freqs){
   max.freq <- max(freqs)
   plot(freqs[1,],type="l",ylim=c(0,1.2*max.freq),col=1,xlab = "Generation",ylab="frequency")
@@ -81,7 +109,22 @@ plot.genotype.frequency <- function(genome,freqs){
   legend("topright",legend=get.genotype.names(genome),lty = rep(1,get.nb.genotype(genome)),col=1:get.nb.genotype(genome))
 }
 
-
+#' Plot the evolution of the frequency of an allele
+#'
+#' given a matrix of frequency returned by the function `compute.frequency.evolution`
+#' and the associated genome, plot the frequency of all possible allele at a given locus.
+#'
+#' @param genome A S4 object of the type genome
+#' @param freqs a matrix of frequency as returned by the function `compute.frequency.evolution`
+#' @param locus.position the index of the locus from which we want to plot the allele frequency
+#' @examples
+#' locus1 = create.locus(chrom1=c(1,1),chrom2 = c(1,2),sd = c(0,1),fitness.male=c(1,1),fitness.female=c(1,1))
+#' locus2 = create.locus(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
+#' genome = create.genome(locus=list(locus1,locus2))
+#' freqs <- compute.frequency.evolution(genome)
+#' plot.allele.frequency(genome, freqs,1)
+#' plot.allele.frequency(genome, freqs,2)
+#'
 
 plot.allele.frequency <- function(genome,freqs,locus.position){
   allele.frequency <- get.allele.frequency(genome,freqs,locus.position)

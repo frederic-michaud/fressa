@@ -1,3 +1,28 @@
+#' Create a locus
+#'
+#' A locus is a S4 class which define all the properties of a locus, like the
+#' various possible allele and genotype, related fitness and sex-determination
+#' system.
+#'
+#' Notice that to create a locus, all possible genotype should be included. Expect
+#' for the parameter `allele.name`, all vector should have the same length, and more
+#' specifically, the length of the number of possible genotype at this locus.
+#' The reason it is like this, is that it allows to skip some genotypes (like yy)
+#' and specify easly the fitness of all genotype without using dominance factor.
+#'
+#' @param chrom1 The allele on the first chromosome
+#' @param chrom2 The allele on the second chromosome
+#' @param fitness.male The fitness of the males carrying this genotype
+#' @param fitness.female The fitness of the female carrying this genotype
+#' @param sd The proportion of individual with this genotype which are male (0 mean that it's  always a female and 1 it's always a male)
+#' @param name The name of the allele. Notice that this vector is of different size as the ones before.
+#' @examples locus1 = create.locus(chrom1 = c(1,1),
+#'                                 chrom2 = c(1,2),
+#'                                     sd = c(0,1),
+#'                           fitness.male = c(1,1),
+#'                         fitness.female = c(1,1),
+#'                            allele.name = c("x","y"))
+
 create.locus <- setClass(Class = "locus",
                           representation =
                           representation(
@@ -34,6 +59,20 @@ setMethod("show", "locus",
             print(df.to.be.printed)
           }
 )
+
+#' Create a genome
+#'
+#' A genome is a S4 class which define all the properties of a genome, it is basically
+#' a list of locus
+#'
+
+#'
+#' @param locus A list of locus
+#' @examples
+#' locus1 = create.locus(chrom1=c(1,1),chrom2 = c(1,2),sd = c(0,1),fitness.male=c(1,1),fitness.female=c(1,1))
+#' locus2 = create.locus(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
+#' genome = create.genome(locus=list(locus1,locus2))
+#'
 
 create.genome <- setClass(Class = "genome",
                           representation =

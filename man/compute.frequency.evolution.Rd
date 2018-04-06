@@ -2,34 +2,31 @@
 % Please edit documentation in R/interface_function.R
 \name{compute.frequency.evolution}
 \alias{compute.frequency.evolution}
-\title{Compute the evolution of the frequency of various haplotype}
+\title{Compute the evolution of the frequency of various genotype}
 \usage{
 compute.frequency.evolution(genome, initial.frequency = NULL,
-  generations = 100)
+  generations = 25)
 }
 \arguments{
-\item{genome}{a list of loci}
+\item{genome}{A S4 object of the type genome}
 
-\item{initial.frequency}{The initial frequency of the various haplotype. If NULL is given
-the initial frequency will all be set to the same value}
+\item{initial.frequency}{The initial frequency of the various genotype. If NULL is given
+the initial frequencies will all be set to the same value}
 
 \item{generations}{The number of generation that have to be computed (including the first one)}
 }
 \value{
-A matrix containing the frequencies of each haplotype at each generation
+A matrix containing the frequencies of each genotype at each generation
 }
 \description{
 Given a genome, this function simulate the evolution of the frequency
-of all the possible haplotype that exist in this genome.
+of all the possible genotype that exist
 }
 \examples{
 locus1 = data.frame(chrom1=c(1,1),chrom2 = c(1,2),sd = c(0,1),fitness.male=c(1,1),fitness.female=c(1,1))
 locus2 = data.frame(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
 genome = list(locus1,locus2)
 freqs <- compute.frequency.evolution(genome)
-plot(freqs[,1],type="l",col=1,ylim=c(0,.5),xlim = c(0,100))
-lines(freqs[,2],type="l",col=2)
-lines(freqs[,3],type="l",col=3)
 
 
 }
