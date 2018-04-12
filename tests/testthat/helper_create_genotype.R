@@ -27,7 +27,8 @@ locus1 = create.locus(chrom1         = c(1,1,1,2,3),
                     chrom2         = c(1,2,3,3,3),
                     fitness.male   = c(1,1,1,1,1),
                     fitness.female = c(1,1,1,1,1),
-                    sd             = c(0,1,0,1,0.5)
+                    sd             = c(0,1,0,1,0.5),
+                    allele.name = c("x","y","r")
                     )
-locus2 = create.locus(chrom1=  c(1,2,2),chrom2 = c(1,1,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
+locus2 = create.locus(chrom1=  c(1,2,2),chrom2 = c(1,1,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1),allele.name = c("a","b"))
 genome.partially.sexual = create.genome(locus=list(locus1,locus2))

@@ -75,6 +75,25 @@ is.male <- function(genotype.index, genome){
   position <- where.is.locus(c(haplotype1[sd.locus],haplotype2[sd.locus]),build.genotype.from.locus(genome,sd.locus))
   return(my_locus.sd[position] > 0)
 }
+
+#' Determine the list of haplotype present in male
+#'
+get.haplotype.male <- function( genome){
+  all.male <- get.male(genome)
+  all.genotype <- genome@all.genotype
+  all.compatible.haplotype <- unique(as.vector(all.genotype[all.male,]))
+  return(all.compatible.haplotype)
+}
+
+#' Determine the list of haplotype present in female
+#'
+get.haplotype.female <- function( genome){
+  all.female <- get.female(genome)
+  all.genotype <- genome@all.genotype
+  all.compatible.haplotype <- unique(as.vector(all.genotype[all.female,]))
+  return(all.compatible.haplotype)
+}
+
 #' give the list of female in a population
 #'
 #' This function return the index of all genotype that are,
