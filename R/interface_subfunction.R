@@ -40,3 +40,9 @@ get.genotype.names <- function(genome){
   }
   return(genotype.names)
 }
+
+#get the names of the allele
+get.allele.name <- function(genome,locus){
+  if (length(genome@locus[[locus]]@allele.name) > 0) names <- genome@locus[[locus]]@allele.name
+  else names <-  as.character(1:get.nb.alleles.per.locus(genome)[locus])
+}

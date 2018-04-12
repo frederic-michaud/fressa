@@ -134,7 +134,7 @@ plot.allele.frequency <- function(genome,freqs,locus.position){
   for(allele in 2:allele.number){
     lines(allele.frequency[allele,],col=allele)
   }
-  legend("topright",legend=as.character(1:allele.number),lty = rep(1,allele.number),col=1:allele.number)
+  legend("topright",legend=get.allele.name(genome,locus.position),lty = rep(1,allele.number),col=1:allele.number)
 }
 
 get.allele.frequency <- function(genome,freqs,locus.position)
