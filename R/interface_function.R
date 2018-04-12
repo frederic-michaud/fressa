@@ -164,17 +164,52 @@ get.single.allele.frequency.single.generation <- function(allele,genome,freqs,lo
 }
 
 get.frequency.from.one.allele.frequency <- function(genome,locus,allele,allele.frequency){
-  nb.genotype <- get.nb.genotype(genome)
-  all.matching.genotype <- get.genotype.with.given.allele(genome,locus,allele)
-  matching.homozygothe <- all.matching.genotype[duplicated(all.matching.genotype)]
-  all.matching.genotype.not.double <- unique(all.matching.genotype)
-  matching.heterozygothe <- setdiff(all.matching.genotype.not.double,matching.homozygothe)
-  no.matching <- setdiff(1:nb.genotype,union(matching.homozygothe,matching.heterozygothe))
-  nb.matching.genotype <- length(all.matching.genotype)
-  frequency <- rep(0, nb.genotype)
-  frequency[matching.homozygothe] <- 2*allele.frequency/length(all.matching.genotype)
-  frequency[matching.heterozygothe] <- allele.frequency/length(all.matching.genotype)+(1-allele.frequency)/(2*nb.genotype - length(all.matching.genotype))
-  frequency[no.matching] <- 2*(1-allele.frequency)/(2*nb.genotype - length(all.matching.genotype))
+  matching.haplotype <- get.haplotype.with.given.allele(genome,locus,allele)
+
+  male.haplotype <- get.haplotype.male(genome)
+  male.matching.haplotype = intersect(matching.haplotype,male.haplotype)
+  female.haplotype <- get.haplotype.female(genome)
+  female.matching.haplotype = intersect(matching.haplotype,female.haplotype)
+
+  nb.haplotype <- get.nb.haplotype(genome)
+  nb.male.haplotype <- length(male.haplotype)
+  nb.female.haplotype <- length(female.haplotype)
+  nb.male.matching.haplotype <- length(male.matching.haplotype)
+  nb.female.matching.haplotype <- length(female.matching.haplotype)
+
+
+  haplotype.matching.male.frequency <- 0.5*allele.frequency/nb.male.matching.haplotype
+  haplotype.matching.female.frequency <- 0.5*allele.frequency/nb.female.matching.haplotype
+
+  if(nb.male.matching.haplotype > 0){
+    haplotype.no.machting.male.frequency <- (1-0.5*allele.frequency)/(nb.male.haplotype - nb.male.matching.haplotype)
+
+  }
+  else{
+    haplotype.no.machting.male.frequency <- 1/nb.male.haplotype
+  }
+
+  if(nb.female.matching.haplotype > 0){
+    haplotype.no.matching.female.frequency <- (1-0.5*allele.frequency)/(nb.female.haplotype - nb.female.matching.haplotype)
+  }
+  else{
+    haplotype.no.matching.female.frequency <- 1/nb.female.haplotype
+  }
+
+  male.haplotype.frequency <- rep(0,nb.haplotype)
+  female.haplotype.frequency <- rep(0,nb.haplotype)
+
+  male.haplotype.frequency[male.haplotype] <- haplotype.no.machting.male.frequency
+  female.haplotype.frequency[female.haplotype] <- haplotype.no.matching.female.frequency
+
+
+  male.haplotype.frequency[male.matching.haplotype] <- haplotype.matching.male.frequency
+  female.haplotype.frequency[female.matching.haplotype] <- haplotype.matching.female.frequency
+
+  genotype.frequency.as.matrix <- outer(male.haplotype.frequency,female.haplotype.frequency)
+  genotype.frequency.as.matrix <-  genotype.frequency.as.matrix +t(genotype.frequency.as.matrix)
+  diag(genotype.frequency.as.matrix) <- diag(genotype.frequency.as.matrix)/2
+  frequency <- genotype.frequency.as.matrix[genome@all.genotype]
   return(frequency)
 }
 
