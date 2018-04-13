@@ -98,3 +98,18 @@ test_that("Fitness of female correctly computed",
             expect_equal(get.fitness.from.genotype.female(2,genome2),0.9)
           }
 )
+
+test_that("We can find the fitness of all males",
+          {
+            expect_equal(get.all.fitness.male(genome1),c(0.6, 0.8, 0.6, 0.8, 1.0, 0.8, 1.0))
+            expect_equal(get.all.fitness.male(genome.partially.sexual),c(0.6,0.8,0.6,0.8,0.6,0.8,1,0.8,1,0.8,1,0.6,0.8,0.8,1,0.6,0.8,1))
+
+          }
+)
+
+test_that("We can find the fitness of all females",
+          {
+            expect_equal(get.all.fitness.female(genome1),c(1, 0.9, 1, 0.9, 0.8, 0.9, 0.8))
+            expect_equal(get.all.fitness.female(genome.partially.sexual),c(1,0.9,1,0.9,1,0.9,0.8,0.9,0.8,0.9,0.8,1,0.9,0.9,0.8,1,0.9,0.8))
+          }
+)

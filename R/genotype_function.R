@@ -186,3 +186,13 @@ get.fitness.from.genotype.female <- function(genotype, genome){
   }
   return(fitness)
 }
+
+get.all.fitness.female <- function(genome){
+  female.genotype <- sapply(1:get.nb.genotype(genome), get.fitness.from.genotype.female,genome = genome)
+  return(female.genotype)
+}
+
+get.all.fitness.male <- function(genome){
+  male.genotype <- sapply(1:get.nb.genotype(genome), get.fitness.from.genotype.male,genome = genome)
+  return(male.genotype)
+}

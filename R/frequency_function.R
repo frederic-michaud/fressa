@@ -46,8 +46,8 @@ props <- c()
 all.genotype <- genome@all.genotype
 all.haplotype <- genome@all.haplotype
 new.frequencies <- rep(0,nb.genotypes)
-fitness.males <- sapply(1:nb.genotypes, get.fitness.from.genotype.male,genome = genome)
-fitness.females <- sapply(1:nb.genotypes, get.fitness.from.genotype.female,genome = genome)
+fitness.males <- get.all.fitness.male(genome)
+fitness.females <- get.all.fitness.female(genome)
 
 
 mean.fitness.male <- 0
