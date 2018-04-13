@@ -144,7 +144,6 @@ get.allele.frequency <- function(genome,freqs,locus.position)
 {
   nb.generation <- ncol(freqs)
   allele.number <- get.nb.alleles.per.locus(genome)[locus.position]
-  print(allele.number)
   allele.frequency <- matrix(0,ncol = nb.generation,nrow = allele.number)
   for (generation in 1:nb.generation){
     allele.frequency[,generation] <- get.allele.frequency.single.generation(genome,freqs[,generation],locus.position)
