@@ -46,3 +46,9 @@ get.allele.name <- function(genome,locus){
   if (length(genome@locus[[locus]]@allele.name) > 0) names <- genome@locus[[locus]]@allele.name
   else names <-  as.character(1:get.nb.alleles.per.locus(genome)[locus])
 }
+
+#get a palette of ncolor colors as much different as possible from each other
+get.palette <- function(n.color){
+  palette <- rainbow(n.color)[sample(1:n.color)]
+  return(palette)
+}

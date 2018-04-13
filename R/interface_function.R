@@ -50,11 +50,12 @@ compute.frequency.evolution <- function(genome,initial.frequency = NULL,generati
 plot.haplotype.frequency <- function(genome,freqs){
   haplotype.frequency <- get.haplotype.frequency(genome,freqs)
   max.freq <- max(haplotype.frequency)
-  plot(haplotype.frequency[1,],type="l",ylim=c(0,1.2*max.freq),col=1,xlab = "Generation",ylab="frequency")
+  palette = get.palette(get.nb.haplotype(genome))
+  plot(haplotype.frequency[1,],type="l",ylim=c(0,1.2*max.freq),col=palette[1],xlab = "Generation",ylab="frequency")
   for(haplotype in 2:get.nb.haplotype(genome)){
-    lines(haplotype.frequency[haplotype,],col=haplotype)
+    lines(haplotype.frequency[haplotype,],col=palette[haplotype])
   }
-  legend("topright",legend=get.haplotype.names(genome),lty = rep(1,get.nb.haplotype(genome)),col=1:get.nb.haplotype(genome))
+  legend("topright",legend=get.haplotype.names(genome),lty = rep(1,get.nb.haplotype(genome)),col=palette)
 }
 
 get.haplotype.frequency <- function(genome,freqs)
@@ -102,11 +103,12 @@ get.haplotype.frequency.single.generation <- function(genome,freqs)
 
 plot.genotype.frequency <- function(genome,freqs){
   max.freq <- max(freqs)
-  plot(freqs[1,],type="l",ylim=c(0,1.2*max.freq),col=1,xlab = "Generation",ylab="frequency")
+  palette=get.palette(get.nb.genotype(genome))
+  plot(freqs[1,],type="l",ylim=c(0,1.2*max.freq),col=palette[1],xlab = "Generation",ylab="frequency")
   for(genotype in 2:get.nb.genotype(genome)){
-    lines(freqs[genotype,],col=genotype)
+    lines(freqs[genotype,],col=palette[genotype])
   }
-  legend("topright",legend=get.genotype.names(genome),lty = rep(1,get.nb.genotype(genome)),col=1:get.nb.genotype(genome))
+  legend("topright",legend=get.genotype.names(genome),lty = rep(1,get.nb.genotype(genome)),col=palette)
 }
 
 #' Plot the evolution of the frequency of an allele
@@ -130,11 +132,12 @@ plot.allele.frequency <- function(genome,freqs,locus.position){
   allele.frequency <- get.allele.frequency(genome,freqs,locus.position)
   max.freq <- max(allele.frequency)
   allele.number <- get.nb.alleles.per.locus(genome)[locus.position]
-  plot(allele.frequency[1,],type="l",ylim=c(0,1.2*max.freq),col=1,xlab = "Generation",ylab="frequency")
+  palette <- get.palette(allele.number)
+  plot(allele.frequency[1,],type="l",ylim=c(0,1.2*max.freq),col=palette[1],xlab = "Generation",ylab="frequency")
   for(allele in 2:allele.number){
-    lines(allele.frequency[allele,],col=allele)
+    lines(allele.frequency[allele,],col=palette[allele])
   }
-  legend("topright",legend=get.allele.name(genome,locus.position),lty = rep(1,allele.number),col=1:allele.number)
+  legend("topright",legend=get.allele.name(genome,locus.position),lty = rep(1,allele.number),col=palette)
 }
 
 get.allele.frequency <- function(genome,freqs,locus.position)
@@ -231,3 +234,5 @@ get.haplotype.with.given.allele <- function(genome,locus,allele){
   matching.haplotype <- which(all.allele==allele)
   return(matching.haplotype)
 }
+
+
