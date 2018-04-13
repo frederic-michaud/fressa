@@ -1,12 +1,12 @@
 #' return names for the haplotype
 get.haplotype.names <- function(genome){
-  if(length(genome@locus[[1]]@allele.name) == 0) haplotype.names <- get.haplotype.names.without.names(genome)
-  else haplotype.names <- get.haplotype.names.with.names(genome)
+  if(length(genome@locus[[1]]@allele.name) == 0) haplotype.names <- get.haplotype.names.from.allele.number(genome)
+  else haplotype.names <- get.haplotype.names.from.allele.names(genome)
   return(haplotype.names)
 }
 
 #' return names for the haplotype if a name is present on a locus
-get.haplotype.names.with.names <- function(genome){
+get.haplotype.names.from.allele.names <- function(genome){
   all.haplotype <- genome@all.haplotype
   haplotype.names <- c()
   for(haplotype in 1:get.nb.haplotype(genome)){
@@ -21,7 +21,7 @@ get.haplotype.names.with.names <- function(genome){
 }
 
 #' return names for the haplotype if no name is provided
-get.haplotype.names.without.names <- function(genome){
+get.haplotype.names.from.allele.number <- function(genome){
   all.haplotype <- genome@all.haplotype
   haplotype.names <- apply(all.haplotype,1,paste,collapse="")
   return(haplotype.names)
