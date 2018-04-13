@@ -96,7 +96,7 @@ setMethod("show", "genome",
           function(object){
             i <- 1
             for(locus in object@locus){
-              print(paste("locus",i))
+              cat(paste("locus",i,"\n"))
               i <- i+1
               print(locus)
               cat(rep("*",30),"\n")
