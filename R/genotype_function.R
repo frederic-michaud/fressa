@@ -153,6 +153,18 @@ get.genotype.index.from.haplotypes.index <- function(haplotypes,all.genotype){
   which(all.genotype[,1] == haplotypes[1] & all.genotype[,2]==haplotypes[2] | all.genotype[,1] == haplotypes[2] & all.genotype[,2]==haplotypes[1])
 }
 
+#' get all the genotype which contains a given haplotype
+
+get.genotype.with.given.haplotype <- function(genome,haplotype){
+  all.matching.genotype <- c()
+  all.genotype <- genome@all.genotype
+  position.first.haplotype.match <- which(haplotype==all.genotype[,1])
+  position.second.haplotype.match <- which(haplotype==all.genotype[,2])
+  all.matching.genotype <- c(position.first.haplotype.match,
+                             position.second.haplotype.match)
+  return(all.matching.genotype)
+}
+
 #' get fitness of a male
 #'
 #' get the fitness of a male from the index value of its genotype

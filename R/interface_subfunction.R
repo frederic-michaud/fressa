@@ -100,4 +100,49 @@ get.marginal.allele.fitness.single.generation.single.allele <- function(genome,f
   return(overall.marginal.fitness)
 }
 
+plot.haplotype.marginal.fitness <- function(genome,freqs){
+  haplotype.marginal.fitness <- get.marginal.haplotype.fitness(genome,freqs)
+  max.fit <- max(haplotype.marginal.fitness,na.rm = T)
+  min.fit <- min(haplotype.marginal.fitness,na.rm = T)
+  haplotype.number <- get.nb.haplotype(genome)
+  palette <- get.palette(haplotype.number)
+  plot(haplotype.marginal.fitness[1,],type="l",ylim=c(min.fit/1.2,1.2*max.fit),col=palette[1],xlab = "Generation",ylab="frequency")
+  for(haplotype in 2:haplotype.number){
+    lines(haplotype.marginal.fitness[haplotype,],col=palette[haplotype])
+  }
+  legend("topright",legend=get.haplotype.names(genome),lty = rep(1,haplotype.number),col=palette)
+}
 
+get.marginal.haplotype.fitness <- function(genome,freqs)
+{
+  nb.generation <- ncol(freqs)
+  haplotype.number <- get.nb.haplotype(genome)
+  haplotype.marginal.fitness <- matrix(0,ncol = nb.generation,nrow = haplotype.number)
+  for (generation in 1:nb.generation){
+    haplotype.marginal.fitness[,generation] <- get.marginal.haplotype.fitness.single.generation(genome,freqs[,generation])
+  }
+  return(haplotype.marginal.fitness)
+}
+
+
+get.marginal.haplotype.fitness.single.generation <- function(genome,frequency){
+  nb.haplotype <- get.nb.haplotype(genome)
+  marginal.fitnesses <- sapply(1:nb.haplotype,function(iter) get.marginal.haplotype.fitness.single.generation.single.haplotype(genome,frequency, iter))
+  return(marginal.fitnesses)
+}
+
+get.marginal.haplotype.fitness.single.generation.single.haplotype <- function(genome,frequency,haplotype){
+  matching.genotype <- get.genotype.with.given.haplotype(genome,haplotype)
+
+  all.fitness.in.male <- get.all.fitness.male(genome)
+  maleness <- get.all.maleness(genome)
+  marginal.fitness.male <- sum(frequency[matching.genotype]*maleness[matching.genotype]*all.fitness.in.male[matching.genotype])
+
+  all.fitness.in.female <- get.all.fitness.female(genome)
+  femaleness <- get.all.femaleness(genome)
+  marginal.fitness.female<- sum(frequency[matching.genotype]*femaleness[matching.genotype]*all.fitness.in.female[matching.genotype])
+
+  overall.marginal.fitness <- (marginal.fitness.male + marginal.fitness.female)/sum(frequency[matching.genotype])
+
+  return(overall.marginal.fitness)
+}
