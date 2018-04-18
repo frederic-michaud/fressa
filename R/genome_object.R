@@ -39,6 +39,38 @@ setMethod("$", "locus", function(x, name) {
   slot(x, name)
 })
 
+setMethod(f="initialize",
+          signature = "locus",
+          definition = function(.Object,
+                                chrom1,
+                                chrom2,
+                                sd = numeric(),
+                                fitness.male = numeric(),
+                                fitness.female = numeric() ,
+                                allele.name = character(),
+                                fitness = numeric()
+          ){
+            nb.locus = length(chrom1)
+            if(nb.locus!= length(chrom2)) stop("chrom1 and chrom2 should be the same length")
+            if(length(fitness.male) == 0) fitness.male <- rep(1,nb.locus)
+            if(length(fitness.female) == 0) fitness.female <- rep(1,nb.locus)
+            if(length(fitness) > 0){
+              fitness.male <- fitness
+              fitness.female <- fitness
+            }
+            if(nb.locus!= length(fitness.male)) stop("Fitness.male should be the same size as chrom1")
+            if(nb.locus!= length(fitness.female)) stop("Fitness.female should be the same size as chrom1")
+            .Object@chrom1 <- chrom1
+            .Object@chrom2 <- chrom2
+            .Object@sd <- sd
+            .Object@fitness.male <- fitness.male
+            .Object@fitness.female <- fitness.female
+            .Object@fitness.female <- fitness.female
+            .Object@allele.name <- allele.name
+            return(.Object)
+          }
+)
+
 setMethod("show", "locus",
           function(object){
             if(length(object@allele.name > 0)){
