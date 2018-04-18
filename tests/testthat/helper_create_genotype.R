@@ -2,7 +2,7 @@
 locus1 = create.locus(chrom1=c(1,1),chrom2 = c(1,2),sd = c(0,1),fitness.male=c(1,1),fitness.female=c(1,1),allele.name = c("x","y"))
 locus2 = create.locus(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1),allele.name=c("A","a"))
 genome1 = create.genome(locus=list(locus1,locus2))
-
+genome.with.recomb = create.genome(locus = list(locus1,locus2),male.recombination = c(0.1),female.recombination = c(0.1))
 #a bit more evolve genome
 locus1 = create.locus(chrom1 = c(1,1,1,2,2,3),
                     chrom2 = c(1,2,3,2,3,3),

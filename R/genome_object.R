@@ -106,20 +106,25 @@ setMethod("show", "locus",
 #' genome = create.genome(locus=list(locus1,locus2))
 #'
 
+
 create.genome <- setClass(Class = "genome",
                           representation =
                             representation(
                               locus = "list",
+                              female.recombination = "vector",
+                              male.recombination = "vector",
                               all.haplotype = "matrix",
                               all.genotype = "matrix"
                             ))
 
 setMethod(f="initialize",
           signature = "genome",
-          definition = function(.Object,locus){
+          definition = function(.Object,locus,male.recombination = numeric(), female.recombination = numeric()){
             .Object@locus <- locus
             .Object@all.haplotype <- build.all.haplotype(.Object)
             .Object@all.genotype <- build.all.genotype(.Object)
+            .Object@male.recombination <- male.recombination
+            .Object@female.recombination <- female.recombination
             return(.Object)
           }
 )
