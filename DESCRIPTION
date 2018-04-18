@@ -3,7 +3,7 @@ Type: Package
 Title: Simulating haplotype in a population
 Version: 0.1.0
 Author: Fr<U+00E9>d<U+00E9>ric Michaud
-Maintainer: Fr<U+00E9>d<U+00E9>ric Michaud <frederic.michaud@unil.ch>
+Maintainer: Fr<U+00E9>d<U+00E9>ric Michaud <frederic.michaud@unil.ch>, Elisa Cavoto
 Description: This package aims at simulating the evolution of the frequency of haplotypes linked to sex locus in an infinite population. 
 License: GPL
 Encoding: UTF-8
