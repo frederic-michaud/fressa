@@ -120,17 +120,22 @@ test_that("we can get all possible genotype which match a given haplotype",{
 )
 
 test_that("we can get all possible gamete from a male",{
-  gamete <- get.gamete.and.frequency.from.haplotype.male(genome1,2)
+  gamete <- get.gamete.and.frequency.from.genotype.male(genome1,2)
   expect_equal(gamete$frequency,c(0.5,0.5))
   expect_equal(gamete$index,c(1,2))
-  gamete <- get.gamete.and.frequency.from.haplotype.male(genome2,7)
+  gamete <- get.gamete.and.frequency.from.genotype.male(genome2,7)
   expect_equal(gamete$frequency,c(0.5,0.5))
   expect_equal(gamete$index,c(1,7))
 }
 )
 
-test_that("we can compute the frequency from the male in the population",{
-  #new.freq <- get.male.gamete.frequency(genome1,initial.frequency = rep(1/7,7))
-  #expect_equal(gamete$index,c(1,7))
+
+test_that("we can get all possible gamete from a female",{
+  gamete <- get.gamete.and.frequency.from.genotype.female(genome1,2)
+  expect_equal(gamete$frequency,c(0.5,0.5))
+  expect_equal(gamete$index,c(1,2))
+  gamete <- get.gamete.and.frequency.from.genotype.female(genome2,7)
+  expect_equal(gamete$frequency,c(0.5,0.5))
+  expect_equal(gamete$index,c(1,7))
 }
 )

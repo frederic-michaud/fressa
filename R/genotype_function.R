@@ -225,7 +225,7 @@ get.male.gamete.frequency <- function(genome,initial.frequency){
   relative.fitness.males <- fitness.males/mean.fitness.male
   gamete.frequency <- rep(0,nb.gamete)
   for(male.genotype in males.genotype){
-    all.gamete <- get.gamete.and.frequency.from.haplotype.male(genome,male.genotype)
+    all.gamete <- get.gamete.and.frequency.from.genotype.male(genome,male.genotype)
     all.gamete$frequency <- all.gamete$frequency*
       relative.frequencies[male.genotype]*
       maleness[male.genotype]*
@@ -237,7 +237,7 @@ get.male.gamete.frequency <- function(genome,initial.frequency){
 return(gamete.frequency)
 }
 
-get.gamete.and.frequency.from.haplotype.male <- function(genome,genotype){
+get.gamete.and.frequency.from.genotype.male <- function(genome,genotype){
   all.haplotype <- genome@all.genotype
   frequency <-  c(1/2,1/2)
   gamete.index <- all.haplotype[genotype,]
@@ -260,7 +260,7 @@ get.female.gamete.frequency <- function(genome,initial.frequency){
   relative.fitness.females <- fitness.females/mean.fitness.female
   gamete.frequency <- rep(0,nb.gamete)
   for(female.genotype in females.genotype){
-    all.gamete <- get.gamete.and.frequency.from.haplotype.female(genome,female.genotype)
+    all.gamete <- get.gamete.and.frequency.from.genotype.female(genome,female.genotype)
     all.gamete$frequency <- all.gamete$frequency*
       relative.frequencies[female.genotype]*
       femaleness[female.genotype]*
@@ -272,7 +272,7 @@ get.female.gamete.frequency <- function(genome,initial.frequency){
   return(gamete.frequency)
 }
 
-get.gamete.and.frequency.from.haplotype.female <- function(genome,genotype){
+get.gamete.and.frequency.from.genotype.female <- function(genome,genotype){
   all.haplotype <- genome@all.genotype
   frequency <-  c(1/2,1/2)
   gamete.index <- all.haplotype[genotype,]
