@@ -33,43 +33,13 @@ get.childs.index.from.parent.index <- function(male.genotype,female.genotype,gen
 #' Get the frequency of new born as a function of adults
 
 simulate.frequency <- function(genome,initial.frequency){
-nb.genotypes <- dim(genome@all.genotype)[1]
-males.genotype <- get.male(genome)
-females.genotype <- get.female(genome)
-frequencies <- initial.frequency
-maleness <- get.all.maleness(genome)
-femaleness <- get.all.femaleness(genome)
-male.frequency <- sum(frequencies[males.genotype]*maleness[males.genotype])
-female.frequency <- sum(frequencies[females.genotype]*femaleness[females.genotype])
-
-props <- c()
-all.genotype <- genome@all.genotype
-all.haplotype <- genome@all.haplotype
-new.frequencies <- rep(0,nb.genotypes)
-fitness.males <- get.all.fitness.male(genome)
-fitness.females <- get.all.fitness.female(genome)
-
-
-mean.fitness.male <- 0
-for(male.genotype in males.genotype) mean.fitness.male <- mean.fitness.male + 1/male.frequency*fitness.males[male.genotype]*maleness[male.genotype]*frequencies[male.genotype]
-fitness.males <- fitness.males/mean.fitness.male
-mean.fitness.female <- 0
-for(female.genotype in females.genotype) mean.fitness.female <- mean.fitness.female + 1/female.frequency*fitness.females[female.genotype]*femaleness[female.genotype]*frequencies[female.genotype]
-fitness.females <- fitness.females/mean.fitness.female
-for(male.genotype in males.genotype){
-  for(female.genotype in females.genotype){
-    childs <- get.childs.index.from.parent.index(male.genotype,female.genotype,genome)
-    fitness.male <- fitness.males[male.genotype]
-    fitness.female <- fitness.females[female.genotype]
-    fitness.couple <- fitness.male*fitness.female
-    probability.of.couple <-1/(male.frequency*female.frequency)*(frequencies[male.genotype]*frequencies[female.genotype])*
-      maleness[male.genotype]*femaleness[female.genotype]
-    for(child in childs){
-      new.frequencies[child] <- new.frequencies[child] + fitness.couple*probability.of.couple/4
-    }
-  }
-}
-return(new.frequencies)
+  female.gamete.frequency <- get.female.gamete.frequency(genome,initial.frequency)
+  male.gamete.frequency <- get.male.gamete.frequency(genome,initial.frequency)
+  genotype.frequency.as.matrix <- outer(male.gamete.frequency,female.gamete.frequency)
+  genotype.frequency.as.matrix <-  genotype.frequency.as.matrix +t(genotype.frequency.as.matrix)
+  diag(genotype.frequency.as.matrix) <- diag(genotype.frequency.as.matrix)/2
+  frequency <- genotype.frequency.as.matrix[genome@all.genotype]
+  return(frequency)
 }
 
 

@@ -113,3 +113,24 @@ test_that("We can find the fitness of all females",
             expect_equal(get.all.fitness.female(genome.partially.sexual),c(1,0.9,1,0.9,1,0.9,0.8,0.9,0.8,0.9,0.8,1,0.9,0.9,0.8,1,0.9,0.8))
           }
 )
+test_that("we can get all possible genotype which match a given haplotype",{
+    expect_equal(get.genotype.with.given.haplotype(genome1,2),c(5,6,7,2,5))
+    expect_equal(get.genotype.with.given.haplotype(genome2,5),c(67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 5, 22, 38, 53, 67))
+}
+)
+
+test_that("we can get all possible gamete from a male",{
+  gamete <- get.gamete.and.frequency.from.haplotype.male(genome1,2)
+  expect_equal(gamete$frequency,c(0.5,0.5))
+  expect_equal(gamete$index,c(1,2))
+  gamete <- get.gamete.and.frequency.from.haplotype.male(genome2,7)
+  expect_equal(gamete$frequency,c(0.5,0.5))
+  expect_equal(gamete$index,c(1,7))
+}
+)
+
+test_that("we can compute the frequency from the male in the population",{
+  #new.freq <- get.male.gamete.frequency(genome1,initial.frequency = rep(1/7,7))
+  #expect_equal(gamete$index,c(1,7))
+}
+)
