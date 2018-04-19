@@ -22,5 +22,4 @@ locus2 = create.locus(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0
 genome = create.genome(locus=list(locus1,locus2))
 freqs <- compute.frequency.evolution(genome)
 freqs.haplotype <- get.haplotype.frequency(genome, freqs)
-
 }

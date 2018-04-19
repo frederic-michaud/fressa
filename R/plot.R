@@ -11,7 +11,7 @@
 #' genome = create.genome(locus=list(locus1,locus2))
 #' freqs <- compute.frequency.evolution(genome)
 #' plot.haplotype.frequency(genome, freqs)
-#'
+#' @export
 
 plot.haplotype.frequency <- function(genome,freqs){
   haplotype.frequency <- get.haplotype.frequency(genome,freqs)
@@ -37,7 +37,7 @@ plot.haplotype.frequency <- function(genome,freqs){
 #' genome = create.genome(locus=list(locus1,locus2))
 #' freqs <- compute.frequency.evolution(genome)
 #' plot.genotype.frequency(genome, freqs)
-#'
+#' @export
 
 plot.genotype.frequency <- function(genome,freqs){
   max.freq <- max(freqs)
@@ -64,7 +64,7 @@ plot.genotype.frequency <- function(genome,freqs){
 #' freqs <- compute.frequency.evolution(genome)
 #' plot.allele.frequency(genome, freqs,1)
 #' plot.allele.frequency(genome, freqs,2)
-#'
+#' @export
 
 plot.allele.frequency <- function(genome,freqs,locus.position){
   allele.frequency <- get.allele.frequency(genome,freqs,locus.position)
@@ -93,7 +93,7 @@ plot.allele.frequency <- function(genome,freqs,locus.position){
 #' genome = create.genome(locus=list(locus1,locus2))
 #' freqs <- compute.frequency.evolution(genome)
 #' plot.haplotype.marginal.fitness(genome, freqs)
-#'
+#' @export
 
 
 plot.haplotype.marginal.fitness <- function(genome,freqs){
@@ -125,7 +125,7 @@ plot.haplotype.marginal.fitness <- function(genome,freqs){
 #' genome = create.genome(locus=list(locus1,locus2))
 #' freqs <- compute.frequency.evolution(genome)
 #' plot.haplotype.marginal.fitness(genome, freqs)
-#'
+#' @export
 
 
 plot.allele.marginal.fitness <- function(genome,freqs,locus.position){

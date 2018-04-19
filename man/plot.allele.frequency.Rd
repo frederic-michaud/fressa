@@ -24,5 +24,4 @@ genome = create.genome(locus=list(locus1,locus2))
 freqs <- compute.frequency.evolution(genome)
 plot.allele.frequency(genome, freqs,1)
 plot.allele.frequency(genome, freqs,2)
-
 }

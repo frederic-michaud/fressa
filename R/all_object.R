@@ -22,6 +22,7 @@
 #'                           fitness.male = c(1,1),
 #'                         fitness.female = c(1,1),
 #'                            allele.name = c("x","y"))
+#' @export
 
 create.locus <- setClass(Class = "locus",
                           representation =
@@ -104,7 +105,7 @@ setMethod("show", "locus",
 #' locus1 = create.locus(chrom1=c(1,1),chrom2 = c(1,2),sd = c(0,1),fitness.male=c(1,1),fitness.female=c(1,1))
 #' locus2 = create.locus(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
 #' genome = create.genome(locus=list(locus1,locus2))
-#'
+#' @export
 
 
 create.genome <- setClass(Class = "genome",

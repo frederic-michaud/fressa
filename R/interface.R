@@ -12,7 +12,7 @@
 #' locus2 = data.frame(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
 #' genome = create.genome(locus1,locus2)
 #' freqs <- compute.frequency.evolution(genome)
-#'
+#' @export
 
 
 compute.frequency.evolution <- function(genome,initial.frequency = NULL,generations = 25)
@@ -45,7 +45,7 @@ compute.frequency.evolution <- function(genome,initial.frequency = NULL,generati
 #' genome = create.genome(locus=list(locus1,locus2))
 #' freqs <- compute.frequency.evolution(genome)
 #' freqs.haplotype <- get.haplotype.frequency(genome, freqs)
-#'
+#' @export
 
 get.haplotype.frequency <- function(genome,freqs)
 {
@@ -73,7 +73,7 @@ get.haplotype.frequency <- function(genome,freqs)
 #' genome = create.genome(locus=list(locus1,locus2))
 #' freqs <- compute.frequency.evolution(genome)
 #' freqs.allele <- get.allele.frequency(genome, freqs)
-#'
+#' @export
 
 get.allele.frequency <- function(genome,freqs,locus.position)
 {
@@ -109,6 +109,7 @@ get.allele.frequency <- function(genome,freqs,locus.position)
 #' initial.frequency <- get.frequency.from.one.allele.frequency(genome,2,1,0.01)
 #' freqs <- compute.frequency.evolution(genome,initial.frequency)
 #' freqs.allele <- get.allele.frequency(genome, freqs)
+#' @export
 
 get.frequency.from.one.allele.frequency <- function(genome,locus,allele,allele.frequency){
   matching.haplotype <- get.haplotype.with.given.allele(genome,locus,allele)
@@ -175,7 +176,7 @@ get.frequency.from.one.allele.frequency <- function(genome,locus,allele,allele.f
 #' genome = create.genome(locus=list(locus1,locus2))
 #' freqs <- compute.frequency.evolution(genome)
 #' get.haplotype.marginal.fitness(genome, freqs)
-#'
+#' @export
 
 
 get.marginal.haplotype.fitness <- function(genome,freqs)
@@ -205,7 +206,7 @@ get.marginal.haplotype.fitness <- function(genome,freqs)
 #' genome = create.genome(locus=list(locus1,locus2))
 #' freqs <- compute.frequency.evolution(genome)
 #' get.haplotype.marginal.fitness(genome, freqs)
-#'
+#' @export
 
 get.marginal.allele.fitness <- function(genome,freqs,locus)
 {
@@ -235,7 +236,7 @@ get.marginal.allele.fitness <- function(genome,freqs,locus)
 #' locus2 = create.locus(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1),allele.name = c("F","M"))
 #' genome = create.genome(locus=list(locus1,locus2))
 #' get.genotype.names(genome)
-
+#' @export
 
 get.genotype.names <- function(genome){
   all.genotype <- genome@all.genotype
@@ -267,7 +268,7 @@ get.genotype.names <- function(genome){
 #' locus2 = create.locus(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1),allele.name = c("F","M"))
 #' genome = create.genome(locus=list(locus1,locus2))
 #' get.haplotype.names(genome)
-
+#' @export
 
 get.haplotype.names <- function(genome){
   if(length(genome@locus[[1]]@allele.name) == 0) haplotype.names <- get.haplotype.names.from.allele.number(genome)
