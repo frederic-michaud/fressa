@@ -1,10 +1,3 @@
-#' return names for the haplotype
-get.haplotype.names <- function(genome){
-  if(length(genome@locus[[1]]@allele.name) == 0) haplotype.names <- get.haplotype.names.from.allele.number(genome)
-  else haplotype.names <- get.haplotype.names.from.allele.names(genome)
-  return(haplotype.names)
-}
-
 #' return names for the haplotype if a name is present on a locus
 get.haplotype.names.from.allele.names <- function(genome){
   all.haplotype <- genome@all.haplotype
@@ -27,54 +20,12 @@ get.haplotype.names.from.allele.number <- function(genome){
   return(haplotype.names)
 }
 
-#' generate names for the phenotype
-get.genotype.names <- function(genome){
-  all.genotype <- genome@all.genotype
-  haplotype.names <- get.haplotype.names(genome)
-  genotype.names=c()
-  for(genotype in 1:get.nb.genotype(genome)){
-    haplotype1.name <- haplotype.names[all.genotype[genotype,1]]
-    haplotype2.name <- haplotype.names[all.genotype[genotype,2]]
-    genotype.name <-paste(haplotype1.name,haplotype2.name, sep="|")
-    genotype.names <- c(genotype.names,genotype.name)
-  }
-  return(genotype.names)
-}
+
 
 #get the names of the allele
 get.allele.name <- function(genome,locus){
   if (length(genome@locus[[locus]]@allele.name) > 0) names <- genome@locus[[locus]]@allele.name
   else names <-  as.character(1:get.nb.alleles.per.locus(genome)[locus])
-}
-
-#get a palette of ncolor colors as much different as possible from each other
-get.palette <- function(n.color){
-  palette <- rainbow(n.color)[sample(1:n.color)]
-  return(palette)
-}
-
-plot.marginal.fitness <- function(genome,freqs,locus){
-  allele.marginal.fitness <- get.marginal.allele.fitness(genome,freqs,locus)
-  max.fit <- max(allele.marginal.fitness)
-  min.fit <- min(allele.marginal.fitness)
-  allele.number <- get.nb.alleles.per.locus(genome)[locus]
-  palette <- get.palette(allele.number)
-  plot(allele.marginal.fitness[1,],type="l",ylim=c(min.fit/1.2,1.2*max.fit),col=palette[1],xlab = "Generation",ylab="frequency")
-  for(allele in 2:allele.number){
-    lines(allele.marginal.fitness[allele,],col=palette[allele])
-  }
-  legend("topright",legend=get.allele.name(genome,locus),lty = rep(1,allele.number),col=palette)
-}
-
-get.marginal.allele.fitness <- function(genome,freqs,locus)
-{
-  nb.generation <- ncol(freqs)
-  allele.number <- get.nb.alleles.per.locus(genome)[locus]
-  allele.marginal.fitness <- matrix(0,ncol = nb.generation,nrow = allele.number)
-  for (generation in 1:nb.generation){
-    allele.marginal.fitness[,generation] <- get.marginal.allele.fitness.single.generation(genome,freqs[,generation],locus)
-  }
-  return(allele.marginal.fitness)
 }
 
 
@@ -100,30 +51,6 @@ get.marginal.allele.fitness.single.generation.single.allele <- function(genome,f
   return(overall.marginal.fitness)
 }
 
-plot.haplotype.marginal.fitness <- function(genome,freqs){
-  haplotype.marginal.fitness <- get.marginal.haplotype.fitness(genome,freqs)
-  max.fit <- max(haplotype.marginal.fitness,na.rm = T)
-  min.fit <- min(haplotype.marginal.fitness,na.rm = T)
-  haplotype.number <- get.nb.haplotype(genome)
-  palette <- get.palette(haplotype.number)
-  plot(haplotype.marginal.fitness[1,],type="l",ylim=c(min.fit/1.2,1.2*max.fit),col=palette[1],xlab = "Generation",ylab="frequency")
-  for(haplotype in 2:haplotype.number){
-    lines(haplotype.marginal.fitness[haplotype,],col=palette[haplotype])
-  }
-  legend("topright",legend=get.haplotype.names(genome),lty = rep(1,haplotype.number),col=palette)
-}
-
-get.marginal.haplotype.fitness <- function(genome,freqs)
-{
-  nb.generation <- ncol(freqs)
-  haplotype.number <- get.nb.haplotype(genome)
-  haplotype.marginal.fitness <- matrix(0,ncol = nb.generation,nrow = haplotype.number)
-  for (generation in 1:nb.generation){
-    haplotype.marginal.fitness[,generation] <- get.marginal.haplotype.fitness.single.generation(genome,freqs[,generation])
-  }
-  return(haplotype.marginal.fitness)
-}
-
 
 get.marginal.haplotype.fitness.single.generation <- function(genome,frequency){
   nb.haplotype <- get.nb.haplotype(genome)
@@ -145,4 +72,35 @@ get.marginal.haplotype.fitness.single.generation.single.haplotype <- function(ge
   overall.marginal.fitness <- (marginal.fitness.male + marginal.fitness.female)/sum(frequency[matching.genotype])
 
   return(overall.marginal.fitness)
+}
+
+
+get.haplotype.frequency.single.generation <- function(genome,freqs)
+{
+  nb.haplotype <- get.nb.haplotype(genome)
+  nb.genotype <- get.nb.genotype(genome)
+  all.genotype <- genome@all.genotype
+  #frequency is a matrix with the frequency of the various genome
+  #row index indicate first haplotype and column index indicate second haplotype
+  frequency <- matrix(0,nrow = nb.haplotype,ncol=nb.haplotype)
+  for (genotype in 1:nb.genotype){
+    frequency[all.genotype[genotype,1],all.genotype[genotype,2]] <- freqs[genotype]
+  }
+  sum.column <- colSums(frequency)/2
+  sum.row <- rowSums(frequency)/2
+  return(sum.column + sum.row)
+}
+
+get.allele.frequency.single.generation <- function(genome,freqs,locus.position){
+  allele.number <- get.nb.alleles.per.locus(genome)[locus.position]
+  allele.frequency <- sapply(1:allele.number,get.single.allele.frequency.single.generation,genome = genome, freqs = freqs, locus.position = locus.position)
+  return(allele.frequency)
+}
+
+get.single.allele.frequency.single.generation <- function(allele,genome,freqs,locus.position){
+  all.haplotype <- genome@all.haplotype
+  haplotype.frequency <- get.haplotype.frequency.single.generation(genome,freqs)
+  matching.haplotype <- which(all.haplotype[,locus.position] == allele)
+  allele.frequency <- sum(haplotype.frequency[matching.haplotype])
+  return(allele.frequency)
 }

@@ -12,3 +12,10 @@ mod <- function(value,modulo){
   new.value <- value%%modulo
   if(new.value>0) return(new.value) else return(modulo)
 }
+
+
+#get a palette of ncolor colors as much different as possible from each other
+get.palette <- function(n.color){
+  palette <- rainbow(n.color)[sample(1:n.color)]
+  return(palette)
+}

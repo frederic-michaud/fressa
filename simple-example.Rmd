@@ -1,0 +1,82 @@
+---
+title: "Simple sex antagonistic gene"
+author: "Frederic Michaud"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::pdf_document: default
+  rmarkdown::html_vignette: default
+vignette: >
+  %\VignetteIndexEntry{Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+In this vignette, we want to study when a polymorphism is maintain in a sex-antagonistic situation. We consider a very simple model with a XX/XY sexual determination system and another (fully-linked) sex-antagonist locus. If both locus are fully linked, it seems reasonable to think that the allele beneficial to male will fix on the y. If the sex-antagonistic gene is as strong in male and in female, we could suppose (and this is actually correct) that the X chromosome will fix the allele benefitial to female since it's spend twice as much time in female than in male.   
+
+So to make the problem more interesting, we can ask the question of what happen if the sex-antagonistic gene does not act in a symetric way but cost more to male than to male? Let's discover this together. 
+
+
+First we create two locus, one which is a XY locus, which determine the sex, and the other which is a sex-antagonistic gene. We then create a genome from this two locus. We see that a male carrying both femenized version of the SA gene has a fitness of 0.6, whereas a female carrying both masculanized version of the SA gene has a fitness of 0.8. 
+```{r}
+devtools::load_all()
+locus1 = create.locus(chrom1=c(1,1),
+                      chrom2 = c(1,2),
+                      sd = c(0,1),
+                      fitness.male=c(1,1),
+                      fitness.female=c(1,1),
+                      allele.name = c("x","y"))
+locus2 = create.locus(chrom1=  c(1,1,2),
+                      chrom2 = c(1,2,2),
+                      fitness.female = c(1,0.9,0.8),
+                      fitness.male = c(0.6,0.8,1),
+                      allele.name = c("F","M"))
+
+genome = create.genome(list(locus1,locus2))
+print(genome)
+```
+
+From this genome, we can compute the evolution of the frequency of the various genotype, using the function `compte.frequency.evolution`. By default, all genotype start with the same frequency. 
+
+```{r}
+freqs <- compute.frequency.evolution(genome, generations=50)
+```
+
+We can now directly plot the result.
+```{r}
+plot.haplotype.frequency(genome, freqs)
+```   
+   
+On this plot, we directly see that the `yF` haplotype goes rapidely to zero, as expected. We also see that on the `X` chromosome, a polymorphism is maintained. What happen now if we set a fitness a bit better for male carrying a "female" version of the SA gene?
+```{r}
+locus2 = create.locus(chrom1=  c(1,1,2),
+                      chrom2 = c(1,2,2),
+                      fitness.female = c(1,0.9,0.8),
+                      fitness.male = c(0.7,0.85,1),
+                      allele.name = c("F","M"))
+genome = create.genome(list(locus1,locus2))
+freqs <- compute.frequency.evolution(genome, generations=500)
+plot.haplotype.frequency(genome, freqs)
+```
+   
+So in this case, the polymorphisme goes away, and the `F` allele is fixed on the `X` chromosome.   
+
+In the first case, the ratio of SA selection strength between male and female was 2, and this lead to a polymorphism. Since the X chromosome spend twice as much time in female than in male, we somehow expected it. On the other hand, we have seen that if we take a ratio of 3/2 between SA in male and female, the polymorphism disapear. This rise the question whether the polymorphism only exist for a ratio of 2, or if it also exist for some intermediate value (between 2 and 3/2). In the next example, we see that it actually exist eventhough the ration is not exactly 2. Of course, in this case, we have a different ration of F/M version of the SA gene. 
+
+```{r}
+locus2 = create.locus(chrom1=  c(1,1,2),
+                      chrom2 = c(1,2,2),
+                      fitness.female = c(1,0.9,0.8),
+                      fitness.male = c(0.62,0.81,1),
+                      allele.name = c("F","M"))
+genome = create.genome(list(locus1,locus2))
+freqs <- compute.frequency.evolution(genome, generations=1000)
+plot.haplotype.frequency(genome, freqs)
+```
+   
+We see that in this case, the polymorphism is maintened.
