@@ -22,18 +22,20 @@ get.haplotype.names.from.allele.number <- function(genome){
 
 
 
-#get the names of the allele
+#get the names of the allele for a given locus
 get.allele.name <- function(genome,locus){
   if (length(genome@locus[[locus]]@allele.name) > 0) names <- genome@locus[[locus]]@allele.name
   else names <-  as.character(1:get.nb.alleles.per.locus(genome)[locus])
 }
 
-
+#get the marginal fitness of all the allele of a locus for a single generation
 get.marginal.allele.fitness.single.generation <- function(genome,frequency,locus){
   nb.allele <- get.nb.alleles.per.locus(genome)[locus]
   marginal.fitnesses <- sapply(1:nb.allele,function(iter) get.marginal.allele.fitness.single.generation.single.allele(genome,frequency, locus,iter))
   return(marginal.fitnesses)
 }
+
+#get the marginal fitness of one allele for a single generation
 
 get.marginal.allele.fitness.single.generation.single.allele <- function(genome,frequency,locus,allele){
   matching.genotype <- get.genotype.with.given.allele(genome,locus,allele)
@@ -51,12 +53,15 @@ get.marginal.allele.fitness.single.generation.single.allele <- function(genome,f
   return(overall.marginal.fitness)
 }
 
+#get the marignal fitness of all the haplotype for a given generation
 
 get.marginal.haplotype.fitness.single.generation <- function(genome,frequency){
   nb.haplotype <- get.nb.haplotype(genome)
   marginal.fitnesses <- sapply(1:nb.haplotype,function(iter) get.marginal.haplotype.fitness.single.generation.single.haplotype(genome,frequency, iter))
   return(marginal.fitnesses)
 }
+
+#get the marignal fitness of one of the haplotype for a given generation
 
 get.marginal.haplotype.fitness.single.generation.single.haplotype <- function(genome,frequency,haplotype){
   matching.genotype <- get.genotype.with.given.haplotype(genome,haplotype)
@@ -74,6 +79,7 @@ get.marginal.haplotype.fitness.single.generation.single.haplotype <- function(ge
   return(overall.marginal.fitness)
 }
 
+#get the frequency of an haplotype in one generation
 
 get.haplotype.frequency.single.generation <- function(genome,freqs)
 {
@@ -91,11 +97,16 @@ get.haplotype.frequency.single.generation <- function(genome,freqs)
   return(sum.column + sum.row)
 }
 
+#get the frequency of all allele in one generation for a given locus
+
+
 get.allele.frequency.single.generation <- function(genome,freqs,locus.position){
   allele.number <- get.nb.alleles.per.locus(genome)[locus.position]
   allele.frequency <- sapply(1:allele.number,get.single.allele.frequency.single.generation,genome = genome, freqs = freqs, locus.position = locus.position)
   return(allele.frequency)
 }
+
+#get the frequency of one allele in one generation
 
 get.single.allele.frequency.single.generation <- function(allele,genome,freqs,locus.position){
   all.haplotype <- genome@all.haplotype

@@ -10,10 +10,10 @@
 #' @examples
 #' locus1 = data.frame(chrom1=c(1,1),chrom2 = c(1,2),sd = c(0,1),fitness.male=c(1,1),fitness.female=c(1,1))
 #' locus2 = data.frame(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
-#' genome = list(locus1,locus2)
+#' genome = create.genome(locus1,locus2)
 #' freqs <- compute.frequency.evolution(genome)
 #'
-#'
+
 
 compute.frequency.evolution <- function(genome,initial.frequency = NULL,generations = 25)
 {
@@ -31,6 +31,22 @@ compute.frequency.evolution <- function(genome,initial.frequency = NULL,generati
   return(freqs)
 }
 
+#' Return the haplotype frequency in a population
+#'
+#' given a matrix of frequency returned by the function `compute.frequency.evolution`
+#' and the associated genome, return a matrix containing the frequency of each haplotype
+#' through time. Each row contains a genotype while each column contains a generation.
+#'
+#' @param genome A S4 object of type genome
+#' @param freqs a matrix of frequency as returned by the function `compute.frequency.evolution`
+#' @examples
+#' locus1 = create.locus(chrom1=c(1,1),chrom2 = c(1,2),sd = c(0,1))
+#' locus2 = create.locus(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
+#' genome = create.genome(locus=list(locus1,locus2))
+#' freqs <- compute.frequency.evolution(genome)
+#' freqs.haplotype <- get.haplotype.frequency(genome, freqs)
+#'
+
 get.haplotype.frequency <- function(genome,freqs)
 {
   nb.generation <- ncol(freqs)
@@ -42,6 +58,22 @@ get.haplotype.frequency <- function(genome,freqs)
   return(haplotype.frequency)
 }
 
+#' Return the allele frequency for a given locus
+#'
+#' given a matrix of frequency returned by the function `compute.frequency.evolution`
+#' and the associated genome, return a matrix containing the frequency of each allele
+#' of a given locuc through time. Each row contains an allele while each column
+#' contains a generation.
+#'
+#' @param genome A S4 object of type genome
+#' @param freqs a matrix of frequency as returned by the function `compute.frequency.evolution`
+#' @examples
+#' locus1 = create.locus(chrom1=c(1,1),chrom2 = c(1,2),sd = c(0,1))
+#' locus2 = create.locus(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
+#' genome = create.genome(locus=list(locus1,locus2))
+#' freqs <- compute.frequency.evolution(genome)
+#' freqs.allele <- get.allele.frequency(genome, freqs)
+#'
 
 get.allele.frequency <- function(genome,freqs,locus.position)
 {
@@ -55,7 +87,29 @@ get.allele.frequency <- function(genome,freqs,locus.position)
 }
 
 #' This functions allows to generate genotypic frequency
-#' by specifying the frequency of one allele.
+#' by specifying the initial frequency of one allele.
+#'
+#'This function is usefull mainly to start a simulation with one allele being
+#'rare. If no input frequency is given, it will be assumed that all genotype have
+#'equal frequency. However, it might be usefull to start with one allele being
+#'very rare. This function allows to do so by automatically computing a
+#'initial set of frequency. To do so, it produce a pool of gamete where the given allele
+#'appears with the specified allele, and then perform random mating (without taking into account fitness).
+#'This ensure that the allele is present at the correct level, and that there is no bias in the
+#'sex-ratio.
+#'
+#' @param genome A S4 object of type genome
+#' @param locus the locus at which the allele should have a given frequency
+#' @param allele the allele which has a given frequency
+#' @param allele.frequency the initial frequency of the allele.
+#' @examples
+#' locus1 = create.locus(chrom1=c(1,1),chrom2 = c(1,2),sd = c(0,1))
+#' locus2 = create.locus(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
+#' genome = create.genome(locus=list(locus1,locus2))
+#' initial.frequency <- get.frequency.from.one.allele.frequency(genome,2,1,0.01)
+#' freqs <- compute.frequency.evolution(genome,initial.frequency)
+#' freqs.allele <- get.allele.frequency(genome, freqs)
+
 get.frequency.from.one.allele.frequency <- function(genome,locus,allele,allele.frequency){
   matching.haplotype <- get.haplotype.with.given.allele(genome,locus,allele)
 
@@ -106,6 +160,24 @@ get.frequency.from.one.allele.frequency <- function(genome,locus,allele,allele.f
   return(frequency)
 }
 
+#' get the marginal fitness of all haplotype in the population
+#'
+#' given a matrix of frequency returned by the function `compute.frequency.evolution`
+#' and the associated genome, return a matrix containing the evolution of the marginal
+#' fitness. The marginal fitness is defined as the mean fitness of
+#' individual carrying this haplotype weighted by the frequency of those individuals.
+#'
+#' @param genome A S4 object of type genome
+#' @param freqs a matrix of frequency as returned by the function `compute.frequency.evolution`
+#' @examples
+#' locus1 = create.locus(chrom1=c(1,1),chrom2 = c(1,2),sd = c(0,1))
+#' locus2 = create.locus(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
+#' genome = create.genome(locus=list(locus1,locus2))
+#' freqs <- compute.frequency.evolution(genome)
+#' get.haplotype.marginal.fitness(genome, freqs)
+#'
+
+
 get.marginal.haplotype.fitness <- function(genome,freqs)
 {
   nb.generation <- ncol(freqs)
@@ -117,7 +189,23 @@ get.marginal.haplotype.fitness <- function(genome,freqs)
   return(haplotype.marginal.fitness)
 }
 
-
+#' get the marginal fitness of all allele from one locus
+#'
+#' given a matrix of frequency returned by the function `compute.frequency.evolution`
+#' and the associated genome, return a matrix containing the evolution of the marginal
+#' fitness of all allele. The marginal fitness is defined as the mean fitness of
+#' individual carrying this allele weighted by the frequency of those individuals.
+#'
+#' @param genome A S4 object of type genome
+#' @param freqs a matrix of frequency as returned by the function `compute.frequency.evolution`
+#' @param locus.position the index of the locus from which we want to plot the allele frequency
+#' @examples
+#' locus1 = create.locus(chrom1=c(1,1),chrom2 = c(1,2),sd = c(0,1))
+#' locus2 = create.locus(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
+#' genome = create.genome(locus=list(locus1,locus2))
+#' freqs <- compute.frequency.evolution(genome)
+#' get.haplotype.marginal.fitness(genome, freqs)
+#'
 
 get.marginal.allele.fitness <- function(genome,freqs,locus)
 {
@@ -130,8 +218,25 @@ get.marginal.allele.fitness <- function(genome,freqs,locus)
   return(allele.marginal.fitness)
 }
 
+#' get the name of all genotype present in the population
+#'
+#' This function returns a name for all genotype present in the population
+#' This is useful for plotting result but also to know in which order the genotype
+#' are store in genome.  This is useful for example to specify the initial frequency
+#'
+#' Notice that if allele.name is specified, the name will contain this name and is
+#' therefore much easier to read that if it's not present, where the name of the allele
+#' is just their number.
+#'
+#' @param genome A S4 object of type genome
 
-#' generate names for the genotype
+#' @examples
+#' locus1 = create.locus(chrom1=c(1,1),chrom2 = c(1,2),sd = c(0,1),allele.name = c("x","y"))
+#' locus2 = create.locus(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1),allele.name = c("F","M"))
+#' genome = create.genome(locus=list(locus1,locus2))
+#' get.genotype.names(genome)
+
+
 get.genotype.names <- function(genome){
   all.genotype <- genome@all.genotype
   haplotype.names <- get.haplotype.names(genome)
@@ -145,8 +250,25 @@ get.genotype.names <- function(genome){
   return(genotype.names)
 }
 
+#' get the name of all haplotype present in the population
+#'
+#' This function returns a name for all haplotype present in the population
+#' This is useful mainly for plotting result but also to know in which order the haplotype
+#' are store in genome.
+#'
+#' Notice that if allele.name is specified, the name will contain this name and is
+#' therefore much easier to read that if it's not present, where the name of the allele
+#' is just their number.
+#'
+#' @param genome A S4 object of type genome
 
-#' return names for the haplotype
+#' @examples
+#' locus1 = create.locus(chrom1=c(1,1),chrom2 = c(1,2),sd = c(0,1),allele.name = c("x","y"))
+#' locus2 = create.locus(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1),allele.name = c("F","M"))
+#' genome = create.genome(locus=list(locus1,locus2))
+#' get.haplotype.names(genome)
+
+
 get.haplotype.names <- function(genome){
   if(length(genome@locus[[1]]@allele.name) == 0) haplotype.names <- get.haplotype.names.from.allele.number(genome)
   else haplotype.names <- get.haplotype.names.from.allele.names(genome)
