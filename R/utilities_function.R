@@ -16,6 +16,7 @@ mod <- function(value,modulo){
 
 #get a palette of ncolor colors as much different as possible from each other
 get.palette <- function(n.color){
+  set.seed(42) # we will get same color for same graph
   palette <- rainbow(n.color)[sample(1:n.color)]
   return(palette)
 }
