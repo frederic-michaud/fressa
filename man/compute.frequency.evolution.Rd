@@ -23,8 +23,8 @@ Given a genome, this function simulate the evolution of the frequency
 of all the possible genotype that exist
 }
 \examples{
-locus1 = data.frame(chrom1=c(1,1),chrom2 = c(1,2),sd = c(0,1),fitness.male=c(1,1),fitness.female=c(1,1))
-locus2 = data.frame(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
+locus1 = data.frame(allele1=c(1,1),allele2 = c(1,2),sd = c(0,1),fitness.male=c(1,1),fitness.female=c(1,1))
+locus2 = data.frame(allele1=  c(1,1,2),allele2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
 genome = create.genome(locus1,locus2)
 freqs <- compute.frequency.evolution(genome)
 }

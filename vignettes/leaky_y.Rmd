@@ -5,8 +5,8 @@ output: html_notebook
 
 ```{r}
 devtools::load_all()
-locus1 = data.frame(chrom1=c(1,1,2),chrom2 = c(1,2,2),sd = c(0,0.9,1),fitness.male=c(1,1,1),fitness.female=c(1,1,1))
-locus2 = data.frame(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
+locus1 = data.frame(allele1=c(1,1,2),allele2 = c(1,2,2),sd = c(0,0.9,1),fitness.male=c(1,1,1),fitness.female=c(1,1,1))
+locus2 = data.frame(allele1=  c(1,1,2),allele2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
 genome = create.genome(locus = list(locus1,locus2))
 ```
 

@@ -10,15 +10,15 @@
 #' The reason it is like this, is that it allows to skip some genotypes (like yy)
 #' and specify easly the fitness of all genotype without using dominance factor.
 #'
-#' @param chrom1 The allele on the first chromosome
-#' @param chrom2 The allele on the second chromosome
+#' @param allele1 The allele on the first chromosome
+#' @param allele2 The allele on the second chromosome
 #' @param fitness.male Optional: The fitness of the males carrying this genotype
 #' @param fitness.female Optional: The fitness of the female carrying this genotype
 #' @param sd Optional: The proportion of individual with this genotype which are male (0 mean that it's  always a female and 1 it's always a male)
 #' @param recombination.modifier Optional: indicate how this genotype modify the overall recombination rate of the chromosome
 #' @param name The name of the allele. Notice that this vector is of different size as the ones before.
-#' @examples locus1 = create.locus(chrom1 = c(1,1),
-#'                                 chrom2 = c(1,2),
+#' @examples locus1 = create.locus(allele1 = c(1,1),
+#'                                 allele2 = c(1,2),
 #'                                     sd = c(0,1),
 #'                           fitness.male = c(1,1),
 #'                         fitness.female = c(1,1),
@@ -28,8 +28,8 @@
 create.locus <- setClass(Class = "locus",
                           representation =
                           representation(
-                            chrom1 = "vector",
-                            chrom2 = "vector",
+                            allele1 = "vector",
+                            allele2 = "vector",
                             sd = "vector",
                             fitness.male = "vector",
                             fitness.female = "vector",
@@ -45,8 +45,8 @@ setMethod("$", "locus", function(x, name) {
 setMethod(f="initialize",
           signature = "locus",
           definition = function(.Object,
-                                chrom1,
-                                chrom2,
+                                allele1,
+                                allele2,
                                 sd = numeric(),
                                 fitness.male = numeric(),
                                 fitness.female = numeric() ,
@@ -54,8 +54,8 @@ setMethod(f="initialize",
                                 fitness = numeric(),
                                 recombination.modifier = numeric()
           ){
-            nb.locus = length(chrom1)
-            if(nb.locus!= length(chrom2)) stop("chrom1 and chrom2 should be the same length")
+            nb.locus = length(allele1)
+            if(nb.locus!= length(allele2)) stop("allele1 and allele2 should be the same length")
             if(length(fitness.male) == 0) fitness.male <- rep(1,nb.locus)
             if(length(fitness.female) == 0) fitness.female <- rep(1,nb.locus)
             if(length(recombination.modifier) == 0) recombination.modifier <- rep(1,nb.locus)
@@ -63,11 +63,11 @@ setMethod(f="initialize",
               fitness.male <- fitness
               fitness.female <- fitness
             }
-            if(nb.locus!= length(fitness.male)) stop("Fitness.male should be the same size as chrom1")
-            if(nb.locus!= length(fitness.female)) stop("Fitness.female should be the same size as chrom1")
-            if(nb.locus!= length(recombination.modifier)) stop("recombination.modifier should be the same size as chrom1")
-            .Object@chrom1 <- chrom1
-            .Object@chrom2 <- chrom2
+            if(nb.locus!= length(fitness.male)) stop("Fitness.male should be the same size as allele1")
+            if(nb.locus!= length(fitness.female)) stop("Fitness.female should be the same size as allele1")
+            if(nb.locus!= length(recombination.modifier)) stop("recombination.modifier should be the same size as allele1")
+            .Object@allele1 <- allele1
+            .Object@allele2 <- allele2
             .Object@sd <- sd
             .Object@fitness.male <- fitness.male
             .Object@fitness.female <- fitness.female
@@ -81,16 +81,16 @@ setMethod(f="initialize",
 setMethod("show", "locus",
           function(object){
             if(length(object@allele.name > 0)){
-              name.chrom1 <-  object@allele.name[object@chrom1]
-              name.chrom2 <-  object@allele.name[object@chrom2]
+              name.allele1 <-  object@allele.name[object@allele1]
+              name.allele2 <-  object@allele.name[object@allele2]
             }
             else{
-              name.chrom1 <-  object@chrom1
-              name.chrom2 <-  object@chrom2
+              name.allele1 <-  object@allele1
+              name.allele2 <-  object@allele2
             }
 
-              df.to.be.printed <- data.frame("chrom1" = name.chrom1,
-                                  "chrom2" = name.chrom2,
+              df.to.be.printed <- data.frame("allele1" = name.allele1,
+                                  "allele2" = name.allele2,
                                   "fitness.male" = object@fitness.male,
                                   "fitness.female" = object@fitness.female,
                                   "modifier" = object@recombination.modifier
@@ -111,8 +111,8 @@ setMethod("show", "locus",
 #' @param male.recombination Optional: A vector containing the recombination rate between the different locus. It should be of length n-1 where n is the number of locus.
 #' @param female.recombination Optional: A vector containing the recombination rate between the different locus. It should be of length n-1 where n is the number of locus.
 #' @examples
-#' locus1 = create.locus(chrom1=c(1,1),chrom2 = c(1,2),sd = c(0,1),fitness.male=c(1,1),fitness.female=c(1,1))
-#' locus2 = create.locus(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
+#' locus1 = create.locus(allele1=c(1,1),allele2 = c(1,2),sd = c(0,1),fitness.male=c(1,1),fitness.female=c(1,1))
+#' locus2 = create.locus(allele1=  c(1,1,2),allele2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
 #' genome = create.genome(locus=list(locus1,locus2))
 #' @export
 

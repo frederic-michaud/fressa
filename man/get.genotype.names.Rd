@@ -20,8 +20,8 @@ therefore much easier to read that if it's not present, where the name of the al
 is just their number.
 }
 \examples{
-locus1 = create.locus(chrom1=c(1,1),chrom2 = c(1,2),sd = c(0,1),allele.name = c("x","y"))
-locus2 = create.locus(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1),allele.name = c("F","M"))
+locus1 = create.locus(allele1=c(1,1),allele2 = c(1,2),sd = c(0,1),allele.name = c("x","y"))
+locus2 = create.locus(allele1=  c(1,1,2),allele2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1),allele.name = c("F","M"))
 genome = create.genome(locus=list(locus1,locus2))
 get.genotype.names(genome)
 }

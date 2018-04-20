@@ -16,8 +16,8 @@ given a matrix of frequency returned by the function `compute.frequency.evolutio
 and the associated genome, plot the frequency of all possible genotype through time
 }
 \examples{
-locus1 = create.locus(chrom1=c(1,1),chrom2 = c(1,2),sd = c(0,1))
-locus2 = create.locus(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
+locus1 = create.locus(allele1=c(1,1),allele2 = c(1,2),sd = c(0,1))
+locus2 = create.locus(allele1=  c(1,1,2),allele2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
 genome = create.genome(locus=list(locus1,locus2))
 freqs <- compute.frequency.evolution(genome)
 plot.genotype.frequency(genome, freqs)

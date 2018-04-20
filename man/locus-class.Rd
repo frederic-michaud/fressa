@@ -6,9 +6,9 @@
 \alias{create.locus}
 \title{Create a locus}
 \arguments{
-\item{chrom1}{The allele on the first chromosome}
+\item{allele1}{The allele on the first chromosome}
 
-\item{chrom2}{The allele on the second chromosome}
+\item{allele2}{The allele on the second chromosome}
 
 \item{fitness.male}{Optional: The fitness of the males carrying this genotype}
 
@@ -33,8 +33,8 @@ The reason it is like this, is that it allows to skip some genotypes (like yy)
 and specify easly the fitness of all genotype without using dominance factor.
 }
 \examples{
-locus1 = create.locus(chrom1 = c(1,1),
-                                chrom2 = c(1,2),
+locus1 = create.locus(allele1 = c(1,1),
+                                allele2 = c(1,2),
                                     sd = c(0,1),
                           fitness.male = c(1,1),
                         fitness.female = c(1,1),

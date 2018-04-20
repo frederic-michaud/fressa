@@ -46,7 +46,7 @@ get.haplotype.from.index <- function(haplotype.index,nb.alleles){
 get.nb.alleles.per.locus <- function(genome){
   nb.alleles <- c()
   for (locus in genome@locus){
-    alleles <- unique(c(locus$chrom1,locus$chrom2))
+    alleles <- unique(c(locus$allele1,locus$allele2))
     nb.alleles <- c(nb.alleles,length(alleles))
   }
   return(nb.alleles)
@@ -78,9 +78,9 @@ build.all.haplotype <- function(genome){
 #' are not possible and this function takes care of eliminating them
 #' like yy is not possible.
 build.genotype.from.locus <- function(genome,locus){
-   all.config <- matrix(0,ncol=2,nrow=length(genome@locus[[locus]]$chrom1))
-    for(i in 1:length(genome@locus[[locus]]$chrom1)){
-      all.config[i,] <- c(genome@locus[[locus]]$chrom1[i],genome@locus[[locus]]$chrom2[i])
+   all.config <- matrix(0,ncol=2,nrow=length(genome@locus[[locus]]$allele1))
+    for(i in 1:length(genome@locus[[locus]]$allele1)){
+      all.config[i,] <- c(genome@locus[[locus]]$allele1[i],genome@locus[[locus]]$allele2[i])
     }
    return(all.config)
 }

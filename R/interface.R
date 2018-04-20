@@ -8,8 +8,8 @@
 #' the initial frequencies will all be set to the same value
 #' @param generations The number of generation that have to be computed (including the first one)
 #' @examples
-#' locus1 = data.frame(chrom1=c(1,1),chrom2 = c(1,2),sd = c(0,1),fitness.male=c(1,1),fitness.female=c(1,1))
-#' locus2 = data.frame(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
+#' locus1 = data.frame(allele1=c(1,1),allele2 = c(1,2),sd = c(0,1),fitness.male=c(1,1),fitness.female=c(1,1))
+#' locus2 = data.frame(allele1=  c(1,1,2),allele2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
 #' genome = create.genome(locus1,locus2)
 #' freqs <- compute.frequency.evolution(genome)
 #' @export
@@ -40,8 +40,8 @@ compute.frequency.evolution <- function(genome,initial.frequency = NULL,generati
 #' @param genome A S4 object of type genome
 #' @param freqs a matrix of frequency as returned by the function `compute.frequency.evolution`
 #' @examples
-#' locus1 = create.locus(chrom1=c(1,1),chrom2 = c(1,2),sd = c(0,1))
-#' locus2 = create.locus(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
+#' locus1 = create.locus(allele1=c(1,1),allele2 = c(1,2),sd = c(0,1))
+#' locus2 = create.locus(allele1=  c(1,1,2),allele2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
 #' genome = create.genome(locus=list(locus1,locus2))
 #' freqs <- compute.frequency.evolution(genome)
 #' freqs.haplotype <- get.haplotype.frequency(genome, freqs)
@@ -68,8 +68,8 @@ get.haplotype.frequency <- function(genome,freqs)
 #' @param genome A S4 object of type genome
 #' @param freqs a matrix of frequency as returned by the function `compute.frequency.evolution`
 #' @examples
-#' locus1 = create.locus(chrom1=c(1,1),chrom2 = c(1,2),sd = c(0,1))
-#' locus2 = create.locus(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
+#' locus1 = create.locus(allele1=c(1,1),allele2 = c(1,2),sd = c(0,1))
+#' locus2 = create.locus(allele1=  c(1,1,2),allele2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
 #' genome = create.genome(locus=list(locus1,locus2))
 #' freqs <- compute.frequency.evolution(genome)
 #' freqs.allele <- get.allele.frequency(genome, freqs)
@@ -103,8 +103,8 @@ get.allele.frequency <- function(genome,freqs,locus.position)
 #' @param allele the allele which has a given frequency
 #' @param allele.frequency the initial frequency of the allele.
 #' @examples
-#' locus1 = create.locus(chrom1=c(1,1),chrom2 = c(1,2),sd = c(0,1))
-#' locus2 = create.locus(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
+#' locus1 = create.locus(allele1=c(1,1),allele2 = c(1,2),sd = c(0,1))
+#' locus2 = create.locus(allele1=  c(1,1,2),allele2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
 #' genome = create.genome(locus=list(locus1,locus2))
 #' initial.frequency <- get.frequency.from.one.allele.frequency(genome,2,1,0.01)
 #' freqs <- compute.frequency.evolution(genome,initial.frequency)
@@ -171,8 +171,8 @@ get.frequency.from.one.allele.frequency <- function(genome,locus,allele,allele.f
 #' @param genome A S4 object of type genome
 #' @param freqs a matrix of frequency as returned by the function `compute.frequency.evolution`
 #' @examples
-#' locus1 = create.locus(chrom1=c(1,1),chrom2 = c(1,2),sd = c(0,1))
-#' locus2 = create.locus(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
+#' locus1 = create.locus(allele1=c(1,1),allele2 = c(1,2),sd = c(0,1))
+#' locus2 = create.locus(allele1=  c(1,1,2),allele2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
 #' genome = create.genome(locus=list(locus1,locus2))
 #' freqs <- compute.frequency.evolution(genome)
 #' get.haplotype.marginal.fitness(genome, freqs)
@@ -201,8 +201,8 @@ get.marginal.haplotype.fitness <- function(genome,freqs)
 #' @param freqs a matrix of frequency as returned by the function `compute.frequency.evolution`
 #' @param locus.position the index of the locus from which we want to plot the allele frequency
 #' @examples
-#' locus1 = create.locus(chrom1=c(1,1),chrom2 = c(1,2),sd = c(0,1))
-#' locus2 = create.locus(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
+#' locus1 = create.locus(allele1=c(1,1),allele2 = c(1,2),sd = c(0,1))
+#' locus2 = create.locus(allele1=  c(1,1,2),allele2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
 #' genome = create.genome(locus=list(locus1,locus2))
 #' freqs <- compute.frequency.evolution(genome)
 #' get.haplotype.marginal.fitness(genome, freqs)
@@ -232,8 +232,8 @@ get.marginal.allele.fitness <- function(genome,freqs,locus)
 #' @param genome A S4 object of type genome
 
 #' @examples
-#' locus1 = create.locus(chrom1=c(1,1),chrom2 = c(1,2),sd = c(0,1),allele.name = c("x","y"))
-#' locus2 = create.locus(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1),allele.name = c("F","M"))
+#' locus1 = create.locus(allele1=c(1,1),allele2 = c(1,2),sd = c(0,1),allele.name = c("x","y"))
+#' locus2 = create.locus(allele1=  c(1,1,2),allele2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1),allele.name = c("F","M"))
 #' genome = create.genome(locus=list(locus1,locus2))
 #' get.genotype.names(genome)
 #' @export
@@ -264,8 +264,8 @@ get.genotype.names <- function(genome){
 #' @param genome A S4 object of type genome
 
 #' @examples
-#' locus1 = create.locus(chrom1=c(1,1),chrom2 = c(1,2),sd = c(0,1),allele.name = c("x","y"))
-#' locus2 = create.locus(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1),allele.name = c("F","M"))
+#' locus1 = create.locus(allele1=c(1,1),allele2 = c(1,2),sd = c(0,1),allele.name = c("x","y"))
+#' locus2 = create.locus(allele1=  c(1,1,2),allele2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1),allele.name = c("F","M"))
 #' genome = create.genome(locus=list(locus1,locus2))
 #' get.haplotype.names(genome)
 #' @export
