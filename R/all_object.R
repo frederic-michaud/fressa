@@ -132,8 +132,8 @@ setMethod(f="initialize",
             .Object@female.recombination <- female.recombination
             .Object@all.gamete.female <- build.all.gamete(.Object,female.recombination)
             .Object@all.gamete.male <- build.all.gamete(.Object,male.recombination)
-            .Object@all.fitness.male <- build.all.gamete(.Object,female.recombination)
-            .Object@all.fitness.female <- build.all.gamete(.Object,male.recombination)
+            .Object@all.fitness.male <- build.all.fitness.male(.Object)
+            .Object@all.fitness.female <- build.all.fitness.female(.Object)
             return(.Object)
           }
 )

@@ -97,6 +97,7 @@ build.genotype.from.locus <- function(genome,locus){
 #' of the form YY would not be returned.
 
 build.all.genotype <- function(genome){
+
   loci <- genome@locus
   nb.locus <- get.nb.locus(genome)
   locus.all.config <- vector("list",nb.locus)
