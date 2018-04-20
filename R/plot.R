@@ -132,11 +132,11 @@ plot.allele.marginal.fitness <- function(genome,freqs,locus.position){
   allele.marginal.fitness <- get.marginal.allele.fitness(genome,freqs,locus.position)
   max.fit <- max(allele.marginal.fitness)
   min.fit <- min(allele.marginal.fitness)
-  allele.number <- get.nb.alleles.per.locus(genome)[locus]
+  allele.number <- get.nb.alleles.per.locus(genome)[locus.position]
   palette <- get.palette(allele.number)
   plot(allele.marginal.fitness[1,],type="l",ylim=c(min.fit/1.2,1.2*max.fit),col=palette[1],xlab = "Generation",ylab="fitness")
   for(allele in 2:allele.number){
     lines(allele.marginal.fitness[allele,],col=palette[allele])
   }
-  legend("topright",legend=get.allele.name(genome,locus),lty = rep(1,allele.number),col=palette)
+  legend("topright",legend=get.allele.name(genome,locus.position),lty = rep(1,allele.number),col=palette)
 }
