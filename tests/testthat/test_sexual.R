@@ -9,8 +9,8 @@ test_that("Id of sd is correctly found",
 
 test_that("If the number of sd is different from one, get error",
           {
-            expect_error(get.id.sd.locus(genome.without.sd))
-            expect_error(get.id.sd.locus(genome.with.two.sd))
+            expect_error(get.id.sd.locus(create.genome(locus = list(locus2,locus2))))
+            expect_error(get.id.sd.locus(create.genome(locus = list(locus3,locus3))))
           }
 )
 

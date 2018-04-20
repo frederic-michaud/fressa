@@ -20,6 +20,11 @@ get.id.sd.locus <- function(genome){
 
 #' Give the list of maleness in a population
 get.all.maleness <- function(genome){
+  return(genome@all.maleness)
+}
+
+#' Give the list of maleness in a population
+build.all.maleness <- function(genome){
   all.haplotype <- genome@all.haplotype
   all.genotype <- genome@all.genotype
   male = c()
@@ -125,9 +130,15 @@ is.female <- function(genotype.index, genome){
 
 
 #' Give the list of femaleness in a population
-get.all.femaleness <- function(genome){
-  return(1-get.all.maleness(genome))
+build.all.femaleness <- function(genome){
+  return(1-build.all.maleness(genome))
 }
+
+#' Give the list of femaleness in a population
+get.all.femaleness <- function(genome){
+  return(genome@all.femaleness)
+}
+
 
 #' Determine the femaleness of a genotype
 #'

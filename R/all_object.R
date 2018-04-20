@@ -119,7 +119,9 @@ create.genome <- setClass(Class = "genome",
                               all.gamete.male = "list",
                               all.gamete.female = "list",
                               all.fitness.male = "vector",
-                              all.fitness.female = "vector"
+                              all.fitness.female = "vector",
+                              all.maleness = "vector",
+                              all.femaleness = "vector"
                             ))
 
 setMethod(f="initialize",
@@ -134,6 +136,9 @@ setMethod(f="initialize",
             .Object@all.gamete.male <- build.all.gamete(.Object,male.recombination)
             .Object@all.fitness.male <- build.all.fitness.male(.Object)
             .Object@all.fitness.female <- build.all.fitness.female(.Object)
+            .Object@all.maleness <- build.all.maleness(.Object)
+            .Object@all.femaleness <- build.all.femaleness(.Object)
+
             return(.Object)
           }
 )
