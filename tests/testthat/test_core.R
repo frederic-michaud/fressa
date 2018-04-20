@@ -57,7 +57,7 @@ test_that("We can build all possible genotype from a genome",
           }
 )
 
-test_that("We can say tif a locus configuration is in a set of locus configuration",
+test_that("We can say if a locus configuration is in a set of locus configuration",
           {
             expect_true(genotype.is.in.locus(c(1,1),matrix(c(1,1,2,1,2,2),nrow = 3)))
             expect_true(genotype.is.in.locus(c(1,2),matrix(c(1,1,2,3,1,2,3,4),nrow = 4)))
@@ -119,4 +119,19 @@ test_that("we can get all possible genotype which match a given haplotype",{
 }
 )
 
+test_that("We can find all the haplotype which contain a given allele",
+          {
+            expect_equal(get.haplotype.with.given.allele(genome1,1,1),c(1,2))
+            expect_equal(get.haplotype.with.given.allele(genome1,2,2),c(2,4))
+            expect_equal(get.haplotype.with.given.allele(genome2,3,3),c(3,  6,  9, 12, 15, 18))
+          }
+)
+
+test_that("We can find all the genotype which contain a given allele",
+          {
+            expect_equal(sort(get.genotype.with.given.allele(genome1,1,1)),c(1, 1, 2, 2, 3, 4, 5, 5, 6, 7))
+            expect_equal(sort(get.genotype.with.given.allele(genome1,2,2)),c(2, 4, 5, 5, 6, 7, 7))
+            expect_equal(sort(get.genotype.with.given.allele(genome2,1,3)),c(13,14,15,16,17,18,30,31,32,33,34,35,46,47,48,49,50,51,61,62,63,64,65,66,75,76,77,78,79,80,88,89,90,91,92,93,100,101,102,103,104,105,111,112,113,114,115,116,121,122,123,124,125,126,130,131,132,133,134,135,138,139,140,141,142,143,145,146,147,148,149,150,151,151,152,152,153,153,154,154,155,155,156,156,157,157,158,158,159,159,160,160,161,161,162,162,163,163,164,164,165,165,166,166,167,167,168,168,169,169,170,170,171,171))
+          }
+)
 

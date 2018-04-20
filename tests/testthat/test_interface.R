@@ -1,5 +1,21 @@
 context("interface")
 
+test_that("We can generate the name of the haplotype",
+          {
+            haplotype.names <- get.haplotype.names(genome1)
+            expect_equal(haplotype.names,c("xA","xa","yA","ya"))
+            haplotype.names <- get.haplotype.names(genome2)
+            expect_equal(haplotype.names,c("111","112","113","121","122","123","211","212","213","221","222","223","311","312","313","321","322","323"))
+          }
+)
+
+test_that("We can generate the name of the genotype",
+          {
+            genotype.names <- get.genotype.names(genome1)
+            expect_equal(genotype.names,c("xA|xA","xA|xa","xA|yA","xA|ya","xa|xa","xa|yA","xa|ya"))
+          }
+)
+
 test_that("We can compute the evolution of the frequency through time",
           {
             freqs1 <- compute.frequency.evolution(genome1)
@@ -29,21 +45,7 @@ test_that("We can compute allele frequency from genotype frequency",
           }
 )
 
-test_that("We can find all the haplotype which contain a given allele",
-          {
-            expect_equal(get.haplotype.with.given.allele(genome1,1,1),c(1,2))
-            expect_equal(get.haplotype.with.given.allele(genome1,2,2),c(2,4))
-            expect_equal(get.haplotype.with.given.allele(genome2,3,3),c(3,  6,  9, 12, 15, 18))
-          }
-)
 
-test_that("We can find all the genotype which contain a given allele",
-          {
-            expect_equal(sort(get.genotype.with.given.allele(genome1,1,1)),c(1, 1, 2, 2, 3, 4, 5, 5, 6, 7))
-            expect_equal(sort(get.genotype.with.given.allele(genome1,2,2)),c(2, 4, 5, 5, 6, 7, 7))
-            expect_equal(sort(get.genotype.with.given.allele(genome2,1,3)),c(13,14,15,16,17,18,30,31,32,33,34,35,46,47,48,49,50,51,61,62,63,64,65,66,75,76,77,78,79,80,88,89,90,91,92,93,100,101,102,103,104,105,111,112,113,114,115,116,121,122,123,124,125,126,130,131,132,133,134,135,138,139,140,141,142,143,145,146,147,148,149,150,151,151,152,152,153,153,154,154,155,155,156,156,157,157,158,158,159,159,160,160,161,161,162,162,163,163,164,164,165,165,166,166,167,167,168,168,169,169,170,170,171,171))
-          }
-)
 
 test_that("We can compute frequency of the genotypes from the frequency of one allele",
           {
