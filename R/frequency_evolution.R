@@ -11,7 +11,7 @@ simulate.frequency <- function(genome,initial.frequency){
 }
 
 get.male.gamete.frequency <- function(genome,initial.frequency){
-  nb.genotypes <- nrow(genome@all.genotype)
+  nb.genotypes <- get.nb.genotype(genome)
   nb.gamete <- nrow(genome@all.haplotype)
   males.genotype <- get.male(genome)
   maleness <- get.all.maleness(genome)
@@ -23,8 +23,9 @@ get.male.gamete.frequency <- function(genome,initial.frequency){
 
   relative.fitness.males <- fitness.males/mean.fitness.male
   gamete.frequency <- rep(0,nb.gamete)
+  list.of.gamete <- genome@all.gamete.male
   for(male.genotype in males.genotype){
-    all.gamete <- get.gamete.and.frequency.from.genotype.male(genome,male.genotype)
+    all.gamete <- list.of.gamete[[male.genotype]]
     all.gamete$frequency <- all.gamete$frequency*
       relative.frequencies[male.genotype]*
       maleness[male.genotype]*
@@ -38,7 +39,7 @@ get.male.gamete.frequency <- function(genome,initial.frequency){
 
 
 get.female.gamete.frequency <- function(genome,initial.frequency){
-  nb.genotypes <- nrow(genome@all.genotype)
+  nb.genotypes <- get.nb.genotype(genome)
   nb.gamete <- nrow(genome@all.haplotype)
   females.genotype <- get.female(genome)
   femaleness <- get.all.femaleness(genome)
@@ -50,12 +51,14 @@ get.female.gamete.frequency <- function(genome,initial.frequency){
 
   relative.fitness.females <- fitness.females/mean.fitness.female
   gamete.frequency <- rep(0,nb.gamete)
+  list.of.gamete <- genome@all.gamete.female
   for(female.genotype in females.genotype){
-    all.gamete <- get.gamete.and.frequency.from.genotype.female(genome,female.genotype)
+    all.gamete <- list.of.gamete[[female.genotype]]
     all.gamete$frequency <- all.gamete$frequency*
       relative.frequencies[female.genotype]*
       femaleness[female.genotype]*
       relative.fitness.females[female.genotype]
+
     for(gamete in 1:length(all.gamete$frequency)){
       gamete.frequency[all.gamete$index[gamete]] <- gamete.frequency[all.gamete$index[gamete]] + all.gamete$frequency[gamete]
     }

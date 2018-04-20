@@ -38,6 +38,7 @@ get.gamete.and.frequency.from.genotype.after.recombination <- function(genome,ge
     }
   }
   gamete.with.frequency <- data.frame(frequency = frequency,index = gamete.index)
+  gamete.with.frequency <- glue.frequency(gamete.with.frequency)
   return(gamete.with.frequency)
 }
 
@@ -61,4 +62,32 @@ get.probability.for.given.recombination <- function(recombination.value, recombi
   nb.interval <- length(recombination.value)
   recombination.probability <- prod(abs(((1-recombination.value) - decomposition.recombination[1:nb.interval])))
   return(recombination.probability)
+}
+
+build.all.gamete <- function(genome,recombination.value){
+nb.genome <- get.nb.genotype(genome)
+  recombination.list = as.list(1:nb.genome)
+  for(i in 1:nb.genome)
+  {
+    recombination.list[[i]] <- get.gamete.and.frequency.from.genotype.after.recombination(genome,i,recombination.value)
+  }
+  return(recombination.list)
+}
+
+glue.frequency <- function(frequency){
+  nb.gamete <- length(frequency$index)
+  max.gamete <- max(frequency$index+1)
+  frequency.vector <- rep(0,max.gamete)
+  for(i in 1:nb.gamete){
+    frequency.vector[frequency$index[i]] <- frequency.vector[frequency$index[i]] + frequency$frequency[i]
+  }
+  new.frequency <- c()
+  new.index <- c()
+  for(i in 1:max.gamete){
+    if(frequency.vector[i] > 0){
+      new.frequency <- c(new.frequency,frequency.vector[i])
+      new.index <- c(new.index,i)
+    }
+  }
+return(data.frame(frequency = new.frequency,index = new.index))
 }
