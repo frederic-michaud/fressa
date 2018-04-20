@@ -7,6 +7,5 @@
 get.female(genome)
 }
 \description{
-This function return the index of all genotype that are,
-at least partially, female
+give the list of female in a population
 }

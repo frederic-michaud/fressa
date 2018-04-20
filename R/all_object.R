@@ -12,9 +12,10 @@
 #'
 #' @param chrom1 The allele on the first chromosome
 #' @param chrom2 The allele on the second chromosome
-#' @param fitness.male The fitness of the males carrying this genotype
-#' @param fitness.female The fitness of the female carrying this genotype
-#' @param sd The proportion of individual with this genotype which are male (0 mean that it's  always a female and 1 it's always a male)
+#' @param fitness.male Optional: The fitness of the males carrying this genotype
+#' @param fitness.female Optional: The fitness of the female carrying this genotype
+#' @param sd Optional: The proportion of individual with this genotype which are male (0 mean that it's  always a female and 1 it's always a male)
+#' @param recombination.modifier Optional: indicate how this genotype modify the overall recombination rate of the chromosome
 #' @param name The name of the allele. Notice that this vector is of different size as the ones before.
 #' @examples locus1 = create.locus(chrom1 = c(1,1),
 #'                                 chrom2 = c(1,2),
@@ -32,6 +33,7 @@ create.locus <- setClass(Class = "locus",
                             sd = "vector",
                             fitness.male = "vector",
                             fitness.female = "vector",
+                            recombination.modifier = "vector",
                             allele.name = "vector"
                             )
                          )
@@ -49,18 +51,21 @@ setMethod(f="initialize",
                                 fitness.male = numeric(),
                                 fitness.female = numeric() ,
                                 allele.name = character(),
-                                fitness = numeric()
+                                fitness = numeric(),
+                                recombination.modifier = numeric()
           ){
             nb.locus = length(chrom1)
             if(nb.locus!= length(chrom2)) stop("chrom1 and chrom2 should be the same length")
             if(length(fitness.male) == 0) fitness.male <- rep(1,nb.locus)
             if(length(fitness.female) == 0) fitness.female <- rep(1,nb.locus)
+            if(length(recombination.modifier) == 0) recombination.modifier <- rep(1,nb.locus)
             if(length(fitness) > 0){
               fitness.male <- fitness
               fitness.female <- fitness
             }
             if(nb.locus!= length(fitness.male)) stop("Fitness.male should be the same size as chrom1")
             if(nb.locus!= length(fitness.female)) stop("Fitness.female should be the same size as chrom1")
+            if(nb.locus!= length(recombination.modifier)) stop("recombination.modifier should be the same size as chrom1")
             .Object@chrom1 <- chrom1
             .Object@chrom2 <- chrom2
             .Object@sd <- sd
@@ -68,6 +73,7 @@ setMethod(f="initialize",
             .Object@fitness.female <- fitness.female
             .Object@fitness.female <- fitness.female
             .Object@allele.name <- allele.name
+            .Object@recombination.modifier <- recombination.modifier
             return(.Object)
           }
 )
@@ -75,19 +81,20 @@ setMethod(f="initialize",
 setMethod("show", "locus",
           function(object){
             if(length(object@allele.name > 0)){
-              df.to.be.printed <- data.frame("chrom1" = object@allele.name[object@chrom1],
-                                  "chrom2" = object@allele.name[object@chrom2],
-                                  "fitness.male" = object@fitness.male,
-                                  "fitness.female" = object@fitness.female
-                                  )
+              name.chrom1 <-  object@allele.name[object@chrom1]
+              name.chrom2 <-  object@allele.name[object@chrom2]
             }
             else{
-              df.to.be.printed <- data.frame("chrom1" = object@chrom1,
-                                  "chrom2" = object@chrom2,
-                                  "fitness.male" = object@fitness.male,
-                                  "fitness.female" = object@fitness.female
-              )
+              name.chrom1 <-  object@chrom1
+              name.chrom2 <-  object@chrom2
             }
+
+              df.to.be.printed <- data.frame("chrom1" = name.chrom1,
+                                  "chrom2" = name.chrom2,
+                                  "fitness.male" = object@fitness.male,
+                                  "fitness.female" = object@fitness.female,
+                                  "modifier" = object@recombination.modifier
+              )
             if(length(object@sd) > 0) df.to.be.printed$sd = object@sd
             print(df.to.be.printed)
           }
@@ -101,6 +108,8 @@ setMethod("show", "locus",
 
 #'
 #' @param locus A list of locus
+#' @param male.recombination Optional: A vector containing the recombination rate between the different locus. It should be of length n-1 where n is the number of locus.
+#' @param female.recombination Optional: A vector containing the recombination rate between the different locus. It should be of length n-1 where n is the number of locus.
 #' @examples
 #' locus1 = create.locus(chrom1=c(1,1),chrom2 = c(1,2),sd = c(0,1),fitness.male=c(1,1),fitness.female=c(1,1))
 #' locus2 = create.locus(chrom1=  c(1,1,2),chrom2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
@@ -123,7 +132,8 @@ create.genome <- setClass(Class = "genome",
                               all.maleness = "vector",
                               all.femaleness = "vector",
                               all.male = "vector",
-                              all.female = "vector"
+                              all.female = "vector",
+                              all.recombination.modifier = "vector"
                             ))
 
 setMethod(f="initialize",
@@ -132,6 +142,7 @@ setMethod(f="initialize",
             .Object@locus <- locus
             .Object@all.haplotype <- build.all.haplotype(.Object)
             .Object@all.genotype <- build.all.genotype(.Object)
+            .Object@all.recombination.modifier <- build.all.recombination.modifier(.Object)
             .Object@male.recombination <- male.recombination
             .Object@female.recombination <- female.recombination
             .Object@all.gamete.female <- build.all.gamete(.Object,female.recombination)

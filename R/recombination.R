@@ -14,7 +14,7 @@ get.gamete.and.frequency.from.genotype.female <- function(genome,genotype){
 get.gamete.and.frequency.from.genotype.after.recombination <- function(genome,genotype,recombination.value){
   all.genotype <- genome@all.genotype
   all.haplotype <- genome@all.haplotype
-  if(length(recombination.value) ==0){
+  if(length(recombination.value) == 0 ||sum(recombination.value) ==0){
     frequency <-  c(1/2,1/2)
     gamete.index <- all.genotype[genotype,]
   }
@@ -65,11 +65,13 @@ get.probability.for.given.recombination <- function(recombination.value, recombi
 }
 
 build.all.gamete <- function(genome,recombination.value){
-nb.genome <- get.nb.genotype(genome)
+  nb.genome <- get.nb.genotype(genome)
   recombination.list = as.list(1:nb.genome)
+  recombination.modifier <- genome@all.recombination.modifier
   for(i in 1:nb.genome)
   {
-    recombination.list[[i]] <- get.gamete.and.frequency.from.genotype.after.recombination(genome,i,recombination.value)
+    scaled.recombination.value <- recombination.value*recombination.modifier[i]
+    recombination.list[[i]] <- get.gamete.and.frequency.from.genotype.after.recombination(genome,i,scaled.recombination.value)
   }
   return(recombination.list)
 }

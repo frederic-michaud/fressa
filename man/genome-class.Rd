@@ -7,6 +7,10 @@
 \title{Create a genome}
 \arguments{
 \item{locus}{A list of locus}
+
+\item{male.recombination}{Optional: A vector containing the recombination rate between the different locus. It should be of length n-1 where n is the number of locus.}
+
+\item{female.recombination}{Optional: A vector containing the recombination rate between the different locus. It should be of length n-1 where n is the number of locus.}
 }
 \description{
 A genome is a S4 class which define all the properties of a genome, it is basically

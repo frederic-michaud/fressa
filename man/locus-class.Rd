@@ -10,11 +10,13 @@
 
 \item{chrom2}{The allele on the second chromosome}
 
-\item{fitness.male}{The fitness of the males carrying this genotype}
+\item{fitness.male}{Optional: The fitness of the males carrying this genotype}
 
-\item{fitness.female}{The fitness of the female carrying this genotype}
+\item{fitness.female}{Optional: The fitness of the female carrying this genotype}
 
-\item{sd}{The proportion of individual with this genotype which are male (0 mean that it's  always a female and 1 it's always a male)}
+\item{sd}{Optional: The proportion of individual with this genotype which are male (0 mean that it's  always a female and 1 it's always a male)}
+
+\item{recombination.modifier}{Optional: indicate how this genotype modify the overall recombination rate of the chromosome}
 
 \item{name}{The name of the allele. Notice that this vector is of different size as the ones before.}
 }

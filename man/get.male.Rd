@@ -7,8 +7,5 @@
 get.male(genome)
 }
 \description{
-This function return the index of all genotype that are,
-at least partially, male
-the number of sd represent of much male is an individual.
-if it's one, the individual is fully male, if 0 fully female
+give the list of male in a population
 }

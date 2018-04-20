@@ -49,5 +49,7 @@ test_that("We can compute which gamete appears with which probability in recombi
 test_that("we can get build correctly the list of all possible gamete",{
   expect_known_value(build.all.gamete(genome.with.recomb,genome.with.recomb@female.recombination),"recomb_genome_female.rds",update = F)
   expect_known_value(build.all.gamete(genome.with.recomb,genome.with.recomb@male.recombination),"recomb_genome_male.rds",update = F)
+  #this was checked by hand before being saved!
+  expect_known_value(build.all.gamete(genome.with.modifier,genome.with.modifier@male.recombination),"recomb_modifier_genome_male.rds",update = F)
 }
 )
