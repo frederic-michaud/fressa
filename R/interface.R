@@ -22,11 +22,11 @@ compute.frequency.evolution <- function(genome,initial.frequency = NULL,generati
     initial.frequency <- rep(1/nb.genotype,nb.genotype)
   }
   if(length(initial.frequency)!=nb.genotype) stop("The given initial frequency is not the correct size")
-
-  freqs <- cbind(initial.frequency,simulate.frequency(genome,initial.frequency)) #we compute the first generation here to be able to use tail
-  for(generation in 1:(generations - 2))
+  freqs <- matrix(0,nrow = nb.genotype,ncol = generations)
+  freqs[,1] <- initial.frequency
+  for(generation in 2:generations)
   {
-    freqs <- cbind(freqs,simulate.frequency(genome,freqs[,ncol(freqs)])) #and the next 1000 generation
+    freqs[,generation] <- simulate.frequency(genome,freqs[ ,generation-1])
   }
   return(freqs)
 }

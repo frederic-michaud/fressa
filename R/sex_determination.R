@@ -51,12 +51,12 @@ get.maleness <- function(genotype.index, genome){
 
 
 #' give the list of male in a population
-#'
-#' This function return the index of all genotype that are,
-#' at least partially, male
-#' the number of sd represent of much male is an individual.
-#' if it's one, the individual is fully male, if 0 fully female
 get.male <- function(genome){
+  return(genome@all.male)
+}
+
+#' build the list of male in a population
+build.male <- function(genome){
   all.haplotype <- genome@all.haplotype
   all.genotype <- genome@all.genotype
   male = c()
@@ -100,10 +100,12 @@ get.haplotype.female <- function( genome){
 }
 
 #' give the list of female in a population
-#'
-#' This function return the index of all genotype that are,
-#' at least partially, female
 get.female <- function(genome){
+  return(genome@all.female)
+}
+
+#' build the list of female in a population
+build.female <- function(genome){
   all.haplotype <- genome@all.haplotype
   all.genotype <- genome@all.genotype
   female = c()

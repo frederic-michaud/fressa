@@ -121,7 +121,9 @@ create.genome <- setClass(Class = "genome",
                               all.fitness.male = "vector",
                               all.fitness.female = "vector",
                               all.maleness = "vector",
-                              all.femaleness = "vector"
+                              all.femaleness = "vector",
+                              all.male = "vector",
+                              all.female = "vector"
                             ))
 
 setMethod(f="initialize",
@@ -138,7 +140,8 @@ setMethod(f="initialize",
             .Object@all.fitness.female <- build.all.fitness.female(.Object)
             .Object@all.maleness <- build.all.maleness(.Object)
             .Object@all.femaleness <- build.all.femaleness(.Object)
-
+            .Object@all.male <- build.male(.Object)
+            .Object@all.female <- build.female(.Object)
             return(.Object)
           }
 )
