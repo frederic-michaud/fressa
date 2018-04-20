@@ -156,10 +156,3 @@ test_that("We can compute which gamete appears with which probability in recombi
   expect_equal(get.probability.for.given.recombination(c(0.1,0.2,0.3),8),0.1*0.2*0.3)
 }
 )
-
-
-test_that("We can compute all gamette from female population",{
-  #expect_equal(get.female.gamete.frequency(genome.with.recomb,rep(1/7,7)))
-
-}
-)
