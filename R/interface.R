@@ -144,20 +144,17 @@ get.frequency.from.one.allele.frequency <- function(genome,locus,allele,allele.f
     haplotype.no.matching.female.frequency <- 1/nb.female.haplotype
   }
 
-  male.haplotype.frequency <- rep(0,nb.haplotype)
-  female.haplotype.frequency <- rep(0,nb.haplotype)
+  male.gamete.frequency <- rep(0,nb.haplotype)
+  female.gamete.frequency <- rep(0,nb.haplotype)
 
-  male.haplotype.frequency[male.haplotype] <- haplotype.no.machting.male.frequency
-  female.haplotype.frequency[female.haplotype] <- haplotype.no.matching.female.frequency
+  male.gamete.frequency[male.haplotype] <- haplotype.no.machting.male.frequency
+  female.gamete.frequency[female.haplotype] <- haplotype.no.matching.female.frequency
 
 
-  male.haplotype.frequency[male.matching.haplotype] <- haplotype.matching.male.frequency
-  female.haplotype.frequency[female.matching.haplotype] <- haplotype.matching.female.frequency
+  male.gamete.frequency[male.matching.haplotype] <- haplotype.matching.male.frequency
+  female.gamete.frequency[female.matching.haplotype] <- haplotype.matching.female.frequency
 
-  genotype.frequency.as.matrix <- outer(male.haplotype.frequency,female.haplotype.frequency)
-  genotype.frequency.as.matrix <-  genotype.frequency.as.matrix +t(genotype.frequency.as.matrix)
-  diag(genotype.frequency.as.matrix) <- diag(genotype.frequency.as.matrix)/2
-  frequency <- genotype.frequency.as.matrix[genome@all.genotype]
+  frequency <- get.frequency.from.gamete.frequency(genome,male.gamete.frequency,female.gamete.frequency)
   return(frequency)
 }
 
@@ -276,3 +273,21 @@ get.haplotype.names <- function(genome){
   return(haplotype.names)
 }
 
+#' This functions allows to generate genotypic frequency
+#' by specifying the initial frequency og the gamete in male and female
+#'
+#'This function is usefull mainly to start a simulation with controlled
+#'gamete frequency
+#'
+#' @param genome A S4 object of type genome
+#' @param male.gamete.frequency a list of the frequency of the gamete for male (should sum up to one)
+#' @param female.gamete.frequency a list of the frequency of the gamete for female (should sum up to one)
+#' @export
+
+get.frequency.from.gamete.frequency <- function(genome,male.gamete.frequency,female.gamete.frequency){
+  genotype.frequency.as.matrix <- outer(male.gamete.frequency,female.gamete.frequency)
+  genotype.frequency.as.matrix <-  genotype.frequency.as.matrix +t(genotype.frequency.as.matrix)
+  diag(genotype.frequency.as.matrix) <- diag(genotype.frequency.as.matrix)/2
+  frequency <- genotype.frequency.as.matrix[genome@all.genotype]
+  return(frequency)
+}
