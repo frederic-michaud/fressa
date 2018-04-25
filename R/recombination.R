@@ -70,7 +70,9 @@ build.all.gamete <- function(genome,recombination.value){
   recombination.modifier <- genome@all.recombination.modifier
   for(i in 1:nb.genome)
   {
-    scaled.recombination.value <- recombination.value*recombination.modifier[i]
+    scaled.recombination.value <- recombination.value
+    if(length(scaled.recombination.value)>0) scaled.recombination.value[1] <- recombination.value[1]*recombination.modifier[i]
+    #scaled.recombination.value <- recombination.value*recombination.modifier[i]
     recombination.list[[i]] <- get.gamete.and.frequency.from.genotype.after.recombination(genome,i,scaled.recombination.value)
   }
   return(recombination.list)
