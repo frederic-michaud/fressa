@@ -51,9 +51,13 @@ plot.haplotype.frequency(genome,freq)
     
 We see that in this case, and as expected, the recombination is halted, so that y can fix the male beneficial allele while x can fix the female benefitial one. 
 
-## overdominance in male
+
+## Otto results
 According to S.P. Otto, https://onlinelibrary.wiley.com/doi/pdf/10.1111/jeb.12324 , in a scenario where there is overdominance in male, with different alleles being selected on the X chromosom carried by male and by female, selection would actually be selected. We can check if this is true using the same scenario as before changing only the strength of the fitness in male and in female. Notice that in male, heterozygothe are favoured. 
 
+In the next section, we will proceed as follow. We start from an equilibrium without any recombination. We set the initial frequency of gamete and the fitness of male and female so that we are in orange region of Figure 1 of previously mentionned paper, in an equilibrium B'. We then run the simulation without recombination for a 1000 generations to go to the exact equilibrium value. We then add a mutation which add recombination, and check if this mutation invade the system or not. 
+
+### setting the genome   
 ```{r}
 locussd = create.locus(allele1=c(1,1),
                       allele2 = c(1,2),
@@ -68,17 +72,32 @@ locusm = create.locus(allele1 = c(1,1,2),
                       )
 locussa = create.locus(allele1=  c(1,1,2),
                       allele2 = c(1,2,2),
-                      fitness.female = c(0.6,1,0.6),
-                      fitness.male = c(0.8,1,0.3),
-                      allele.name = c("A","a"))
+                      fitness.female = c(0.75,1,0.75),
+                      fitness.male = c(0.95,1,0.4),
+                      allele.name = c("a","A"))
 genome = create.genome(list(locussd,locussa,locusm),
-                       male.recombination = c(0.01,0.01),
-                       female.recombination = c(0.01,0.01))
+                       male.recombination = c(0.01,0.5),
+                       female.recombination = c(0.01,0.5))
 print(genome)
+get.haplotype.names(genome)
 ```
+### Computing the frequency at equilibrium  
 ```{r}
-initial.frequency <- get.frequency.from.one.allele.frequency(genome,3,2,1.99)
-freq <- compute.frequency.evolution(genome, generations = 1000)
+initial.frequency <- get.frequency.from.gamete.frequency(genome,
+                                                 male.gamete.frequency = c(0.49,0,0.01,0,0.01,0,0.49,0),
+                                                 female.gamete.frequency = c(0.99,0,0.01,0,0,0,0,0))
+freq <- compute.frequency.evolution(genome,initial.frequency, generations = 1000)
 plot.haplotype.frequency(genome,freq)
+equilibrium.frequency <- freq[,ncol(freq)]
+equilibrium.frequency[8] <- 0.01 #addinf a mutation
 ```
-Unfortunately, we are not able to reproduce Otto's result. The reason why is still an open question. 
+
+### simulation starting from equilibrium with added mutation for recombination
+```{r}
+freq <- compute.frequency.evolution(genome,equilibrium.frequency, generations = 40000)
+plot.haplotype.frequency(genome,freq)
+plot.allele.frequency(genome,freq,3)
+```
+   
+As we can see, the mutation causing recombination (called +) actually invade the system. 
+
