@@ -133,7 +133,9 @@ create.genome <- setClass(Class = "genome",
                               all.femaleness = "vector",
                               all.male = "vector",
                               all.female = "vector",
-                              all.recombination.modifier = "vector"
+                              all.recombination.modifier = "vector",
+                              male.gamete.matrix = "dgCMatrix",
+                              female.gamete.matrix = "dgCMatrix"
                             ))
 
 setMethod(f="initialize",
@@ -153,6 +155,8 @@ setMethod(f="initialize",
             .Object@all.femaleness <- build.all.femaleness(.Object)
             .Object@all.male <- build.male(.Object)
             .Object@all.female <- build.female(.Object)
+            .Object@male.gamete.matrix <- build.male.gamete.matrix(.Object)
+            .Object@female.gamete.matrix <- build.female.gamete.matrix(.Object)
             return(.Object)
           }
 )

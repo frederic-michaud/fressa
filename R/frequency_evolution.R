@@ -11,59 +11,57 @@ simulate.frequency <- function(genome,initial.frequency){
 }
 
 get.male.gamete.frequency <- function(genome,initial.frequency){
-  nb.genotypes <- get.nb.genotype(genome)
-  nb.gamete <- nrow(genome@all.haplotype)
-  males.genotype <- get.male(genome)
-  maleness <- get.all.maleness(genome)
-  male.frequency <- sum(initial.frequency[males.genotype]*maleness[males.genotype])
-  relative.frequencies <- initial.frequency/male.frequency
-  fitness.males <- get.all.fitness.male(genome)
-  mean.fitness.male <- 0
-  for(male.genotype in males.genotype) mean.fitness.male <- mean.fitness.male + 1/male.frequency*fitness.males[male.genotype]*maleness[male.genotype]*initial.frequency[male.genotype]
-
-  relative.fitness.males <- fitness.males/mean.fitness.male
-  gamete.frequency <- rep(0,nb.gamete)
-  list.of.gamete <- genome@all.gamete.male
-  for(male.genotype in males.genotype){
-    all.gamete <- list.of.gamete[[male.genotype]]
-    all.gamete$frequency <- all.gamete$frequency*
-      relative.frequencies[male.genotype]*
-      maleness[male.genotype]*
-      relative.fitness.males[male.genotype]
-    for(gamete in 1:length(all.gamete$frequency)){
-      gamete.frequency[all.gamete$index[gamete]] <- gamete.frequency[all.gamete$index[gamete]] + all.gamete$frequency[gamete]
-    }
-  }
-  return(gamete.frequency)
+  male.gamete.matrix <- genome@male.gamete.matrix
+  gamete.frequency <- initial.frequency%*%male.gamete.matrix
+  return(gamete.frequency/sum(gamete.frequency))
 }
 
 
 get.female.gamete.frequency <- function(genome,initial.frequency){
+  female.gamete.matrix <- genome@female.gamete.matrix
+  gamete.frequency <- initial.frequency%*%female.gamete.matrix
+  return(gamete.frequency/sum(gamete.frequency))
+}
+
+build.male.gamete.matrix <- function(genome){
   nb.genotypes <- get.nb.genotype(genome)
-  nb.gamete <- nrow(genome@all.haplotype)
-  females.genotype <- get.female(genome)
-  femaleness <- get.all.femaleness(genome)
-  female.frequency <- sum(initial.frequency[females.genotype]*femaleness[females.genotype])
-  relative.frequencies <- initial.frequency/female.frequency
-  fitness.females <- get.all.fitness.female(genome)
-  mean.fitness.female <- 0
-  for(female.genotype in females.genotype) mean.fitness.female <- mean.fitness.female + 1/female.frequency*fitness.females[female.genotype]*femaleness[female.genotype]*initial.frequency[female.genotype]
-
-  relative.fitness.females <- fitness.females/mean.fitness.female
+  nb.gamete <- get.nb.haplotype(genome)
+  males.genotype <- get.male(genome)
+  maleness <- get.all.maleness(genome)
+  fitness.males <- get.all.fitness.male(genome)
   gamete.frequency <- rep(0,nb.gamete)
-  list.of.gamete <- genome@all.gamete.female
-  for(female.genotype in females.genotype){
-    all.gamete <- list.of.gamete[[female.genotype]]
+  list.of.gamete <- genome@all.gamete.male
+  gamete.matrix <- as(matrix(0,nrow = nb.genotypes, ncol = nb.gamete),"sparseMatrix")
+  for(male.genotype in males.genotype){
+    all.gamete <- list.of.gamete[[male.genotype]]
     all.gamete$frequency <- all.gamete$frequency*
-      relative.frequencies[female.genotype]*
-      femaleness[female.genotype]*
-      relative.fitness.females[female.genotype]
-
+      maleness[male.genotype]*
+      fitness.males[male.genotype]
     for(gamete in 1:length(all.gamete$frequency)){
-      gamete.frequency[all.gamete$index[gamete]] <- gamete.frequency[all.gamete$index[gamete]] + all.gamete$frequency[gamete]
+      gamete.matrix[male.genotype, all.gamete$index[gamete]] <- gamete.matrix[male.genotype, all.gamete$index[gamete]] + all.gamete$frequency[gamete]
     }
   }
-  return(gamete.frequency)
+  return(gamete.matrix)
 }
 
 
+build.female.gamete.matrix <- function(genome){
+  nb.genotypes <- get.nb.genotype(genome)
+  nb.gamete <- get.nb.haplotype(genome)
+  females.genotype <- get.female(genome)
+  femaleness <- get.all.femaleness(genome)
+  fitness.females <- get.all.fitness.female(genome)
+  gamete.frequency <- rep(0,nb.gamete)
+  list.of.gamete <- genome@all.gamete.female
+  gamete.matrix <- as(matrix(0,nrow = nb.genotypes, ncol = nb.gamete),"sparseMatrix")
+  for(female.genotype in females.genotype){
+    all.gamete <- list.of.gamete[[female.genotype]]
+    all.gamete$frequency <- all.gamete$frequency*
+      femaleness[female.genotype]*
+      fitness.females[female.genotype]
+    for(gamete in 1:length(all.gamete$frequency)){
+      gamete.matrix[female.genotype, all.gamete$index[gamete]] <- gamete.matrix[female.genotype, all.gamete$index[gamete]] + all.gamete$frequency[gamete]
+    }
+  }
+  return(gamete.matrix)
+}
