@@ -25,7 +25,7 @@ get.all.maleness <- function(genome){
 
 #' Give the list of maleness in a population
 build.all.maleness <- function(genome){
-  all.haplotype <- genome@all.haplotype
+  all.gamete <- genome@all.gamete
   all.genotype <- genome@all.genotype
   male = c()
   for(genotype.index in 1:get.nb.genotype(genome)){
@@ -39,13 +39,13 @@ build.all.maleness <- function(genome){
 #' Gives the proportion of individuals whith the given genotype
 #' which are male
 get.maleness <- function(genotype.index, genome){
-  all.haplotype <- genome@all.haplotype
+  all.gamete <- genome@all.gamete
   all.genotype <- genome@all.genotype
   sd.locus <- get.id.sd.locus(genome)
-  haplotype1 = all.haplotype[all.genotype[genotype.index,1],]
-  haplotype2 = all.haplotype[all.genotype[genotype.index,2],]
+  gamete1 = all.gamete[all.genotype[genotype.index,1],]
+  gamete2 = all.gamete[all.genotype[genotype.index,2],]
   my_locus.sd <- genome@locus[[sd.locus]]$sd
-  position <- where.is.locus(c(haplotype1[sd.locus],haplotype2[sd.locus]),build.genotype.from.locus(genome,sd.locus))
+  position <- where.is.locus(c(gamete1[sd.locus],gamete2[sd.locus]),build.genotype.from.locus(genome,sd.locus))
   return(my_locus.sd[position])
 }
 
@@ -57,7 +57,7 @@ get.male <- function(genome){
 
 #' build the list of male in a population
 build.male <- function(genome){
-  all.haplotype <- genome@all.haplotype
+  all.gamete <- genome@all.gamete
   all.genotype <- genome@all.genotype
   male = c()
   for(genotype in 1:get.nb.genotype(genome)){
@@ -71,32 +71,32 @@ build.male <- function(genome){
 #' This function return true if the genotype with index
 #' genotype.index might generate a male and false otherwise.
 is.male <- function(genotype.index, genome){
-  all.haplotype <- genome@all.haplotype
+  all.gamete <- genome@all.gamete
   all.genotype <- genome@all.genotype
   sd.locus <- get.id.sd.locus(genome)
-  haplotype1 = all.haplotype[all.genotype[genotype.index,1],]
-  haplotype2 = all.haplotype[all.genotype[genotype.index,2],]
+  gamete1 = all.gamete[all.genotype[genotype.index,1],]
+  gamete2 = all.gamete[all.genotype[genotype.index,2],]
   my_locus.sd <- genome@locus[[sd.locus]]$sd
-  position <- where.is.locus(c(haplotype1[sd.locus],haplotype2[sd.locus]),build.genotype.from.locus(genome,sd.locus))
+  position <- where.is.locus(c(gamete1[sd.locus],gamete2[sd.locus]),build.genotype.from.locus(genome,sd.locus))
   return(my_locus.sd[position] > 0)
 }
 
-#' Determine the list of haplotype present in male
+#' Determine the list of gamete present in male
 #'
-get.haplotype.male <- function( genome){
+get.gamete.male <- function( genome){
   all.male <- get.male(genome)
   all.genotype <- genome@all.genotype
-  all.compatible.haplotype <- unique(as.vector(all.genotype[all.male,]))
-  return(all.compatible.haplotype)
+  all.compatible.gamete <- unique(as.vector(all.genotype[all.male,]))
+  return(all.compatible.gamete)
 }
 
-#' Determine the list of haplotype present in female
+#' Determine the list of gamete present in female
 #'
-get.haplotype.female <- function( genome){
+get.gamete.female <- function( genome){
   all.female <- get.female(genome)
   all.genotype <- genome@all.genotype
-  all.compatible.haplotype <- unique(as.vector(all.genotype[all.female,]))
-  return(all.compatible.haplotype)
+  all.compatible.gamete <- unique(as.vector(all.genotype[all.female,]))
+  return(all.compatible.gamete)
 }
 
 #' give the list of female in a population
@@ -106,7 +106,7 @@ get.female <- function(genome){
 
 #' build the list of female in a population
 build.female <- function(genome){
-  all.haplotype <- genome@all.haplotype
+  all.gamete <- genome@all.gamete
   all.genotype <- genome@all.genotype
   female = c()
   for(genotype in 1:get.nb.genotype(genome)){
@@ -120,13 +120,13 @@ build.female <- function(genome){
 #' This function return true if the genotype with index
 #' genotype.index might generate a female, and false otherwise.
 is.female <- function(genotype.index, genome){
-  all.haplotype <- genome@all.haplotype
+  all.gamete <- genome@all.gamete
   all.genotype <- genome@all.genotype
   sd.locus <- get.id.sd.locus(genome)
-  haplotype1 = all.haplotype[all.genotype[genotype.index,1],]
-  haplotype2 = all.haplotype[all.genotype[genotype.index,2],]
+  gamete1 = all.gamete[all.genotype[genotype.index,1],]
+  gamete2 = all.gamete[all.genotype[genotype.index,2],]
   my_locus.sd <- genome@locus[[sd.locus]]$sd
-  position <- where.is.locus(c(haplotype1[sd.locus],haplotype2[sd.locus]),build.genotype.from.locus(genome,sd.locus))
+  position <- where.is.locus(c(gamete1[sd.locus],gamete2[sd.locus]),build.genotype.from.locus(genome,sd.locus))
   return(my_locus.sd[position] < 1)
 }
 

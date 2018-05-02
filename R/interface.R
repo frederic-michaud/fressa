@@ -31,10 +31,10 @@ compute.frequency.evolution <- function(genome,initial.frequency = NULL,generati
   return(freqs)
 }
 
-#' Return the haplotype frequency in a population
+#' Return the gamete frequency in a population
 #'
 #' given a matrix of frequency returned by the function `compute.frequency.evolution`
-#' and the associated genome, return a matrix containing the frequency of each haplotype
+#' and the associated genome, return a matrix containing the frequency of each gamete
 #' through time. Each row contains a genotype while each column contains a generation.
 #'
 #' @param genome A S4 object of type genome
@@ -44,18 +44,18 @@ compute.frequency.evolution <- function(genome,initial.frequency = NULL,generati
 #' locus2 = create.locus(allele1=  c(1,1,2),allele2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
 #' genome = create.genome(locus=list(locus1,locus2))
 #' freqs <- compute.frequency.evolution(genome)
-#' freqs.haplotype <- get.haplotype.frequency(genome, freqs)
+#' freqs.gamete <- get.gamete.frequency(genome, freqs)
 #' @export
 
-get.haplotype.frequency <- function(genome,freqs)
+get.gamete.frequency <- function(genome,freqs)
 {
   nb.generation <- ncol(freqs)
-  haplotype.frequency <- matrix(0,ncol = nb.generation,nrow = get.nb.haplotype(genome))
+  gamete.frequency <- matrix(0,ncol = nb.generation,nrow = get.nb.gamete(genome))
   for (generation in 1:nb.generation){
-    haplotype.frequency[,generation] <- get.haplotype.frequency.single.generation(genome,freqs[,generation])
+    gamete.frequency[,generation] <- get.gamete.frequency.single.generation(genome,freqs[,generation])
   }
-  row.names(haplotype.frequency) <- get.haplotype.names(genome)
-  return(haplotype.frequency)
+  row.names(gamete.frequency) <- get.gamete.names(genome)
+  return(gamete.frequency)
 }
 
 #' Return the allele frequency for a given locus
@@ -112,58 +112,58 @@ get.allele.frequency <- function(genome,freqs,locus.position)
 #' @export
 
 get.frequency.from.one.allele.frequency <- function(genome,locus,allele,allele.frequency){
-  matching.haplotype <- get.haplotype.with.given.allele(genome,locus,allele)
+  matching.gamete <- get.gamete.with.given.allele(genome,locus,allele)
 
-  male.haplotype <- get.haplotype.male(genome)
-  male.matching.haplotype = intersect(matching.haplotype,male.haplotype)
-  female.haplotype <- get.haplotype.female(genome)
-  female.matching.haplotype = intersect(matching.haplotype,female.haplotype)
+  male.gamete <- get.gamete.male(genome)
+  male.matching.gamete = intersect(matching.gamete,male.gamete)
+  female.gamete <- get.gamete.female(genome)
+  female.matching.gamete = intersect(matching.gamete,female.gamete)
 
-  nb.haplotype <- get.nb.haplotype(genome)
-  nb.male.haplotype <- length(male.haplotype)
-  nb.female.haplotype <- length(female.haplotype)
-  nb.male.matching.haplotype <- length(male.matching.haplotype)
-  nb.female.matching.haplotype <- length(female.matching.haplotype)
+  nb.gamete <- get.nb.gamete(genome)
+  nb.male.gamete <- length(male.gamete)
+  nb.female.gamete <- length(female.gamete)
+  nb.male.matching.gamete <- length(male.matching.gamete)
+  nb.female.matching.gamete <- length(female.matching.gamete)
 
 
-  haplotype.matching.male.frequency <- 0.5*allele.frequency/nb.male.matching.haplotype
-  haplotype.matching.female.frequency <- 0.5*allele.frequency/nb.female.matching.haplotype
+  gamete.matching.male.frequency <- 0.5*allele.frequency/nb.male.matching.gamete
+  gamete.matching.female.frequency <- 0.5*allele.frequency/nb.female.matching.gamete
 
-  if(nb.male.matching.haplotype > 0){
-    haplotype.no.machting.male.frequency <- (1-0.5*allele.frequency)/(nb.male.haplotype - nb.male.matching.haplotype)
+  if(nb.male.matching.gamete > 0){
+    gamete.no.machting.male.frequency <- (1-0.5*allele.frequency)/(nb.male.gamete - nb.male.matching.gamete)
 
   }
   else{
-    haplotype.no.machting.male.frequency <- 1/nb.male.haplotype
+    gamete.no.machting.male.frequency <- 1/nb.male.gamete
   }
 
-  if(nb.female.matching.haplotype > 0){
-    haplotype.no.matching.female.frequency <- (1-0.5*allele.frequency)/(nb.female.haplotype - nb.female.matching.haplotype)
+  if(nb.female.matching.gamete > 0){
+    gamete.no.matching.female.frequency <- (1-0.5*allele.frequency)/(nb.female.gamete - nb.female.matching.gamete)
   }
   else{
-    haplotype.no.matching.female.frequency <- 1/nb.female.haplotype
+    gamete.no.matching.female.frequency <- 1/nb.female.gamete
   }
 
-  male.gamete.frequency <- rep(0,nb.haplotype)
-  female.gamete.frequency <- rep(0,nb.haplotype)
+  male.gamete.frequency <- rep(0,nb.gamete)
+  female.gamete.frequency <- rep(0,nb.gamete)
 
-  male.gamete.frequency[male.haplotype] <- haplotype.no.machting.male.frequency
-  female.gamete.frequency[female.haplotype] <- haplotype.no.matching.female.frequency
+  male.gamete.frequency[male.gamete] <- gamete.no.machting.male.frequency
+  female.gamete.frequency[female.gamete] <- gamete.no.matching.female.frequency
 
 
-  male.gamete.frequency[male.matching.haplotype] <- haplotype.matching.male.frequency
-  female.gamete.frequency[female.matching.haplotype] <- haplotype.matching.female.frequency
+  male.gamete.frequency[male.matching.gamete] <- gamete.matching.male.frequency
+  female.gamete.frequency[female.matching.gamete] <- gamete.matching.female.frequency
 
   frequency <- get.frequency.from.gamete.frequency(genome,male.gamete.frequency,female.gamete.frequency)
   return(frequency)
 }
 
-#' get the marginal fitness of all haplotype in the population
+#' get the marginal fitness of all gamete in the population
 #'
 #' given a matrix of frequency returned by the function `compute.frequency.evolution`
 #' and the associated genome, return a matrix containing the evolution of the marginal
 #' fitness. The marginal fitness is defined as the mean fitness of
-#' individual carrying this haplotype weighted by the frequency of those individuals.
+#' individual carrying this gamete weighted by the frequency of those individuals.
 #'
 #' @param genome A S4 object of type genome
 #' @param freqs a matrix of frequency as returned by the function `compute.frequency.evolution`
@@ -172,19 +172,19 @@ get.frequency.from.one.allele.frequency <- function(genome,locus,allele,allele.f
 #' locus2 = create.locus(allele1=  c(1,1,2),allele2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
 #' genome = create.genome(locus=list(locus1,locus2))
 #' freqs <- compute.frequency.evolution(genome)
-#' get.haplotype.marginal.fitness(genome, freqs)
+#' get.gamete.marginal.fitness(genome, freqs)
 #' @export
 
 
-get.marginal.haplotype.fitness <- function(genome,freqs)
+get.marginal.gamete.fitness <- function(genome,freqs)
 {
   nb.generation <- ncol(freqs)
-  haplotype.number <- get.nb.haplotype(genome)
-  haplotype.marginal.fitness <- matrix(0,ncol = nb.generation,nrow = haplotype.number)
+  gamete.number <- get.nb.gamete(genome)
+  gamete.marginal.fitness <- matrix(0,ncol = nb.generation,nrow = gamete.number)
   for (generation in 1:nb.generation){
-    haplotype.marginal.fitness[,generation] <- get.marginal.haplotype.fitness.single.generation(genome,freqs[,generation])
+    gamete.marginal.fitness[,generation] <- get.marginal.gamete.fitness.single.generation(genome,freqs[,generation])
   }
-  return(haplotype.marginal.fitness)
+  return(gamete.marginal.fitness)
 }
 
 #' get the marginal fitness of all allele from one locus
@@ -202,7 +202,7 @@ get.marginal.haplotype.fitness <- function(genome,freqs)
 #' locus2 = create.locus(allele1=  c(1,1,2),allele2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
 #' genome = create.genome(locus=list(locus1,locus2))
 #' freqs <- compute.frequency.evolution(genome)
-#' get.haplotype.marginal.fitness(genome, freqs)
+#' get.gamete.marginal.fitness(genome, freqs)
 #' @export
 
 get.marginal.allele.fitness <- function(genome,freqs,locus)
@@ -237,21 +237,21 @@ get.marginal.allele.fitness <- function(genome,freqs,locus)
 
 get.genotype.names <- function(genome){
   all.genotype <- genome@all.genotype
-  haplotype.names <- get.haplotype.names(genome)
+  gamete.names <- get.gamete.names(genome)
   genotype.names=c()
   for(genotype in 1:get.nb.genotype(genome)){
-    haplotype1.name <- haplotype.names[all.genotype[genotype,1]]
-    haplotype2.name <- haplotype.names[all.genotype[genotype,2]]
-    genotype.name <-paste(haplotype1.name,haplotype2.name, sep="|")
+    gamete1.name <- gamete.names[all.genotype[genotype,1]]
+    gamete2.name <- gamete.names[all.genotype[genotype,2]]
+    genotype.name <-paste(gamete1.name,gamete2.name, sep="|")
     genotype.names <- c(genotype.names,genotype.name)
   }
   return(genotype.names)
 }
 
-#' get the name of all haplotype present in the population
+#' get the name of all gamete present in the population
 #'
-#' This function returns a name for all haplotype present in the population
-#' This is useful mainly for plotting result but also to know in which order the haplotype
+#' This function returns a name for all gamete present in the population
+#' This is useful mainly for plotting result but also to know in which order the gamete
 #' are store in genome.
 #'
 #' Notice that if allele.name is specified, the name will contain this name and is
@@ -264,13 +264,13 @@ get.genotype.names <- function(genome){
 #' locus1 = create.locus(allele1=c(1,1),allele2 = c(1,2),sd = c(0,1),allele.name = c("x","y"))
 #' locus2 = create.locus(allele1=  c(1,1,2),allele2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1),allele.name = c("F","M"))
 #' genome = create.genome(locus=list(locus1,locus2))
-#' get.haplotype.names(genome)
+#' get.gamete.names(genome)
 #' @export
 
-get.haplotype.names <- function(genome){
-  if(length(genome@locus[[1]]@allele.name) == 0) haplotype.names <- get.haplotype.names.from.allele.number(genome)
-  else haplotype.names <- get.haplotype.names.from.allele.names(genome)
-  return(haplotype.names)
+get.gamete.names <- function(genome){
+  if(length(genome@locus[[1]]@allele.name) == 0) gamete.names <- get.gamete.names.from.allele.number(genome)
+  else gamete.names <- get.gamete.names.from.allele.names(genome)
+  return(gamete.names)
 }
 
 #' This functions allows to generate genotypic frequency

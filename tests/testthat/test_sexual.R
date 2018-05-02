@@ -65,11 +65,11 @@ test_that("The function get.femaleness correctly get the femaleness",
           }
 )
 
-test_that("The function get.haplotype.male & get.haplotype.female correctly return the list of all haplotype present in male, resp. female",
+test_that("The function get.gamete.male & get.gamete.female correctly return the list of all gamete present in male, resp. female",
           {
-            expect_equal(get.haplotype.male(genome1),c(1,2,3,4))
-            expect_equal(get.haplotype.female(genome1),c(1,2))
-            expect_equal(get.haplotype.male(genome.partially.sexual),1:6)
-            expect_equal(get.haplotype.female(genome.partially.sexual),c(1,2,5,6))
+            expect_equal(get.gamete.male(genome1),c(1,2,3,4))
+            expect_equal(get.gamete.female(genome1),c(1,2))
+            expect_equal(get.gamete.male(genome.partially.sexual),1:6)
+            expect_equal(get.gamete.female(genome.partially.sexual),c(1,2,5,6))
           }
 )

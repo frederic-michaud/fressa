@@ -13,23 +13,23 @@ get.gamete.and.frequency.from.genotype.female <- function(genome,genotype){
 
 get.gamete.and.frequency.from.genotype.after.recombination <- function(genome,genotype,recombination.value){
   all.genotype <- genome@all.genotype
-  all.haplotype <- genome@all.haplotype
+  all.gamete <- genome@all.gamete
   if(length(recombination.value) == 0 ||sum(recombination.value) ==0){
     frequency <-  c(1/2,1/2)
     gamete.index <- all.genotype[genotype,]
   }
   else{
-    haplotype1.index <- all.genotype[genotype,1]
-    haplotype2.index <- all.genotype[genotype,2]
-    haplotype1 <- all.haplotype[haplotype1.index,]
-    haplotype2 <- all.haplotype[haplotype2.index,]
+    gamete1.index <- all.genotype[genotype,1]
+    gamete2.index <- all.genotype[genotype,2]
+    gamete1 <- all.gamete[gamete1.index,]
+    gamete2 <- all.gamete[gamete2.index,]
     nb.of.link <- length(recombination.value)
     frequency <- c()
     gamete.index <- c()
     for(recombination.index in 1:2^nb.of.link){
-      gametes <- get.gamete.for.given.recombination(haplotype1, haplotype2, recombination.index)
-      gamete.index.partial <-c(get.haplotype.from.allele(genome,gametes[1,]),
-                               get.haplotype.from.allele(genome,gametes[2,])
+      gametes <- get.gamete.for.given.recombination(gamete1, gamete2, recombination.index)
+      gamete.index.partial <-c(get.gamete.from.allele(genome,gametes[1,]),
+                               get.gamete.from.allele(genome,gametes[2,])
       )
       gamete.frequency.partial <- get.probability.for.given.recombination(recombination.value, recombination.index)
       #gamete.frequency.partial is twice in next expression, once for each gamete.
@@ -42,17 +42,17 @@ get.gamete.and.frequency.from.genotype.after.recombination <- function(genome,ge
   return(gamete.with.frequency)
 }
 
-get.gamete.for.given.recombination <- function(haplotype1, haplotype2, recombination.index){
-  both.haplotype = rbind(haplotype1,haplotype2)
+get.gamete.for.given.recombination <- function(gamete1.before.recombination, gamete2.before.recombination, recombination.index){
+  both.gamete = rbind(gamete1.before.recombination,gamete2.before.recombination)
   decomposition.recombination <- as.numeric(intToBits(recombination.index-1))
-  nb.locus <- length(haplotype1)
+  nb.locus <- length(gamete1.before.recombination)
   gamete1 <- rep(0,nb.locus)
   gamete2 <- rep(0,nb.locus)
-  gamete1 <- haplotype1[1]
-  gamete2 <- haplotype2[1]
+  gamete1 <- gamete1.before.recombination[1]
+  gamete2 <- gamete2.before.recombination[1]
   for(i in 2:nb.locus){
-    gamete1[i] <- both.haplotype[mod(1+sum(decomposition.recombination[1:i-1]),2),i]
-    gamete2[i] <- both.haplotype[mod(sum(decomposition.recombination[1:i-1]),2),i]
+    gamete1[i] <- both.gamete[mod(1+sum(decomposition.recombination[1:i-1]),2),i]
+    gamete2[i] <- both.gamete[mod(sum(decomposition.recombination[1:i-1]),2),i]
   }
   return(rbind(gamete1,gamete2))
 }

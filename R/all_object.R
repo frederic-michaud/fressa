@@ -125,7 +125,7 @@ create.genome <- setClass(Class = "genome",
                               locus = "list",
                               female.recombination = "vector",
                               male.recombination = "vector",
-                              all.haplotype = "matrix",
+                              all.gamete = "matrix",
                               all.genotype = "matrix",
                               all.gamete.male = "list",
                               all.gamete.female = "list",
@@ -144,7 +144,7 @@ setMethod(f="initialize",
           signature = "genome",
           definition = function(.Object,locus,male.recombination = numeric(), female.recombination = numeric()){
             .Object@locus <- locus
-            .Object@all.haplotype <- build.all.haplotype(.Object)
+            .Object@all.gamete <- build.all.possible.gamete(.Object)
             .Object@all.genotype <- build.all.genotype(.Object)
             .Object@all.recombination.modifier <- build.all.recombination.modifier(.Object)
             .Object@male.recombination <- male.recombination

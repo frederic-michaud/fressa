@@ -1,4 +1,4 @@
-context("haplotype")
+context("gamete")
 test_that("number of locus is correctly retrieve from genome",
           {
             expect_equal(get.nb.locus(genome1),2)
@@ -13,10 +13,10 @@ test_that("Number of genotype is correctly found",
           }
 )
 
-test_that("An haplotype is correctly computed from its index",
+test_that("An gamete is correctly computed from its index",
           {
-            expect_equal(get.haplotype.from.index(2,c(2,2)),c(1,2))
-            expect_equal(get.haplotype.from.index(16,c(3,3,2)),c(3,2,2))
+            expect_equal(get.gamete.from.index(2,c(2,2)),c(1,2))
+            expect_equal(get.gamete.from.index(16,c(3,3,2)),c(3,2,2))
           }
 )
 
@@ -27,17 +27,17 @@ test_that("The number of allele per locus from a genome is correctly retreive",
           }
 )
 
-test_that("All haplotype are correctly found",
+test_that("All gamete are correctly found",
           {
-            expect_equal(build.all.haplotype(genome1),matrix(c(1, 1, 2, 2, 1, 2, 1, 2),ncol=2))
-            expect_equal(build.all.haplotype(genome2),matrix(c(1,1,1,1,1,1,2,2,2,2,2,2,3,3,3,3,3,3,1,1,1,2,2,2,1,1,1,2,2,2,1,1,1,2,2,2,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3),ncol=3))
+            expect_equal(build.all.possible.gamete(genome1),matrix(c(1, 1, 2, 2, 1, 2, 1, 2),ncol=2))
+            expect_equal(build.all.possible.gamete(genome2),matrix(c(1,1,1,1,1,1,2,2,2,2,2,2,3,3,3,3,3,3,1,1,1,2,2,2,1,1,1,2,2,2,1,1,1,2,2,2,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3),ncol=3))
             }
 )
 
-test_that("All haplotype are correctly found",
+test_that("All gamete are correctly found",
           {
-            expect_equal(build.all.haplotype(genome1),matrix(c(1, 1, 2, 2, 1, 2, 1, 2),ncol=2))
-            expect_equal(build.all.haplotype(genome2),matrix(c(1,1,1,1,1,1,2,2,2,2,2,2,3,3,3,3,3,3,1,1,1,2,2,2,1,1,1,2,2,2,1,1,1,2,2,2,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3),ncol=3))
+            expect_equal(build.all.possible.gamete(genome1),matrix(c(1, 1, 2, 2, 1, 2, 1, 2),ncol=2))
+            expect_equal(build.all.possible.gamete(genome2),matrix(c(1,1,1,1,1,1,2,2,2,2,2,2,3,3,3,3,3,3,1,1,1,2,2,2,1,1,1,2,2,2,1,1,1,2,2,2,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3),ncol=3))
           }
 )
 
@@ -74,11 +74,11 @@ test_that("We can find the position of a locus configuration in a set of locus c
           }
 )
 
-test_that("Finding the index of a genotype from index of two haplotype",
+test_that("Finding the index of a genotype from index of two gamete",
           {
-            expect_equal(get.genotype.index.from.haplotypes.index(c(1,1),matrix(c(1,1,2,1,2,2),nrow = 3)),1)
-            expect_equal(get.genotype.index.from.haplotypes.index(c(1,2),matrix(c(1,1,2,3,1,2,3,4),nrow = 4)),2)
-            expect_equal(get.genotype.index.from.haplotypes.index(c(2,1),matrix(c(1,1,2,3,1,2,3,4),nrow = 4)),2)
+            expect_equal(get.genotype.index.from.gametes.index(c(1,1),matrix(c(1,1,2,1,2,2),nrow = 3)),1)
+            expect_equal(get.genotype.index.from.gametes.index(c(1,2),matrix(c(1,1,2,3,1,2,3,4),nrow = 4)),2)
+            expect_equal(get.genotype.index.from.gametes.index(c(2,1),matrix(c(1,1,2,3,1,2,3,4),nrow = 4)),2)
           }
 )
 
@@ -113,17 +113,17 @@ test_that("We can find the fitness of all females",
             expect_equal(get.all.fitness.female(genome.partially.sexual),c(1,0.9,1,0.9,1,0.9,0.8,0.9,0.8,0.9,0.8,1,0.9,0.9,0.8,1,0.9,0.8))
           }
 )
-test_that("we can get all possible genotype which match a given haplotype",{
-    expect_equal(get.genotype.with.given.haplotype(genome1,2),c(5,6,7,2,5))
-    expect_equal(get.genotype.with.given.haplotype(genome2,5),c(67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 5, 22, 38, 53, 67))
+test_that("we can get all possible genotype which match a given gamete",{
+    expect_equal(get.genotype.with.given.gamete(genome1,2),c(5,6,7,2,5))
+    expect_equal(get.genotype.with.given.gamete(genome2,5),c(67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 5, 22, 38, 53, 67))
 }
 )
 
-test_that("We can find all the haplotype which contain a given allele",
+test_that("We can find all the gamete which contain a given allele",
           {
-            expect_equal(get.haplotype.with.given.allele(genome1,1,1),c(1,2))
-            expect_equal(get.haplotype.with.given.allele(genome1,2,2),c(2,4))
-            expect_equal(get.haplotype.with.given.allele(genome2,3,3),c(3,  6,  9, 12, 15, 18))
+            expect_equal(get.gamete.with.given.allele(genome1,1,1),c(1,2))
+            expect_equal(get.gamete.with.given.allele(genome1,2,2),c(2,4))
+            expect_equal(get.gamete.with.given.allele(genome2,3,3),c(3,  6,  9, 12, 15, 18))
           }
 )
 

@@ -1,23 +1,23 @@
-#' return names for the haplotype if a name is present on a locus
-get.haplotype.names.from.allele.names <- function(genome){
-  all.haplotype <- genome@all.haplotype
-  haplotype.names <- c()
-  for(haplotype in 1:get.nb.haplotype(genome)){
-    haplotype.name <- c()
-    haplotype <- all.haplotype[haplotype,]
+#' return names for the gamete if a name is present on a locus
+get.gamete.names.from.allele.names <- function(genome){
+  all.gamete <- genome@all.gamete
+  gamete.names <- c()
+  for(gamete in 1:get.nb.gamete(genome)){
+    gamete.name <- c()
+    gamete <- all.gamete[gamete,]
     for(locus in 1:get.nb.locus(genome)){
-      haplotype.name <- paste(haplotype.name, genome@locus[[locus]]@allele.name[haplotype[locus]],sep = "",collapse = "")
+      gamete.name <- paste(gamete.name, genome@locus[[locus]]@allele.name[gamete[locus]],sep = "",collapse = "")
     }
-    haplotype.names <- c(haplotype.names,haplotype.name)
+    gamete.names <- c(gamete.names,gamete.name)
   }
-  return(haplotype.names)
+  return(gamete.names)
 }
 
-#' return names for the haplotype if no name is provided
-get.haplotype.names.from.allele.number <- function(genome){
-  all.haplotype <- genome@all.haplotype
-  haplotype.names <- apply(all.haplotype,1,paste,collapse="")
-  return(haplotype.names)
+#' return names for the gamete if no name is provided
+get.gamete.names.from.allele.number <- function(genome){
+  all.gamete <- genome@all.gamete
+  gamete.names <- apply(all.gamete,1,paste,collapse="")
+  return(gamete.names)
 }
 
 
@@ -53,18 +53,18 @@ get.marginal.allele.fitness.single.generation.single.allele <- function(genome,f
   return(overall.marginal.fitness)
 }
 
-#get the marignal fitness of all the haplotype for a given generation
+#get the marignal fitness of all the gamete for a given generation
 
-get.marginal.haplotype.fitness.single.generation <- function(genome,frequency){
-  nb.haplotype <- get.nb.haplotype(genome)
-  marginal.fitnesses <- sapply(1:nb.haplotype,function(iter) get.marginal.haplotype.fitness.single.generation.single.haplotype(genome,frequency, iter))
+get.marginal.gamete.fitness.single.generation <- function(genome,frequency){
+  nb.gamete <- get.nb.gamete(genome)
+  marginal.fitnesses <- sapply(1:nb.gamete,function(iter) get.marginal.gamete.fitness.single.generation.single.gamete(genome,frequency, iter))
   return(marginal.fitnesses)
 }
 
-#get the marignal fitness of one of the haplotype for a given generation
+#get the marignal fitness of one of the gamete for a given generation
 
-get.marginal.haplotype.fitness.single.generation.single.haplotype <- function(genome,frequency,haplotype){
-  matching.genotype <- get.genotype.with.given.haplotype(genome,haplotype)
+get.marginal.gamete.fitness.single.generation.single.gamete <- function(genome,frequency,gamete){
+  matching.genotype <- get.genotype.with.given.gamete(genome,gamete)
 
   all.fitness.in.male <- get.all.fitness.male(genome)
   maleness <- get.all.maleness(genome)
@@ -79,16 +79,16 @@ get.marginal.haplotype.fitness.single.generation.single.haplotype <- function(ge
   return(overall.marginal.fitness)
 }
 
-#get the frequency of an haplotype in one generation
+#get the frequency of an gamete in one generation
 
-get.haplotype.frequency.single.generation <- function(genome,freqs)
+get.gamete.frequency.single.generation <- function(genome,freqs)
 {
-  nb.haplotype <- get.nb.haplotype(genome)
+  nb.gamete <- get.nb.gamete(genome)
   nb.genotype <- get.nb.genotype(genome)
   all.genotype <- genome@all.genotype
   #frequency is a matrix with the frequency of the various genome
-  #row index indicate first haplotype and column index indicate second haplotype
-  frequency <- matrix(0,nrow = nb.haplotype,ncol=nb.haplotype)
+  #row index indicate first gamete and column index indicate second gamete
+  frequency <- matrix(0,nrow = nb.gamete,ncol=nb.gamete)
   for (genotype in 1:nb.genotype){
     frequency[all.genotype[genotype,1],all.genotype[genotype,2]] <- freqs[genotype]
   }
@@ -109,9 +109,9 @@ get.allele.frequency.single.generation <- function(genome,freqs,locus.position){
 #get the frequency of one allele in one generation
 
 get.single.allele.frequency.single.generation <- function(allele,genome,freqs,locus.position){
-  all.haplotype <- genome@all.haplotype
-  haplotype.frequency <- get.haplotype.frequency.single.generation(genome,freqs)
-  matching.haplotype <- which(all.haplotype[,locus.position] == allele)
-  allele.frequency <- sum(haplotype.frequency[matching.haplotype])
+  all.gamete <- genome@all.gamete
+  gamete.frequency <- get.gamete.frequency.single.generation(genome,freqs)
+  matching.gamete <- which(all.gamete[,locus.position] == allele)
+  allele.frequency <- sum(gamete.frequency[matching.gamete])
   return(allele.frequency)
 }

@@ -1,11 +1,11 @@
 context("interface")
 
-test_that("We can generate the name of the haplotype",
+test_that("We can generate the name of the gamete",
           {
-            haplotype.names <- get.haplotype.names(genome1)
-            expect_equal(haplotype.names,c("xA","xa","yA","ya"))
-            haplotype.names <- get.haplotype.names(genome2)
-            expect_equal(haplotype.names,c("111","112","113","121","122","123","211","212","213","221","222","223","311","312","313","321","322","323"))
+            gamete.names <- get.gamete.names(genome1)
+            expect_equal(gamete.names,c("xA","xa","yA","ya"))
+            gamete.names <- get.gamete.names(genome2)
+            expect_equal(gamete.names,c("111","112","113","121","122","123","211","212","213","221","222","223","311","312","313","321","322","323"))
           }
 )
 
@@ -27,10 +27,10 @@ test_that("We can compute the evolution of the frequency through time",
           }
 )
 
-test_that("We can compute haplotype frequency from genotype frequency",
+test_that("We can compute gamete frequency from genotype frequency",
           {
             freqs1 <- compute.frequency.evolution(genome1)
-            expect_known_value(get.haplotype.frequency(genome1,freqs1),"freq_haplotype1.rds",update = F)
+            expect_known_value(get.gamete.frequency(genome1,freqs1),"freq_gamete1.rds",update = F)
           }
 )
 

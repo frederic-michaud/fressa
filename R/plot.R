@@ -1,7 +1,7 @@
-#' Plot the evolution of the frequency of haplotypes
+#' Plot the evolution of the frequency of gametes
 #'
 #' given a matrix of frequency returned by the function `compute.frequency.evolution`
-#' and the associated genome, plot the frequency of all possible haplotype through time
+#' and the associated genome, plot the frequency of all possible gamete through time
 #'
 #' @param genome A S4 object of type genome
 #' @param freqs a matrix of frequency as returned by the function `compute.frequency.evolution`
@@ -10,18 +10,18 @@
 #' locus2 = create.locus(allele1=  c(1,1,2),allele2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
 #' genome = create.genome(locus=list(locus1,locus2))
 #' freqs <- compute.frequency.evolution(genome)
-#' plot.haplotype.frequency(genome, freqs)
+#' plot.gamete.frequency(genome, freqs)
 #' @export
 
-plot.haplotype.frequency <- function(genome,freqs){
-  haplotype.frequency <- get.haplotype.frequency(genome,freqs)
-  max.freq <- max(haplotype.frequency)
-  palette = get.palette(get.nb.haplotype(genome))
-  plot(haplotype.frequency[1,],type="l",ylim=c(0,1.2*max.freq),col=palette[1],xlab = "Generation",ylab="frequency")
-  for(haplotype in 2:get.nb.haplotype(genome)){
-    lines(haplotype.frequency[haplotype,],col=palette[haplotype])
+plot.gamete.frequency <- function(genome,freqs){
+  gamete.frequency <- get.gamete.frequency(genome,freqs)
+  max.freq <- max(gamete.frequency)
+  palette = get.palette(get.nb.gamete(genome))
+  plot(gamete.frequency[1,],type="l",ylim=c(0,1.2*max.freq),col=palette[1],xlab = "Generation",ylab="frequency")
+  for(gamete in 2:get.nb.gamete(genome)){
+    lines(gamete.frequency[gamete,],col=palette[gamete])
   }
-  legend("topright",legend=get.haplotype.names(genome),lty = rep(1,get.nb.haplotype(genome)),col=palette)
+  legend("topright",legend=get.gamete.names(genome),lty = rep(1,get.nb.gamete(genome)),col=palette)
 }
 
 #' Plot the evolution of the frequency of genotype
@@ -78,12 +78,12 @@ plot.allele.frequency <- function(genome,freqs,locus.position){
   legend("topright",legend=get.allele.name(genome,locus.position),lty = rep(1,allele.number),col=palette)
 }
 
-#' Plot the marginal fitness of all haplotype in the population
+#' Plot the marginal fitness of all gamete in the population
 #'
 #' given a matrix of frequency returned by the function `compute.frequency.evolution`
 #' and the associated genome, plot the evolution of marginal fitness. The marginal fitness i
 #' s defined as the mean fitness of
-#' individual carrying this haplotype weighted by the frequency of those individuals.
+#' individual carrying this gamete weighted by the frequency of those individuals.
 #'
 #' @param genome A S4 object of type genome
 #' @param freqs a matrix of frequency as returned by the function `compute.frequency.evolution`
@@ -92,21 +92,21 @@ plot.allele.frequency <- function(genome,freqs,locus.position){
 #' locus2 = create.locus(allele1=  c(1,1,2),allele2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
 #' genome = create.genome(locus=list(locus1,locus2))
 #' freqs <- compute.frequency.evolution(genome)
-#' plot.haplotype.marginal.fitness(genome, freqs)
+#' plot.gamete.marginal.fitness(genome, freqs)
 #' @export
 
 
-plot.haplotype.marginal.fitness <- function(genome,freqs){
-  haplotype.marginal.fitness <- get.marginal.haplotype.fitness(genome,freqs)
-  max.fit <- max(haplotype.marginal.fitness,na.rm = T)
-  min.fit <- min(haplotype.marginal.fitness,na.rm = T)
-  haplotype.number <- get.nb.haplotype(genome)
-  palette <- get.palette(haplotype.number)
-  plot(haplotype.marginal.fitness[1,],type="l",ylim=c(min.fit/1.2,1.2*max.fit),col=palette[1],xlab = "Generation",ylab="fitness")
-  for(haplotype in 2:haplotype.number){
-    lines(haplotype.marginal.fitness[haplotype,],col=palette[haplotype])
+plot.gamete.marginal.fitness <- function(genome,freqs){
+  gamete.marginal.fitness <- get.marginal.gamete.fitness(genome,freqs)
+  max.fit <- max(gamete.marginal.fitness,na.rm = T)
+  min.fit <- min(gamete.marginal.fitness,na.rm = T)
+  gamete.number <- get.nb.gamete(genome)
+  palette <- get.palette(gamete.number)
+  plot(gamete.marginal.fitness[1,],type="l",ylim=c(min.fit/1.2,1.2*max.fit),col=palette[1],xlab = "Generation",ylab="fitness")
+  for(gamete in 2:gamete.number){
+    lines(gamete.marginal.fitness[gamete,],col=palette[gamete])
   }
-  legend("topright",legend=get.haplotype.names(genome),lty = rep(1,haplotype.number),col=palette)
+  legend("topright",legend=get.gamete.names(genome),lty = rep(1,gamete.number),col=palette)
 }
 
 #' Plot the marginal fitness of all allele from one locus
@@ -124,7 +124,7 @@ plot.haplotype.marginal.fitness <- function(genome,freqs){
 #' locus2 = create.locus(allele1=  c(1,1,2),allele2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
 #' genome = create.genome(locus=list(locus1,locus2))
 #' freqs <- compute.frequency.evolution(genome)
-#' plot.haplotype.marginal.fitness(genome, freqs)
+#' plot.gamete.marginal.fitness(genome, freqs)
 #' @export
 
 

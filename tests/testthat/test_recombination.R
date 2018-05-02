@@ -28,7 +28,7 @@ test_that("we can get all possible gamete from a female",{
 }
 )
 
-test_that("We can compute the gamete from two haplotype and a recombination index",{
+test_that("We can compute the gamete from two gamete and a recombination index",{
   expect_equal(get.gamete.for.given.recombination(c(1,2,3,4),c(5,6,7,8),1),rbind(gamete1 = c(1,2,3,4),gamete2 = c(5,6,7,8)))
   expect_equal(get.gamete.for.given.recombination(c(1,2,3,4),c(5,6,7,8),2),rbind(gamete1 = c(1,6,7,8),gamete2 = c(5,2,3,4)))
   expect_equal(get.gamete.for.given.recombination(c(1,2,3,4),c(5,6,7,8),3),rbind(gamete1 = c(1,2,7,8),gamete2 = c(5,6,3,4)))

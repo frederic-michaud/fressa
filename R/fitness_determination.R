@@ -4,12 +4,12 @@
 #' get the fitness of a male from the index value of its genotype
 get.fitness.from.genotype.male <- function(genotype, genome){
   all.genotype <- genome@all.genotype
-  all.haplotype <- genome@all.haplotype
+  all.gamete <- genome@all.gamete
   fitness <- 1
-  haplotype1 <- get.haplotype.from.index(all.genotype[genotype,1],get.nb.alleles.per.locus(genome))
-  haplotype2 <- get.haplotype.from.index(all.genotype[genotype,2],get.nb.alleles.per.locus(genome))
+  gamete1 <- get.gamete.from.index(all.genotype[genotype,1],get.nb.alleles.per.locus(genome))
+  gamete2 <- get.gamete.from.index(all.genotype[genotype,2],get.nb.alleles.per.locus(genome))
   for (locus in 1:get.nb.locus(genome)){
-    position <- where.is.locus(c(haplotype1[locus],haplotype2[locus]),build.genotype.from.locus(genome,locus))
+    position <- where.is.locus(c(gamete1[locus],gamete2[locus]),build.genotype.from.locus(genome,locus))
     locus.fitness <- genome@locus[[locus]]$fitness.male[position]
     fitness <- fitness*locus.fitness
   }
@@ -23,12 +23,12 @@ get.fitness.from.genotype.male <- function(genotype, genome){
 #' get the fitness of a female from the index value of its genotype
 get.fitness.from.genotype.female <- function(genotype, genome){
   all.genotype <- genome@all.genotype
-  all.haplotype <- genome@all.haplotype
+  all.gamete <- genome@all.gamete
   fitness <- 1
-  haplotype1 <- get.haplotype.from.index(all.genotype[genotype,1],get.nb.alleles.per.locus(genome))
-  haplotype2 <- get.haplotype.from.index(all.genotype[genotype,2],get.nb.alleles.per.locus(genome))
+  gamete1 <- get.gamete.from.index(all.genotype[genotype,1],get.nb.alleles.per.locus(genome))
+  gamete2 <- get.gamete.from.index(all.genotype[genotype,2],get.nb.alleles.per.locus(genome))
   for (locus in 1:get.nb.locus(genome)){
-    position <- where.is.locus(c(haplotype1[locus],haplotype2[locus]),build.genotype.from.locus(genome,locus))
+    position <- where.is.locus(c(gamete1[locus],gamete2[locus]),build.genotype.from.locus(genome,locus))
     locus.fitness <- genome@locus[[locus]]$fitness.female[position]
     fitness <- fitness*locus.fitness
   }

@@ -25,7 +25,7 @@ get.female.gamete.frequency <- function(genome,initial.frequency){
 
 build.male.gamete.matrix <- function(genome){
   nb.genotypes <- get.nb.genotype(genome)
-  nb.gamete <- get.nb.haplotype(genome)
+  nb.gamete <- get.nb.gamete(genome)
   males.genotype <- get.male(genome)
   maleness <- get.all.maleness(genome)
   fitness.males <- get.all.fitness.male(genome)
@@ -47,7 +47,7 @@ build.male.gamete.matrix <- function(genome){
 
 build.female.gamete.matrix <- function(genome){
   nb.genotypes <- get.nb.genotype(genome)
-  nb.gamete <- get.nb.haplotype(genome)
+  nb.gamete <- get.nb.gamete(genome)
   females.genotype <- get.female(genome)
   femaleness <- get.all.femaleness(genome)
   fitness.females <- get.all.fitness.female(genome)
