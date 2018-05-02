@@ -1,0 +1,37 @@
+---
+title: "test hierarchical fstat"
+output: html_notebook
+---
+
+
+```{r}
+hierachia <- read.csv("~/Desktop/test_fstat.csv", header=FALSE, col.names=c("population","sub.pop.l1","sub.pop.l2","nb.individual"))
+hierachia[1,1] <- 1
+nb.sub.population <- nrow(hierachia)
+allele1 <- numeric(nb.sub.population)
+allele2 <- numeric(nb.sub.population)
+for(index.l2 in 1:nb.sub.population) allele1[index.l2] <- list(floor(runif(hierachia$nb.individual[index.l2],0,2)))
+for(index.l2 in 1:nb.sub.population) allele2[index.l2] <- list(floor(runif(hierachia$nb.individual[index.l2],0,2)))
+```
+
+```{r}
+sum((unlist(allele1)+unlist(allele2)))^2/464
+tot <- 0
+n1 <- c(71,78,13,70)
+for(population in 1:4){
+  tot <- tot + 
+  sum(unlist(allele1[which(hierachia$population == population)])+unlist(allele2[which(hierachia$population == population)]))^2/sum(hierachia$nb.individual[which(hierachia$population == population)])
+}
+tot
+```
+
+```{r}
+for(population in 1:4){
+cat(sum(hierachia$nb.individual[which(hierachia$population == population)]),"\n")
+}
+```
+
+```{r}
+hierachia$nb.individual[which(hierachia$population == 1)]
+```
+
