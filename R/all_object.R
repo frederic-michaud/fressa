@@ -111,6 +111,7 @@ setMethod("show", "locus",
 #' @param locus A list of locus
 #' @param male.recombination Optional: A vector containing the recombination rate between the different locus. It should be of length n-1 where n is the number of locus.
 #' @param female.recombination Optional: A vector containing the recombination rate between the different locus. It should be of length n-1 where n is the number of locus.
+#' @param position.modifier Optional: indicate a list of link on which the modifier act. If empty (as in default), modifier act on all links.
 #' @examples
 #' locus1 = create.locus(allele1=c(1,1),allele2 = c(1,2),sd = c(0,1),fitness.male=c(1,1),fitness.female=c(1,1))
 #' locus2 = create.locus(allele1=  c(1,1,2),allele2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
@@ -137,18 +138,20 @@ create.genome <- setClass(Class = "genome",
                               all.female = "vector",
                               all.recombination.modifier = "vector",
                               male.gamete.matrix = "dgCMatrix",
-                              female.gamete.matrix = "dgCMatrix"
+                              female.gamete.matrix = "dgCMatrix",
+                              position.modifier = "vector"
                             ))
 
 setMethod(f="initialize",
           signature = "genome",
-          definition = function(.Object,locus,male.recombination = numeric(), female.recombination = numeric()){
+          definition = function(.Object,locus,male.recombination = numeric(), female.recombination = numeric(),position.modifier = numeric()){
             .Object@locus <- locus
             .Object@all.gamete <- build.all.possible.gamete(.Object)
             .Object@all.genotype <- build.all.genotype(.Object)
             .Object@all.recombination.modifier <- build.all.recombination.modifier(.Object)
             .Object@male.recombination <- male.recombination
             .Object@female.recombination <- female.recombination
+            .Object@position.modifier <- position.modifier
             .Object@all.gamete.female <- build.all.gamete(.Object,female.recombination)
             .Object@all.gamete.male <- build.all.gamete(.Object,male.recombination)
             .Object@all.fitness.male <- build.all.fitness.male(.Object)

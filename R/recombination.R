@@ -11,6 +11,25 @@ get.gamete.and.frequency.from.genotype.female <- function(genome,genotype){
   return(female.gamete)
 }
 
+build.all.gamete <- function(genome,recombination.value){
+  nb.genome <- get.nb.genotype(genome)
+  recombination.list = as.list(1:nb.genome)
+  recombination.modifier <- genome@all.recombination.modifier
+  position.modifier <- genome@position.modifier
+  for(genotype in 1:nb.genome)
+  {
+    scaled.recombination.value <- build.rescaled.recombination(recombination.value,
+                                                               recombination.modifier,
+                                                               genotype,
+                                                               position.modifier)
+    recombination.list[[genotype]] <- get.gamete.and.frequency.from.genotype.after.recombination(genome,
+                                                                                                     genotype,
+                                                                                                     scaled.recombination.value)
+  }
+  return(recombination.list)
+}
+
+
 get.gamete.and.frequency.from.genotype.after.recombination <- function(genome,genotype,recombination.value){
   all.genotype <- genome@all.genotype
   all.gamete <- genome@all.gamete
@@ -64,16 +83,19 @@ get.probability.for.given.recombination <- function(recombination.value, recombi
   return(recombination.probability)
 }
 
-build.all.gamete <- function(genome,recombination.value){
-  nb.genome <- get.nb.genotype(genome)
-  recombination.list = as.list(1:nb.genome)
-  recombination.modifier <- genome@all.recombination.modifier
-  for(i in 1:nb.genome)
-  {
-    scaled.recombination.value <- recombination.value*recombination.modifier[i]
-    recombination.list[[i]] <- get.gamete.and.frequency.from.genotype.after.recombination(genome,i,scaled.recombination.value)
-  }
-  return(recombination.list)
+#return the recombination value after its scaling by the modifier
+build.rescaled.recombination <- function(recombination.value,recombination.modifier,index.genome,position.modifier){
+  scaled.recombination.value <- recombination.value
+  if(length(recombination.modifier)>0)
+    {
+    if(length(position.modifier) == 0){
+      scaled.recombination.value <- recombination.value*recombination.modifier[index.genome]
+    }
+    else{
+      scaled.recombination.value[position.modifier] <- recombination.value[position.modifier]*recombination.modifier[index.genome]
+    }
+    }
+  return(scaled.recombination.value)
 }
 
 glue.frequency <- function(frequency){
