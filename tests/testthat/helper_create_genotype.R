@@ -42,3 +42,10 @@ locus8 = create.locus(allele1         = c(1,1,1,2,3),
                          allele.name = c("x","y","r")
 )
 genome.with.modifier = create.genome(locus = list(locus8,locus2),male.recombination = c(0.1),female.recombination = c(0.1))
+
+genome.with.modifier.with.position = create.genome(locus = list(locus8,locus2,locus2),
+                                                   male.recombination = c(0.1,0.2),
+                                                   female.recombination = c(0.1,0.2),
+                                                   position.modifier = c(2)
+                                                   )
+

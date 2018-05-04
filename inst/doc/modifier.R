@@ -23,7 +23,8 @@ locus3 = create.locus(allele1=  c(1,1,2),
                       allele.name = c("M","F"))
 genome = create.genome(list(locus1,locus2,locus3),
                        male.recombination = c(0,0.01),
-                       female.recombination = c(0,0.01))
+                       female.recombination = c(0,0.01)
+                       )
 print(genome)
 
 ## ------------------------------------------------------------------------
@@ -38,7 +39,9 @@ locussa = create.locus(allele1=  c(1,1,2),
                       allele.name = c("a","A"))
 genome = create.genome(list(locussd,locussa,locusm),
                        male.recombination = c(0.01,0.5),
-                       female.recombination = c(0.01,0.5))
+                       female.recombination = c(0.01,0.5),
+                       position.modifier = c(1)
+                       )
 print(genome)
 get.haplotype.names(genome)
 
@@ -64,7 +67,8 @@ locussa = create.locus(allele1=  c(1,1,2),
                       allele.name = c("a","A"))
 genome = create.genome(list(locussd,locussa,locusm),
                        male.recombination = c(0.01,0.5),
-                       female.recombination = c(0.01,0.5))
+                       female.recombination = c(0.01,0.5),
+                       position.modifier = c(1))
 print(genome)
 get.genotype.names(genome)
 
@@ -93,7 +97,8 @@ locussa = create.locus(allele1=  c(1,1,2),
                       allele.name = c("a","A"))
 genome = create.genome(list(locussd,locussa,locusm),
                        male.recombination = c(0.01,0.5),
-                       female.recombination = c(0.01,0.5))
+                       female.recombination = c(0.01,0.5),
+                       position.modifier = c(1))
 print(genome)
 get.genotype.names(genome)
 
