@@ -45,6 +45,7 @@ compute.frequency.evolution <- function(genome,initial.frequency = NULL,generati
 #' @param initial.frequency The initial frequency of the various genotype. If NULL is given
 #' the initial frequencies will all be set to the same value
 #' @param min.generations The minimum number of generation to be computed
+#' @param max.generations The maximum number of generation to be computed. If the convergence is not reached in this time, iteration stop and a warning is emited. A value of zero indicate no limit.
 #' @param criteria If the sum of the slope of the evolution of the genotype frequency is under this number, the simulation stop (if the other criteria are also met)
 #' @examples
 #' locus1 = data.frame(allele1=c(1,1),allele2 = c(1,2),sd = c(0,1),fitness.male=c(1,1),fitness.female=c(1,1))
@@ -57,6 +58,7 @@ compute.frequency.evolution <- function(genome,initial.frequency = NULL,generati
 compute.frequency.evolution.until.convergence <- function(genome,
                                                           initial.frequency = NULL,
                                                           min.generations = 25,
+                                                          max.generations = 100000,
                                                           criteria = 1.e-8
                                                           )
 {
@@ -77,7 +79,7 @@ compute.frequency.evolution.until.convergence <- function(genome,
   return(freqs)
 }
 
-is.converged <- function(freqs,generation,min.generations,criteria){
+is.converged <- function(freqs,generation,min.generations,max.generations,criteria){
   #If we are still in the warmup, we wait
   if(generation < min.generations) return(FALSE)
 
@@ -85,6 +87,11 @@ is.converged <- function(freqs,generation,min.generations,criteria){
   pre.last.slope <- sum(abs(freqs[,generation-1] - freqs[,generation-2]))
   #if the criteria is increasing, we should better wait
   if(last.slope > pre.last.slope) return(FALSE)
+
+  if(generation > max.generations & max.generations > 0){
+    warning("The maximum number of generation has been reached without reaching convergence")
+    return(TRUE)
+  }
 
   is.criteria.met <- (last.slope < criteria)
   return(is.criteria.met)
