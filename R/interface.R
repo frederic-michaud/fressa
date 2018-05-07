@@ -70,7 +70,7 @@ compute.frequency.evolution.until.convergence <- function(genome,
 
   freqs <- cbind(initial.frequency,simulate.frequency(genome,initial.frequency)) #we compute the first generation here to be able to use tail
   generation <- 2
-  while(!is.converged(freqs,generation,min.generations,criteria))
+  while(!is.converged(freqs,generation,min.generations,max.generations,criteria))
   {
     generation <- generation +1
     freqs <- cbind(freqs,simulate.frequency(genome,freqs[,generation-1]))
