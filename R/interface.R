@@ -79,26 +79,6 @@ compute.frequency.evolution.until.convergence <- function(genome,
   return(freqs)
 }
 
-is.converged <- function(freqs,generation,min.generations,max.generations,criteria){
-  #If we are still in the warmup, we wait
-  if(generation < min.generations) return(FALSE)
-
-  last.slope <- sum(abs(freqs[,generation] - freqs[,generation-1]))
-  pre.last.slope <- sum(abs(freqs[,generation-1] - freqs[,generation-2]))
-  #if the criteria is increasing, we should better wait
-  if(last.slope > pre.last.slope) return(FALSE)
-
-  if(generation > max.generations & max.generations > 0){
-    warning("The maximum number of generation has been reached without reaching convergence")
-    return(TRUE)
-  }
-
-  is.criteria.met <- (last.slope < criteria)
-  return(is.criteria.met)
-}
-
-
-
 
 #' Return the gamete frequency in a population
 #'
