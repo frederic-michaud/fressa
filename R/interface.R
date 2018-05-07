@@ -31,6 +31,68 @@ compute.frequency.evolution <- function(genome,initial.frequency = NULL,generati
   return(freqs)
 }
 
+
+#' Compute the evolution of the frequency of the genotypes until convergence is reach
+#'
+#' Given a genome, this function simulate the evolution of the frequency
+#' of all the possible genotype that exist until convergence has been reach.
+#'
+#' Convergence is evaluated in the following way. First, a few generation are perform (warmup) without measuring the criteria
+#' since they might be oscillation due to male/female proportion effect. Then, at each generation, the total
+#' slope $\abs(\vec({_t}-\vec{x_{t-1}})$ and the total curvature $\abs(\vec({_t}-\vec{x_{t-1}})$
+#' @return A matrix containing the frequencies of each genotype at each generation
+#' @param genome A S4 object of the type genome
+#' @param initial.frequency The initial frequency of the various genotype. If NULL is given
+#' the initial frequencies will all be set to the same value
+#' @param min.generations The minimum number of generation to be computed
+#' @param criteria If the sum of the slope of the evolution of the genotype frequency is under this number, the simulation stop (if the other criteria are also met)
+#' @examples
+#' locus1 = data.frame(allele1=c(1,1),allele2 = c(1,2),sd = c(0,1),fitness.male=c(1,1),fitness.female=c(1,1))
+#' locus2 = data.frame(allele1=  c(1,1,2),allele2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
+#' genome = create.genome(locus1,locus2)
+#' freqs <- compute.frequency.evolution.until.convergence(genome)
+#' @export
+
+
+compute.frequency.evolution.until.convergence <- function(genome,
+                                                          initial.frequency = NULL,
+                                                          min.generations = 25,
+                                                          criteria = 1.e-8
+                                                          )
+{
+  nb.genotype <- get.nb.genotype(genome)
+  if(is.null(initial.frequency)){
+    initial.frequency <- rep(1/nb.genotype,nb.genotype)
+  }
+  if(length(initial.frequency)!=nb.genotype) stop("The given initial frequency is not the correct size")
+
+  freqs <- cbind(initial.frequency,simulate.frequency(genome,initial.frequency)) #we compute the first generation here to be able to use tail
+  generation <- 2
+  while(!is.converged(freqs,generation,min.generations,criteria))
+  {
+    generation <- generation +1
+    freqs <- cbind(freqs,simulate.frequency(genome,freqs[,generation-1]))
+
+  }
+  return(freqs)
+}
+
+is.converged <- function(freqs,generation,min.generations,criteria){
+  #If we are still in the warmup, we wait
+  if(generation < min.generations) return(FALSE)
+
+  last.slope <- sum(abs(freqs[,generation] - freqs[,generation-1]))
+  pre.last.slope <- sum(abs(freqs[,generation-1] - freqs[,generation-2]))
+  #if the criteria is increasing, we should better wait
+  if(last.slope > pre.last.slope) return(FALSE)
+
+  is.criteria.met <- (last.slope < criteria)
+  return(is.criteria.met)
+}
+
+
+
+
 #' Return the gamete frequency in a population
 #'
 #' given a matrix of frequency returned by the function `compute.frequency.evolution`
