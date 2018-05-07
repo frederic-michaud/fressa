@@ -73,6 +73,8 @@ compute.frequency.evolution.until.convergence <- function(genome,
   while(!is.converged(freqs,generation,min.generations,max.generations,criteria))
   {
     generation <- generation +1
+    #about growing table in loop is evil.
+    #growing the freq like this seems to have almost no effect up to 10'000 generations, but then start to be noticed.
     freqs <- cbind(freqs,simulate.frequency(genome,freqs[,generation-1]))
 
   }
