@@ -1,4 +1,4 @@
 library(testthat)
-library(hapex)
+library(fressa)
 
-test_check("hapex")
+test_check("fressa")

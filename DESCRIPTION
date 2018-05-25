@@ -1,11 +1,10 @@
-Package: hapex
+Package: fressa
 Type: Package
-Title: Simulating haplotype in a population
+Title: FRequency Evolution Simulator of Sex-linked Alleles
 Version: 0.1.0
 Author@R: c(person("Michaud","Fr<U+00E9>d<U+00E9>ric",email = "frederic.michaud@unil.ch" ),person("Cavoto","Elisa",email="elisa.cavoto@unil.ch"))
 Maintainer: Fr<U+00E9>d<U+00E9>ric Michaud <frederic.michaud@unil.ch>
-Description: This package aims at simulating the evolution of the frequency of haplotypes linked to sex locus in an infinite population. 
-License: GPL
+Description: This package aims at simulating the evolution of the frequency of alleles along a chromosome. It allows to simulate among other things sexual chromosomes, fully, partially or unlinked loci and loci acting as modifier of the recombination rate. License: GPL
 Encoding: UTF-8
 LazyData: true
 Suggests: testthat,
