@@ -24,7 +24,7 @@
 #'                         fitness.female = c(1,1),
 #'                            allele.name = c("x","y"))
 #' @import Matrix
-#' @export
+#' @export create.locus
 
 create.locus <- setClass(Class = "locus",
                           representation =
@@ -117,7 +117,7 @@ setMethod("show", "locus",
 #' locus2 = create.locus(allele1=  c(1,1,2),allele2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
 #' genome = create.genome(locus=list(locus1,locus2))
 #' @import Matrix
-#' @export
+#' @export create.genome
 
 
 create.genome <- setClass(Class = "genome",
@@ -141,6 +141,7 @@ create.genome <- setClass(Class = "genome",
                               female.gamete.matrix = "dgCMatrix",
                               position.modifier = "vector"
                             ))
+
 
 setMethod(f="initialize",
           signature = "genome",

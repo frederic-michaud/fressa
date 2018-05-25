@@ -4,7 +4,7 @@
 \alias{plot.allele.frequency}
 \title{Plot the evolution of the frequency of an allele}
 \usage{
-\method{plot}{allele.frequency}(genome, freqs, locus.position)
+plot.allele.frequency(genome, freqs,locus.position)
 }
 \arguments{
 \item{genome}{A S4 object of type genome}

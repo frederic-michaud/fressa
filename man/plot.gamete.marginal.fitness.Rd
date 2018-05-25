@@ -4,7 +4,7 @@
 \alias{plot.gamete.marginal.fitness}
 \title{Plot the marginal fitness of all gamete in the population}
 \usage{
-\method{plot}{gamete.marginal.fitness}(genome, freqs)
+plot.gamete.marginal.fitness(genome, freqs)
 }
 \arguments{
 \item{genome}{A S4 object of type genome}

@@ -4,7 +4,7 @@
 \alias{plot.allele.marginal.fitness}
 \title{Plot the marginal fitness of all allele from one locus}
 \usage{
-\method{plot}{allele.marginal.fitness}(genome, freqs, locus.position)
+plot.allele.marginal.fitness(genome, freqs)
 }
 \arguments{
 \item{genome}{A S4 object of type genome}
