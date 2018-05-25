@@ -8,6 +8,6 @@ get.nb.genotype(genome)
 }
 \description{
 The number of possible genotype is of the order of the square of the
-number of possible haplotype. If all genotype are possible, it's given
+number of possible gamete. If all genotype are possible, it's given
 by \eqn{n(n+1)/2}, but if some are not (like YY), it might be more complicated
 }

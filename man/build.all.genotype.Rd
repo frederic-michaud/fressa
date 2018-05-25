@@ -7,12 +7,12 @@
 build.all.genotype(genome)
 }
 \description{
-a genotype is defined by two haplotype. Since an
-haplotype can be defined by its index, i.e. a number,
+a genotype is defined by two gamete. Since an
+gamete can be defined by its index, i.e. a number,
 a genotype can be seen as two number. This function return
 all the possible genotype for a given genome, i.e. all the possible
 pairs of number. Notice that the pair is not order so is c(1,2) is
 equivalent to c(2,1) and only one is return. Moreover, this function
-check that only compatible haplotype are combine. Therefore genotype
+check that only compatible gamete are combine. Therefore genotype
 of the form YY would not be returned.
 }

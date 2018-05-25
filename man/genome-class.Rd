@@ -11,6 +11,8 @@
 \item{male.recombination}{Optional: A vector containing the recombination rate between the different locus. It should be of length n-1 where n is the number of locus.}
 
 \item{female.recombination}{Optional: A vector containing the recombination rate between the different locus. It should be of length n-1 where n is the number of locus.}
+
+\item{position.modifier}{Optional: indicate a list of link on which the modifier act. If empty (as in default), modifier act on all links.}
 }
 \description{
 A genome is a S4 class which define all the properties of a genome, it is basically
