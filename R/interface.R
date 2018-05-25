@@ -39,7 +39,7 @@ compute.frequency.evolution <- function(genome,initial.frequency = NULL,generati
 #'
 #' Convergence is evaluated in the following way. First, a few generation are perform (warmup) without measuring the criteria
 #' since they might be oscillation due to male/female proportion effect. Then, at each generation, the total
-#' slope $\abs(\vec({_t}-\vec{x_{t-1}})$ and the total curvature $\abs(\vec({_t}-\vec{x_{t-1}})$
+#' slope \eqn{\abs(\vec({_t}-\vec{x_{t-1}})} and the total curvature \eqn{\abs(\vec({_t}-\vec{x_{t-1}})}
 #' @return A matrix containing the frequencies of each genotype at each generation
 #' @param genome A S4 object of the type genome
 #' @param initial.frequency The initial frequency of the various genotype. If NULL is given
@@ -47,6 +47,7 @@ compute.frequency.evolution <- function(genome,initial.frequency = NULL,generati
 #' @param min.generations The minimum number of generation to be computed
 #' @param max.generations The maximum number of generation to be computed. If the convergence is not reached in this time, iteration stop and a warning is emited. A value of zero indicate no limit.
 #' @param criteria If the sum of the slope of the evolution of the genotype frequency is under this number, the simulation stop (if the other criteria are also met)
+#' @param keep.all.generation tell wether to give only the value of the last three generations or all of them. Kepping only the last generations improve computation time. Default value = TRUE
 #' @examples
 #' locus1 = data.frame(allele1=c(1,1),allele2 = c(1,2),sd = c(0,1),fitness.male=c(1,1),fitness.female=c(1,1))
 #' locus2 = data.frame(allele1=  c(1,1,2),allele2 = c(1,2,2),fitness.female = c(1,0.9,0.8),fitness.male = c(0.6,0.8,1))
@@ -59,7 +60,8 @@ compute.frequency.evolution.until.convergence <- function(genome,
                                                           initial.frequency = NULL,
                                                           min.generations = 25,
                                                           max.generations = 100000,
-                                                          criteria = 1.e-8
+                                                          criteria = 1.e-8,
+                                                          keep.all.generation = TRUE
                                                           )
 {
   nb.genotype <- get.nb.genotype(genome)
@@ -75,7 +77,12 @@ compute.frequency.evolution.until.convergence <- function(genome,
     generation <- generation +1
     #about growing table in loop is evil.
     #growing the freq like this seems to have almost no effect up to 10'000 generations, but then start to be noticed.
-    freqs <- cbind(freqs,simulate.frequency(genome,freqs[,generation-1]))
+    if(keep.all.generation | generation == 3){
+      freqs <- cbind(freqs,simulate.frequency(genome,freqs[,generation-1]))
+    }
+    else{
+      freqs <- cbind(freqs[,c(2,3)],simulate.frequency(genome,freqs[,3]))
+    }
 
   }
   return(freqs)

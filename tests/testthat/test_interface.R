@@ -60,3 +60,15 @@ test_that("We can compute frequency of the genotypes from the frequency of one a
             expect_equal(sum(get.frequency.from.one.allele.frequency(genome.partially.sexual,2,1,0.25)[get.genotype.with.given.allele(genome.partially.sexual,2,1)]),0.25)
           }
 )
+
+
+test_that("We can compute until convergence is reached",
+          {
+            freqs1 <- compute.frequency.evolution.until.convergence(genome1)
+            expect_known_value(get.gamete.frequency(genome1,freqs1),"freq_converged.rds",update = F)
+            expect_equal(ncol(freqs1),2206)
+            freqs2 <- compute.frequency.evolution.until.convergence(genome1,keep.all.generation = FALSE)
+            expect_equal(ncol(freqs2),3)
+            expect_equal(freqs1[,2204:2206],freqs2)
+          }
+)

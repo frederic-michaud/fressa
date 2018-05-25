@@ -6,7 +6,7 @@
 \usage{
 compute.frequency.evolution.until.convergence(genome,
   initial.frequency = NULL, min.generations = 25, max.generations = 1e+05,
-  criteria = 1e-08)
+  criteria = 1e-08, keep.all.generation = TRUE)
 }
 \arguments{
 \item{genome}{A S4 object of the type genome}
@@ -19,6 +19,8 @@ the initial frequencies will all be set to the same value}
 \item{max.generations}{The maximum number of generation to be computed. If the convergence is not reached in this time, iteration stop and a warning is emited. A value of zero indicate no limit.}
 
 \item{criteria}{If the sum of the slope of the evolution of the genotype frequency is under this number, the simulation stop (if the other criteria are also met)}
+
+\item{keep.all.generation}{tell wether to give only the value of the last three generations or all of them. Kepping only the last generations improve computation time. Default value = TRUE}
 }
 \value{
 A matrix containing the frequencies of each genotype at each generation

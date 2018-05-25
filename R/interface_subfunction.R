@@ -121,9 +121,9 @@ get.single.allele.frequency.single.generation <- function(allele,genome,freqs,lo
 is.converged <- function(freqs,generation,min.generations,max.generations,criteria){
   #If we are still in the warmup, we wait
   if(generation < min.generations) return(FALSE)
-
-  last.slope <- sum(abs(freqs[,generation] - freqs[,generation-1]))
-  pre.last.slope <- sum(abs(freqs[,generation-1] - freqs[,generation-2]))
+  nb.generation.store <- ncol(freqs)
+  last.slope <- sum(abs(freqs[,nb.generation.store] - freqs[,nb.generation.store-1]))
+  pre.last.slope <- sum(abs(freqs[,nb.generation.store-1] - freqs[,nb.generation.store-2]))
   #if the criteria is increasing, we should better wait
   if(last.slope > pre.last.slope) return(FALSE)
 
